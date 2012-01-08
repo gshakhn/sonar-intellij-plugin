@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.sonar-ide.intellij</groupId>
+  <artifactId>sonar-intellij-plugin</artifactId>
+  <version>0.1</version>
+  <packaging>jar</packaging>
+
+  <name>sonar-intellij-plugin</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+      <dependency>
+          <groupId>com.intellij</groupId>
+          <artifactId>openapi</artifactId>
+          <version>11.0.1</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>com.intellij</groupId>
+          <artifactId>util</artifactId>
+          <version>11.0.1</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>com.intellij</groupId>
+          <artifactId>extensions</artifactId>
+          <version>11.0.1</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>com.intellij</groupId>
+          <artifactId>annotations</artifactId>
+          <version>11.0.1</version>
+          <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+          <!-- Note that sonar-ws-client supports both of httpclient 3.x and 4.x -->
+          <groupId>org.codehaus.sonar</groupId>
+          <artifactId>sonar-ws-client</artifactId>
+          <version>2.12</version>
+      </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,31 @@
+<idea-plugin version="2">
+    <name>Sonar IntelliJ</name>
+    <description>Adds Sonar integration to IntelliJ</description>
+    <version>0.1</version>
+    <vendor>George Shakhnazaryan</vendor>
+    <idea-version since-build="111.67"/>
+
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
+
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <toolWindow id="Sonar" anchor="bottom" factoryClass="org.sonar.ide.intellij.ui.SonarToolWindowFactory"/>
+        <moduleConfigurable id="SonarConfigurable" instance="org.sonar.ide.intellij.ui.SonarModuleConfiguration"/>
+    </extensions>
+    <module-components>
+        <component>
+            <interface-class>org.sonar.ide.intellij.SonarModuleComponent</interface-class>
+            <implementation-class>org.sonar.ide.intellij.SonarModuleComponentImpl</implementation-class>
+        </component>
+    </module-components>
+</idea-plugin>

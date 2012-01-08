@@ -22,51 +22,51 @@ import java.awt.event.ActionListener;
 
 public class SonarToolWindowFactory implements ToolWindowFactory {
 
-    private JPanel myToolWindowContent;
-    private JTable violationsTable;
-    private JButton refreshViolations;
-    private ViolationTableModel violationTableModel;
+  private JPanel myToolWindowContent;
+  private JTable violationsTable;
+  private JButton refreshViolations;
+  private ViolationTableModel violationTableModel;
 
-    public SonarToolWindowFactory() {
-        refreshViolations.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SonarToolWindowFactory.this.refreshViolationList();
-            }
-        });
-        
-        violationsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+  public SonarToolWindowFactory() {
+    refreshViolations.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        SonarToolWindowFactory.this.refreshViolationList();
+      }
+    });
+
+    violationsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+      @Override
+      public void valueChanged(ListSelectionEvent e) {
+        ListSelectionModel listSelectionModel = (ListSelectionModel) e.getSource();
+        if (!listSelectionModel.isSelectionEmpty()) {
+          Integer selectionIndex = listSelectionModel.getMinSelectionIndex();
+          final Violation selectedViolation = violationTableModel.getViolation(selectionIndex);
+
+          DataManager.getInstance().getDataContextFromFocus().doWhenDone(new AsyncResult.Handler<DataContext>() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                ListSelectionModel listSelectionModel = (ListSelectionModel) e.getSource();
-                if (!listSelectionModel.isSelectionEmpty()) {
-                    Integer selectionIndex = listSelectionModel.getMinSelectionIndex();
-                    final Violation selectedViolation = violationTableModel.getViolation(selectionIndex);
-                    
-                    DataManager.getInstance().getDataContextFromFocus().doWhenDone(new AsyncResult.Handler<DataContext>() {
-                        @Override
-                        public void run(DataContext dataContext) {
-                            Project project = DataKeys.PROJECT.getData(dataContext);
-                            OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getVirtualFile(), selectedViolation.getLine(), 0);
-                            FileEditorManager.getInstance(project).openTextEditor(descriptor, false);
-                        }
-                    });
-                }
+            public void run(DataContext dataContext) {
+              Project project = DataKeys.PROJECT.getData(dataContext);
+              OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getVirtualFile(), selectedViolation.getLine(), 0);
+              FileEditorManager.getInstance(project).openTextEditor(descriptor, false);
             }
-        });
-    }
+          });
+        }
+      }
+    });
+  }
 
-    @Override
-    public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent(myToolWindowContent, "", false);
-        toolWindow.getContentManager().addContent(content);
+  @Override
+  public void createToolWindowContent(Project project, ToolWindow toolWindow) {
+    ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+    Content content = contentFactory.createContent(myToolWindowContent, "", false);
+    toolWindow.getContentManager().addContent(content);
 
-        violationTableModel = new ViolationTableModel();
-        violationsTable.setModel(violationTableModel);
-        violationsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    }
+    violationTableModel = new ViolationTableModel();
+    violationsTable.setModel(violationTableModel);
+    violationsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+  }
 
-    public void refreshViolationList() {
-        violationTableModel.refreshViolations();
-    }
+  public void refreshViolationList() {
+    violationTableModel.refreshViolations();
+  }
 }

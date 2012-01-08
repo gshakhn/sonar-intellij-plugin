@@ -16,53 +16,53 @@ import org.sonar.wsclient.connectors.HttpClient4Connector;
  * Time: 7:37 PM
  * To change this template use File | Settings | File Templates.
  */
-@State(name = "SonarConfiguration", storages = {@Storage(id="other", file = "$MODULE_FILE$")})
+@State(name = "SonarConfiguration", storages = {@Storage(id = "other", file = "$MODULE_FILE$")})
 public class SonarModuleComponentImpl implements SonarModuleComponent, ModuleComponent, PersistentStateComponent<SonarModuleComponent.State> {
-    
-    private State myState = new State();
 
-    public SonarModuleComponentImpl() {
-    }
+  private State myState = new State();
 
-    public void initComponent() {
-        // TODO: insert component initialization logic here
-    }
+  public SonarModuleComponentImpl() {
+  }
 
-    public void disposeComponent() {
-        // TODO: insert component disposal logic here
-    }
+  public void initComponent() {
+    // TODO: insert component initialization logic here
+  }
 
-    @NotNull
-    public String getComponentName() {
-        return "SonarModuleComponentImpl";
-    }
+  public void disposeComponent() {
+    // TODO: insert component disposal logic here
+  }
 
-    public void projectOpened() {
-        // called when project is opened
-    }
+  @NotNull
+  public String getComponentName() {
+    return "SonarModuleComponentImpl";
+  }
 
-    public void projectClosed() {
-        // called when project is being closed
-    }
+  public void projectOpened() {
+    // called when project is opened
+  }
 
-    public void moduleAdded() {
-        // Invoked when the module corresponding to this component instance has been completely
-        // loaded and added to the project.
-    }
+  public void projectClosed() {
+    // called when project is being closed
+  }
 
-    @Override
-    public State getState() {
-        return myState;
-    }
+  public void moduleAdded() {
+    // Invoked when the module corresponding to this component instance has been completely
+    // loaded and added to the project.
+  }
 
-    @Override
-    public void loadState(State state) {
-        myState = state;
-    }
+  @Override
+  public State getState() {
+    return myState;
+  }
 
-    @Override
-    public Sonar getSonar() {
-        return new Sonar(new HttpClient4Connector(new Host(myState.host)));
+  @Override
+  public void loadState(State state) {
+    myState = state;
+  }
 
-    }
+  @Override
+  public Sonar getSonar() {
+    return new Sonar(new HttpClient4Connector(new Host(myState.host)));
+
+  }
 }

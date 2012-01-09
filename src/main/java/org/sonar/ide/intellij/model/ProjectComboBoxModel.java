@@ -11,33 +11,12 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ProjectComboBoxModel extends DefaultComboBoxModel {
-  private List<SonarProject> projects;
+  private List<SonarProject> projects = new ArrayList<SonarProject>();
 
-  public ProjectComboBoxModel() {
-  }
+  public void refreshProjectList(List<SonarProject> projects) {
+    this.projects = projects;
 
-  public void refreshProjectList(Sonar sonar) {
-    projects = new ArrayList<SonarProject>();
-
-    ResourceQuery query = new ResourceQuery();
-    query.setQualifiers("TRK,BRC");
-    query.setDepth(1);
-
-    List<Resource> resources = sonar.findAll(query);
     removeAllElements();
-
-    for (Resource resource : resources) {
-      SonarProject project = new SonarProject(resource);
-      projects.add(project);
-    }
-
-    Collections.sort(projects, new Comparator<SonarProject>() {
-      @Override
-      public int compare(SonarProject o1, SonarProject o2) {
-        return o1.toString().compareTo(o2.toString());
-      }
-    });
-
     for (SonarProject project : projects) {
       addElement(project);
     }
@@ -53,20 +32,4 @@ public class ProjectComboBoxModel extends DefaultComboBoxModel {
     return null;
   }
 
-  public static class SonarProject {
-    private Resource resource;
-
-    public SonarProject(Resource resource) {
-      this.resource = resource;
-    }
-
-    @Override
-    public String toString() {
-      return resource.getName() + " - " + resource.getVersion();
-    }
-
-    public Resource getResource() {
-      return resource;
-    }
-  }
 }

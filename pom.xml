@@ -8,35 +8,49 @@
   <packaging>jar</packaging>
 
   <name>sonar-intellij-plugin</name>
-  <url>http://maven.apache.org</url>
+  <description>Adds Sonar integration to IntelliJ.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <jdk.min.version>1.6</jdk.min.version>
+
+    <idea.version>11.0.1</idea.version>
+    <idea.build>111.67</idea.build>
+
+    <sonar.version>2.12</sonar.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.intellij</groupId>
       <artifactId>openapi</artifactId>
-      <version>11.0.1</version>
+      <version>${idea.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.intellij</groupId>
       <artifactId>util</artifactId>
-      <version>11.0.1</version>
+      <version>${idea.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.intellij</groupId>
       <artifactId>extensions</artifactId>
-      <version>11.0.1</version>
+      <version>${idea.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.intellij</groupId>
       <artifactId>annotations</artifactId>
-      <version>11.0.1</version>
+      <version>${idea.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.4</version>
       <scope>provided</scope>
     </dependency>
 
@@ -44,7 +58,49 @@
       <!-- Note that sonar-ws-client supports both of httpclient 3.x and 4.x -->
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-ws-client</artifactId>
-      <version>2.12</version>
+      <version>${sonar.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.0</version>
+      <scope>runtime</scope>
+      <optional>true</optional>
     </dependency>
   </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>./</directory>
+        <includes>
+          <include>META-INF/plugin.xml</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>${project.basedir}/src/main/assembly/sonar-intellij-plugin-assembly.xml</descriptor>
+          </descriptors>
+          <!--<finalName>${project.artifactId}.${project.packaging}</finalName>-->
+        </configuration>
+        <executions>
+          <execution>
+            <id>distribution-package</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

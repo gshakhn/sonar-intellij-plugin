@@ -73,7 +73,7 @@
   <build>
     <resources>
       <resource>
-        <directory>./</directory>
+        <directory>src/main/resources/</directory>
         <includes>
           <include>META-INF/plugin.xml</include>
         </includes>

@@ -25,8 +25,8 @@
   </extensions>
   <module-components>
     <component>
-      <interface-class>org.sonar.ide.intellij.SonarModuleComponent</interface-class>
-      <implementation-class>org.sonar.ide.intellij.SonarModuleComponentImpl</implementation-class>
+      <interface-class>org.sonar.ide.intellij.component.SonarModuleComponent</interface-class>
+      <implementation-class>org.sonar.ide.intellij.component.SonarModuleComponentImpl</implementation-class>
     </component>
   </module-components>
 </idea-plugin>

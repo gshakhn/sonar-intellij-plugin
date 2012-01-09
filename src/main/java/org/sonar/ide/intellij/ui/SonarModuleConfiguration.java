@@ -5,7 +5,7 @@ import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nls;
-import org.sonar.ide.intellij.SonarModuleComponent;
+import org.sonar.ide.intellij.component.SonarModuleComponent;
 import org.sonar.ide.intellij.model.ProjectComboBoxModel;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;

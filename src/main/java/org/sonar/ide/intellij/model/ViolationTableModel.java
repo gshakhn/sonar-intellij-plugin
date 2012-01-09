@@ -12,7 +12,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiManager;
-import org.sonar.ide.intellij.SonarModuleComponent;
+import org.sonar.ide.intellij.component.SonarModuleComponent;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.SourceQuery;

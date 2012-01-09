@@ -1,4 +1,4 @@
-package org.sonar.ide.intellij;
+package org.sonar.ide.intellij.component;
 
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
@@ -19,7 +19,7 @@ import org.sonar.wsclient.connectors.HttpClient4Connector;
 @State(name = "SonarConfiguration", storages = {@Storage(id = "other", file = "$MODULE_FILE$")})
 public class SonarModuleComponentImpl implements SonarModuleComponent, ModuleComponent, PersistentStateComponent<SonarModuleComponent.State> {
 
-  private State myState = new State();
+  private com.intellij.openapi.components.State myState = new com.intellij.openapi.components.State();
 
   public SonarModuleComponentImpl() {
   }
@@ -51,12 +51,12 @@ public class SonarModuleComponentImpl implements SonarModuleComponent, ModuleCom
   }
 
   @Override
-  public State getState() {
+  public com.intellij.openapi.components.State getState() {
     return myState;
   }
 
   @Override
-  public void loadState(State state) {
+  public void loadState(com.intellij.openapi.components.State state) {
     myState = state;
   }
 

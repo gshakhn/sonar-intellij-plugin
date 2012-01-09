@@ -1,4 +1,4 @@
-package org.sonar.ide.intellij;
+package org.sonar.ide.intellij.component;
 
 import org.sonar.wsclient.Sonar;
 

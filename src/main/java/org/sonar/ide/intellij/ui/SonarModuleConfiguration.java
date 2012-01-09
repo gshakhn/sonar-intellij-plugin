@@ -16,16 +16,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SonarModuleConfiguration extends BaseConfigurable {
-  private JTextField txtHost;
-  private JComboBox cmbProject;
-  private JButton btnRefreshProject;
   private JLabel lblHost;
-  private JLabel lblProject;
+  private JTextField txtHost;
+  private JButton btnRefreshProjects;
+  private JTextField txtUser;
   private JLabel lblUser;
   private JLabel lblPassword;
-  private JTextField txtUser;
   private JPasswordField txtPassword;
-  private JPanel pnlPanel;
+  private JLabel lblProject;
+  private JComboBox cmbProject;
+  private JPanel pnlMain;
 
   private ProjectComboBoxModel projectComboBoxModel;
 
@@ -36,7 +36,7 @@ public class SonarModuleConfiguration extends BaseConfigurable {
     projectComboBoxModel = new ProjectComboBoxModel();
     cmbProject.setModel(projectComboBoxModel);
 
-    btnRefreshProject.addActionListener(new ActionListener() {
+    btnRefreshProjects.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         projectComboBoxModel.refreshProjectList(getSonar());
@@ -80,7 +80,7 @@ public class SonarModuleConfiguration extends BaseConfigurable {
 
   @Override
   public JComponent createComponent() {
-    return pnlPanel;
+    return pnlMain;
   }
 
   @Override

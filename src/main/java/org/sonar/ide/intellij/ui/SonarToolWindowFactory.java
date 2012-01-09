@@ -21,10 +21,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SonarToolWindowFactory implements ToolWindowFactory {
-
-  private JPanel myToolWindowContent;
-  private JTable violationsTable;
   private JButton refreshViolations;
+  private JTable violationsTable;
+  private JPanel myToolWindowContent;
+
   private ViolationTableModel violationTableModel;
 
   public SonarToolWindowFactory() {

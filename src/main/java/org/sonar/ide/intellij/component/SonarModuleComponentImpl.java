@@ -9,17 +9,10 @@ import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
 
-/**
- * Created by IntelliJ IDEA.
- * User: gshakhn
- * Date: 1/2/12
- * Time: 7:37 PM
- * To change this template use File | Settings | File Templates.
- */
 @State(name = "SonarConfiguration", storages = {@Storage(id = "other", file = "$MODULE_FILE$")})
-public class SonarModuleComponentImpl implements SonarModuleComponent, ModuleComponent, PersistentStateComponent<SonarModuleComponent.State> {
+public class SonarModuleComponentImpl implements SonarModuleComponent, ModuleComponent, PersistentStateComponent<SonarModuleComponent.SonarModuleState> {
 
-  private com.intellij.openapi.components.State myState = new com.intellij.openapi.components.State();
+  private SonarModuleState myState = new SonarModuleState();
 
   public SonarModuleComponentImpl() {
   }
@@ -51,12 +44,12 @@ public class SonarModuleComponentImpl implements SonarModuleComponent, ModuleCom
   }
 
   @Override
-  public com.intellij.openapi.components.State getState() {
+  public SonarModuleState getState() {
     return myState;
   }
 
   @Override
-  public void loadState(com.intellij.openapi.components.State state) {
+  public void loadState(SonarModuleState state) {
     myState = state;
   }
 

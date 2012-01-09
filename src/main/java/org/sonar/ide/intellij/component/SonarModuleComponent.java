@@ -3,9 +3,9 @@ package org.sonar.ide.intellij.component;
 import org.sonar.wsclient.Sonar;
 
 public interface SonarModuleComponent {
-  State getState();
+  SonarModuleState getState();
 
-  class State {
+  class SonarModuleState {
     public String host;
     public String user;
     public String password;

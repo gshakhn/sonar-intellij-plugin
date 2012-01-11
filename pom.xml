@@ -91,6 +91,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
@@ -100,6 +101,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>ideauidesigner-maven-plugin</artifactId>
+        <version>1.0-beta-1</version>
         <executions>
           <execution>
             <goals>
@@ -107,7 +109,6 @@
             </goals>
           </execution>
         </executions>
-
         <configuration>
           <fork>true</fork>
           <debug>true</debug>
@@ -118,11 +119,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-5</version>
         <configuration>
           <descriptors>
             <descriptor>${project.basedir}/src/main/assembly/sonar-intellij-plugin-assembly.xml</descriptor>
           </descriptors>
-          <!--<finalName>${project.artifactId}.${project.packaging}</finalName>-->
         </configuration>
         <executions>
           <execution>

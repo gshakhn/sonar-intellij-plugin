@@ -1,28 +1,29 @@
 package org.sonar.ide.intellij.model;
 
-import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
+import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ProjectComboBoxModel extends DefaultComboBoxModel {
   private List<SonarProject> projects = new ArrayList<SonarProject>();
 
-  public void refreshProjectList(List<SonarProject> projects) {
+  public void refreshProjectList(List<SonarProject> projects, String existingProjectKey) {
     this.projects = projects;
 
     removeAllElements();
     for (SonarProject project : projects) {
       addElement(project);
     }
+
+    if (!StringUtils.isBlank(existingProjectKey)) {
+      SonarProject selectedProject = findProjectByKey(existingProjectKey);
+      setSelectedItem(selectedProject);
+    }
   }
 
-  public SonarProject findProjectByKey(String projectKey) {
+  private SonarProject findProjectByKey(String projectKey) {
     for (SonarProject project : projects) {
       if (project.getResource().getKey().equals(projectKey)) {
         return project;

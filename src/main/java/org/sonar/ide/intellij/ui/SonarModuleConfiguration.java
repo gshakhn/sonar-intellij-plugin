@@ -4,24 +4,20 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
 import org.apache.commons.lang.StringUtils;
+import org.jdesktop.swingx.JXBusyLabel;
 import org.jetbrains.annotations.Nls;
 import org.sonar.ide.intellij.component.SonarModuleComponent;
 import org.sonar.ide.intellij.model.ProjectComboBoxModel;
 import org.sonar.ide.intellij.model.SonarProject;
+import org.sonar.ide.intellij.worker.RefreshProjectList;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class SonarModuleConfiguration extends BaseConfigurable {
   private JLabel lblHost;
@@ -34,6 +30,7 @@ public class SonarModuleConfiguration extends BaseConfigurable {
   private JLabel lblProject;
   private JComboBox cmbProject;
   private JPanel pnlMain;
+  private JXBusyLabel lblRefreshingProjects;
 
   private ProjectComboBoxModel projectComboBoxModel;
 
@@ -47,7 +44,7 @@ public class SonarModuleConfiguration extends BaseConfigurable {
     btnRefreshProjects.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        new RefreshProjectList().execute();
+        startRefreshProjects();
       }
     });
     cmbProject.addActionListener(new ActionListener() {
@@ -63,8 +60,30 @@ public class SonarModuleConfiguration extends BaseConfigurable {
     txtPassword.setText(sonarModuleComponent.getState().password);
 
     if (!StringUtils.isEmpty(txtHost.getText())) {
-      new RefreshProjectList().execute();
+      startRefreshProjects();
     }
+  }
+
+  private void startRefreshProjects() {
+    lblRefreshingProjects.setBusy(true);
+    btnRefreshProjects.setEnabled(false);
+    txtHost.setEnabled(false);
+    txtUser.setEnabled(false);
+    txtPassword.setEnabled(false);
+    cmbProject.setEnabled(false);
+
+    new RefreshProjectList(this).execute();
+  }
+
+  public void finishRefreshProjects(List<SonarProject> projects) {
+    this.projectComboBoxModel.refreshProjectList(projects, this.sonarModuleComponent.getState().projectKey);
+
+    this.lblRefreshingProjects.setBusy(false);
+    this.btnRefreshProjects.setEnabled(true);
+    this.txtHost.setEnabled(true);
+    this.txtUser.setEnabled(true);
+    this.txtPassword.setEnabled(true);
+    this.cmbProject.setEnabled(true);
   }
 
   @Nls
@@ -104,56 +123,11 @@ public class SonarModuleConfiguration extends BaseConfigurable {
   public void disposeUIResources() {
   }
 
-  private Sonar getSonar() {
+  public Sonar getSonar() {
     String host = txtHost.getText();
     String user = txtUser.getText();
     String password = txtPassword.getPassword().toString();
     return new Sonar(new HttpClient4Connector(new Host(host, user, password)));
   }
 
-  class RefreshProjectList extends SwingWorker<List<SonarProject>, Void> {
-
-    @Override
-    protected List<SonarProject> doInBackground() throws Exception {
-      ResourceQuery query = new ResourceQuery();
-      query.setQualifiers("TRK,BRC");
-      query.setDepth(1);
-
-      List<Resource> resources = getSonar().findAll(query);
-      
-      List<SonarProject> projects = new ArrayList<SonarProject>();
-
-      for (Resource resource : resources) {
-        SonarProject project = new SonarProject(resource);
-        projects.add(project);
-      }
-
-      Collections.sort(projects, new Comparator<SonarProject>() {
-        @Override
-        public int compare(SonarProject o1, SonarProject o2) {
-          return o1.toString().compareTo(o2.toString());
-        }
-      });
-
-      return projects;
-    }
-
-    @Override
-    protected void done() {
-      try {
-        List<SonarProject> projects = get();
-        projectComboBoxModel.refreshProjectList(projects);
-
-        String projectKey = sonarModuleComponent.getState().projectKey;
-        if (!StringUtils.isBlank(projectKey)) {
-          SonarProject selectedProject = projectComboBoxModel.findProjectByKey(projectKey);
-          projectComboBoxModel.setSelectedItem(selectedProject);
-        }
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      } catch (ExecutionException e) {
-        e.printStackTrace();
-      }
-    }
-  }
 }

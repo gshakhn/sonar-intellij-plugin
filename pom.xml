@@ -55,6 +55,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.swinglabs</groupId>
+      <artifactId>swingx-core</artifactId>
+      <version>1.6.2-2</version>
+    </dependency>
+
+    <dependency>
       <!-- Note that sonar-ws-client supports both of httpclient 3.x and 4.x -->
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-ws-client</artifactId>

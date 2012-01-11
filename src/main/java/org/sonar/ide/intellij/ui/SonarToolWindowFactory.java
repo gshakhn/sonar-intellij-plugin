@@ -11,28 +11,29 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import org.sonar.ide.intellij.component.SonarProjectComponent;
+import org.sonar.ide.intellij.model.ToolWindowModel;
 import org.sonar.ide.intellij.model.ViolationTableModel;
 import org.sonar.wsclient.services.Violation;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 
 public class SonarToolWindowFactory implements ToolWindowFactory {
-  private JButton refreshViolations;
-  private JTable violationsTable;
-  private JPanel myToolWindowContent;
-
-  private ViolationTableModel violationTableModel;
-
   public SonarToolWindowFactory() {
-    refreshViolations.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        SonarToolWindowFactory.this.refreshViolationList();
-      }
-    });
+  }
+
+  @Override
+  public void createToolWindowContent(Project project, ToolWindow toolWindow) {
+    final ViolationTableModel violationTableModel = new ViolationTableModel(project);
+
+    JTable violationsTable = new JTable(violationTableModel);
+    violationsTable.setFillsViewportHeight(true);
+
+    violationsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    violationsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
     violationsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       @Override
@@ -46,27 +47,34 @@ public class SonarToolWindowFactory implements ToolWindowFactory {
             @Override
             public void run(DataContext dataContext) {
               Project project = DataKeys.PROJECT.getData(dataContext);
-              OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getVirtualFile(), selectedViolation.getLine(), 0);
+              OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getCurrentVirtualFile(), selectedViolation.getLine(), 0);
               FileEditorManager.getInstance(project).openTextEditor(descriptor, false);
             }
           });
         }
       }
     });
-  }
 
-  @Override
-  public void createToolWindowContent(Project project, ToolWindow toolWindow) {
+    JScrollPane scrollPane = new JScrollPane(violationsTable);
+
+    JPanel panel = new JPanel(new GridBagLayout());
+    GridBagConstraints gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.gridwidth = 1;
+    gridBagConstraints.gridheight = 1;
+    gridBagConstraints.fill = GridBagConstraints.BOTH;
+    gridBagConstraints.anchor = GridBagConstraints.CENTER;
+    gridBagConstraints.weightx = 1;
+    gridBagConstraints.weighty = 1;
+    panel.add(scrollPane, gridBagConstraints);
+
     ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-    Content content = contentFactory.createContent(myToolWindowContent, "", false);
+    Content content = contentFactory.createContent(panel, "", false);
     toolWindow.getContentManager().addContent(content);
 
-    violationTableModel = new ViolationTableModel();
-    violationsTable.setModel(violationTableModel);
-    violationsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-  }
-
-  public void refreshViolationList() {
-    violationTableModel.refreshViolations();
+    ToolWindowModel toolWindowModel = new ToolWindowModel(violationTableModel);
+    SonarProjectComponent projectComponent = project.getComponent(SonarProjectComponent.class);
+    projectComponent.setToolWindowModel(toolWindowModel);
   }
 }

@@ -11,22 +11,25 @@
   </application-components>
 
   <project-components>
-    <!-- Add your project components here -->
+    <component>
+      <interface-class>org.sonar.ide.intellij.component.SonarProjectComponent</interface-class>
+      <implementation-class>org.sonar.ide.intellij.component.SonarProjectComponentImpl</implementation-class>
+    </component>
   </project-components>
 
-  <actions>
-    <!-- Add your actions here -->
-  </actions>
-
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-    <toolWindow id="Sonar" anchor="bottom" factoryClass="org.sonar.ide.intellij.ui.SonarToolWindowFactory"/>
-    <moduleConfigurable id="SonarConfigurable" instance="org.sonar.ide.intellij.ui.SonarModuleConfiguration"/>
-  </extensions>
   <module-components>
     <component>
       <interface-class>org.sonar.ide.intellij.component.SonarModuleComponent</interface-class>
       <implementation-class>org.sonar.ide.intellij.component.SonarModuleComponentImpl</implementation-class>
     </component>
   </module-components>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <toolWindow id="Sonar" anchor="bottom" factoryClass="org.sonar.ide.intellij.ui.SonarToolWindowFactory"/>
+    <moduleConfigurable id="SonarConfigurable" instance="org.sonar.ide.intellij.ui.SonarModuleConfiguration"/>
+  </extensions>
 </idea-plugin>

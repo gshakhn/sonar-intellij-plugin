@@ -24,10 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViolationTableModel extends AbstractTableModel {
+  
+  private Project project;
 
   private List<Violation> violations = new ArrayList<Violation>();
-  private VirtualFile virtualFile;
+  private VirtualFile currentVirtualFile;
   private Source sourceCode;
+
+  public ViolationTableModel(Project project) {
+    this.project = project;
+  }
 
   @Override
   public String getColumnName(int column) {
@@ -76,48 +82,38 @@ public class ViolationTableModel extends AbstractTableModel {
     }
   }
 
-  public void refreshViolations() {
-    DataManager.getInstance().getDataContextFromFocus().doWhenDone(new AsyncResult.Handler<DataContext>() {
-      @Override
-      public void run(DataContext dataContext) {
-        violations.clear();
+  public void refreshViolations(VirtualFile virtualFile) {
+    this.currentVirtualFile = virtualFile;
 
-        Project project = DataKeys.PROJECT.getData(dataContext);
-        VirtualFile[] files = FileEditorManager.getInstance(project).getSelectedFiles();
-        if (files.length > 0) {
-          virtualFile = files[0];
-          Module module = ModuleUtil.findModuleForFile(virtualFile, project);
-          SonarModuleComponent sonarModuleComponent = module.getComponent(SonarModuleComponent.class);
+    Module module = ModuleUtil.findModuleForFile(virtualFile, this.project);
+    SonarModuleComponent sonarModuleComponent = module.getComponent(SonarModuleComponent.class);
 
-          PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
-          if (psiFile instanceof PsiJavaFile) {
-            PsiJavaFile psiJavaFile = (PsiJavaFile) psiFile;
-            String packageName = psiJavaFile.getPackageName();
-            String className = psiJavaFile.getClasses()[0].getName();
+    PsiFile psiFile = PsiManager.getInstance(this.project).findFile(virtualFile);
+    if (psiFile instanceof PsiJavaFile) {
+      PsiJavaFile psiJavaFile = (PsiJavaFile) psiFile;
+      String packageName = psiJavaFile.getPackageName();
+      String className = psiJavaFile.getClasses()[0].getName();
 
-            String resourceKey = sonarModuleComponent.getState().projectKey + ":" + packageName + "." + className;
+      String resourceKey = sonarModuleComponent.getState().projectKey + ":" + packageName + "." + className;
 
-            Sonar sonar = sonarModuleComponent.getSonar();
+      Sonar sonar = sonarModuleComponent.getSonar();
 
-            ViolationQuery violationQuery = ViolationQuery.createForResource(resourceKey);
-            violationQuery.setDepth(-1);
-            violations = sonar.findAll(violationQuery);
+      ViolationQuery violationQuery = ViolationQuery.createForResource(resourceKey);
+      violationQuery.setDepth(-1);
+      violations = sonar.findAll(violationQuery);
 
-            SourceQuery sourceQuery = SourceQuery.create(resourceKey);
-            sourceCode = sonar.find(sourceQuery);
+      SourceQuery sourceQuery = SourceQuery.create(resourceKey);
+      sourceCode = sonar.find(sourceQuery);
 
-            fireTableDataChanged();
-          }
-        }
-      }
-    });
+      fireTableDataChanged();
+    }
   }
 
   public Violation getViolation(int index) {
     return violations.get(index);
   }
 
-  public VirtualFile getVirtualFile() {
-    return virtualFile;
+  public VirtualFile getCurrentVirtualFile() {
+    return this.currentVirtualFile;
   }
 }

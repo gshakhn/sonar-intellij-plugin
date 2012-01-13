@@ -43,14 +43,16 @@ public class SonarToolWindowFactory implements ToolWindowFactory {
           Integer selectionIndex = listSelectionModel.getMinSelectionIndex();
           final Violation selectedViolation = violationTableModel.getViolation(selectionIndex);
 
-          DataManager.getInstance().getDataContextFromFocus().doWhenDone(new AsyncResult.Handler<DataContext>() {
-            @Override
-            public void run(DataContext dataContext) {
-              Project project = DataKeys.PROJECT.getData(dataContext);
-              OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getCurrentVirtualFile(), selectedViolation.getLine(), 0);
-              FileEditorManager.getInstance(project).openTextEditor(descriptor, false);
-            }
-          });
+          if (selectedViolation.getLine() != null) {
+            DataManager.getInstance().getDataContextFromFocus().doWhenDone(new AsyncResult.Handler<DataContext>() {
+              @Override
+              public void run(DataContext dataContext) {
+                Project project = DataKeys.PROJECT.getData(dataContext);
+                OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getCurrentVirtualFile(), selectedViolation.getLine(), 0);
+                FileEditorManager.getInstance(project).openTextEditor(descriptor, false);
+              }
+            });
+          }
         }
       }
     });

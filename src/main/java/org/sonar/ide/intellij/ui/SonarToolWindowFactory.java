@@ -27,7 +27,7 @@ public class SonarToolWindowFactory implements ToolWindowFactory {
 
   @Override
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-    final ViolationTableModel violationTableModel = new ViolationTableModel(project);
+    final ViolationTableModel violationTableModel = new ViolationTableModel();
 
     JTable violationsTable = new JTable(violationTableModel);
     violationsTable.setFillsViewportHeight(true);
@@ -73,7 +73,7 @@ public class SonarToolWindowFactory implements ToolWindowFactory {
     Content content = contentFactory.createContent(panel, "", false);
     toolWindow.getContentManager().addContent(content);
 
-    ToolWindowModel toolWindowModel = new ToolWindowModel(violationTableModel);
+    ToolWindowModel toolWindowModel = new ToolWindowModel(project, violationTableModel);
     SonarProjectComponent projectComponent = project.getComponent(SonarProjectComponent.class);
     projectComponent.setToolWindowModel(toolWindowModel);
   }

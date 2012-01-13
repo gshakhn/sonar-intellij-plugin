@@ -5,7 +5,6 @@ import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.sonar.ide.intellij.component.SonarProjectComponent;
-import org.sonar.ide.intellij.model.ToolWindowModel;
 
 public class SonarFileEditorManagerListener implements FileEditorManagerListener {
 
@@ -25,7 +24,7 @@ public class SonarFileEditorManagerListener implements FileEditorManagerListener
   @Override
   public void selectionChanged(FileEditorManagerEvent event) {
     if (sonarProjectComponent != null && sonarProjectComponent.getToolWindowModel() != null) {
-      sonarProjectComponent.getToolWindowModel().getViolationTableModel().refreshViolations(event.getNewFile());
+      sonarProjectComponent.getToolWindowModel().refreshViolationsTable(event.getNewFile());
     }
   }
 }

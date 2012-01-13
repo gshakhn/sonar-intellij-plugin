@@ -1,7 +1,8 @@
 package org.sonar.ide.intellij.worker;
 
+import org.sonar.ide.intellij.listener.RefreshProjectListListener;
 import org.sonar.ide.intellij.model.SonarProject;
-import org.sonar.ide.intellij.ui.SonarModuleConfiguration;
+import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
@@ -12,12 +13,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class RefreshProjectList extends SwingWorker<List<SonarProject>, Void> {
+public class RefreshProjectListWorker extends SwingWorker<List<SonarProject>, Void> {
 
-  SonarModuleConfiguration sonarModuleConfiguration;
+  private Sonar sonar;
+  private List<RefreshProjectListListener> listeners = new ArrayList<RefreshProjectListListener>();
 
-  public RefreshProjectList(SonarModuleConfiguration sonarModuleConfiguration) {
-    this.sonarModuleConfiguration = sonarModuleConfiguration;
+  public RefreshProjectListWorker(Sonar sonar) {
+    this.sonar = sonar;
+  }
+
+  public void addListener(RefreshProjectListListener listener) {
+    listeners.add(listener);
   }
 
   @Override
@@ -26,7 +32,7 @@ public class RefreshProjectList extends SwingWorker<List<SonarProject>, Void> {
     query.setQualifiers("TRK,BRC");
     query.setDepth(1);
 
-    List<Resource> resources = this.sonarModuleConfiguration.getSonar().findAll(query);
+    List<Resource> resources = this.sonar.findAll(query);
 
     List<SonarProject> projects = new ArrayList<SonarProject>();
 
@@ -49,7 +55,9 @@ public class RefreshProjectList extends SwingWorker<List<SonarProject>, Void> {
   protected void done() {
     try {
       List<SonarProject> projects = get();
-      this.sonarModuleConfiguration.finishRefreshProjects(projects);
+      for (RefreshProjectListListener listener : this.listeners) {
+        listener.doneRefreshProjects(projects);
+      }
     } catch (InterruptedException e) {
       e.printStackTrace();
     } catch (ExecutionException e) {

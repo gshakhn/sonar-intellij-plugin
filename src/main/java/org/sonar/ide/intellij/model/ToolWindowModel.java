@@ -4,6 +4,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.sonar.ide.intellij.listener.LoadingSonarFilesListener;
 import org.sonar.ide.intellij.listener.RefreshSourceListener;
 import org.sonar.ide.intellij.listener.RefreshViolationsListener;
 import org.sonar.ide.intellij.worker.RefreshSourceWorker;
@@ -11,9 +12,7 @@ import org.sonar.ide.intellij.worker.RefreshViolationsWorker;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ToolWindowModel implements RefreshViolationsListener, RefreshSourceListener {
   private Project project;
@@ -21,10 +20,19 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
 
   private Map<VirtualFile, List<Violation>> violationsCache = new HashMap<VirtualFile, List<Violation>>();
   private Map<VirtualFile, Source> sourceCache = new HashMap<VirtualFile, Source>();
+  
+  private Set<VirtualFile> currentlyLoadingViolations = Collections.synchronizedSet(new HashSet<VirtualFile>());
+  private Set<VirtualFile> currentlyLoadingSources = Collections.synchronizedSet(new HashSet<VirtualFile>());
+  
+  private Set<LoadingSonarFilesListener> listeners = new HashSet<LoadingSonarFilesListener>();
 
   public ToolWindowModel(Project project, ViolationTableModel violationTableModel) {
     this.project = project;
     this.violationTableModel = violationTableModel;
+  }
+  
+  public void addListener(LoadingSonarFilesListener listener) {
+    this.listeners.add(listener);
   }
 
   public ViolationTableModel getViolationTableModel() {
@@ -40,9 +48,15 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
     if (this.violationsCache.containsKey(newFile)) {
       doneRefreshViolations(newFile, this.violationsCache.get(newFile));
     } else {
-      RefreshViolationsWorker refreshViolationsWorker = new RefreshViolationsWorker(this.project, newFile);
-      refreshViolationsWorker.addListener(this);
-      refreshViolationsWorker.execute();
+      synchronized (this.currentlyLoadingViolations) {
+        if (!this.currentlyLoadingViolations.contains(newFile)) {
+          RefreshViolationsWorker refreshViolationsWorker = new RefreshViolationsWorker(this.project, newFile);
+          refreshViolationsWorker.addListener(this);
+          refreshViolationsWorker.execute();
+
+          refreshLoadingSonarFiles();
+        }
+      }
     }
   }
 
@@ -50,14 +64,23 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
     if (this.sourceCache.containsKey(newFile)) {
       doneRefreshSource(newFile, this.sourceCache.get(newFile));
     } else {
-      RefreshSourceWorker refreshSourceWorker = new RefreshSourceWorker(this.project, newFile);
-      refreshSourceWorker.addListener(this);
-      refreshSourceWorker.execute();
+      synchronized (this.currentlyLoadingSources) {
+        if (!this.currentlyLoadingSources.contains(newFile)) {
+          this.currentlyLoadingSources.add(newFile);
+
+          RefreshSourceWorker refreshSourceWorker = new RefreshSourceWorker(this.project, newFile);
+          refreshSourceWorker.addListener(this);
+          refreshSourceWorker.execute();
+
+          refreshLoadingSonarFiles();
+        }
+      }
     }
   }
 
   @Override
   public void doneRefreshViolations(final VirtualFile virtualFile, final List<Violation> violations) {
+    this.currentlyLoadingViolations.remove(virtualFile);
     ApplicationManager.getApplication().runWriteAction(new Runnable() {
       @Override
       public void run() {
@@ -68,10 +91,13 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
         }
       }
     });
+
+    refreshLoadingSonarFiles();
   }
 
   @Override
   public void doneRefreshSource(final VirtualFile virtualFile, final Source source) {
+    this.currentlyLoadingSources.remove(virtualFile);
     ApplicationManager.getApplication().runWriteAction(new Runnable() {
       @Override
       public void run() {
@@ -82,6 +108,8 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
         }
       }
     });
+
+    refreshLoadingSonarFiles();
   }
 
   private boolean isFileCurrentlySelected(VirtualFile virtualFile) {
@@ -93,5 +121,15 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
     }
 
     return false;
+  }
+
+  private void refreshLoadingSonarFiles() {
+    Set<VirtualFile> currentlyLoadingFiles = new HashSet<VirtualFile>();
+    currentlyLoadingFiles.addAll(this.currentlyLoadingViolations);
+    currentlyLoadingFiles.addAll(this.currentlyLoadingSources);
+
+    for (LoadingSonarFilesListener listener : this.listeners) {
+      listener.loadingFiles(new ArrayList<VirtualFile>(currentlyLoadingFiles));
+    }
   }
 }

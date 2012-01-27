@@ -23,7 +23,7 @@ public class ViolationTableModel extends AbstractTableModel {
     this.source = null;
     this.currentVirtualFile = null;
   }
-  
+
   public void setViolations(VirtualFile virtualFile, List<Violation> newViolations) {
     if (!virtualFile.equals(this.currentVirtualFile)) {
       reset();
@@ -34,7 +34,7 @@ public class ViolationTableModel extends AbstractTableModel {
 
     fireTableDataChanged();
   }
-  
+
   public void setSource(VirtualFile virtualFile, Source newSource) {
     if (!virtualFile.equals(this.currentVirtualFile)) {
       reset();
@@ -90,7 +90,12 @@ public class ViolationTableModel extends AbstractTableModel {
       case 2:
         return violation.getLine();
       case 3:
-        return source == null ? "UNKNOWN" : source.getLine(violation.getLine());
+        if (this.source == null) {
+          return "UNKNOWN";
+        } else {
+          Integer lineNumber = violation.getLine();
+          return this.source.getLine(lineNumber);
+        }
       case 4:
         return violation.getMessage();
       default:

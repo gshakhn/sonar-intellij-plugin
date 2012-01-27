@@ -11,6 +11,9 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.decorator.HighlightPredicate;
+import org.jdesktop.swingx.decorator.ToolTipHighlighter;
 import org.sonar.ide.intellij.component.SonarProjectComponent;
 import org.sonar.ide.intellij.model.ToolWindowModel;
 import org.sonar.ide.intellij.model.ViolationTableModel;
@@ -29,7 +32,8 @@ public class SonarToolWindowFactory implements ToolWindowFactory {
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
     final ViolationTableModel violationTableModel = new ViolationTableModel();
 
-    JTable violationsTable = new JTable(violationTableModel);
+    JXTable violationsTable = new JXTable(violationTableModel);
+    violationsTable.addHighlighter(new ToolTipHighlighter(HighlightPredicate.IS_TEXT_TRUNCATED));
     violationsTable.setFillsViewportHeight(true);
 
     violationsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);

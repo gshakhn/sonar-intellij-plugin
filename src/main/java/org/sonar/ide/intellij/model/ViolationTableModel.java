@@ -65,6 +65,11 @@ public class ViolationTableModel extends AbstractTableModel {
   }
 
   @Override
+  public Class<?> getColumnClass(int columnIndex) {
+    return columnIndex == 2 ? Integer.class : String.class;
+  }
+
+  @Override
   public int getRowCount() {
     return violations.size();
   }

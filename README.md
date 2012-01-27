@@ -20,3 +20,21 @@ After you install all the jars this plugin needs into your local repo, just run
     mvn package
 
 The resulting zip file will be located in the target folder.
+
+
+Using the plugin
+------------------
+
+1. Go to  File > Project Settings > Modules > Your Module > Sonar Configuration.
+2. Enter your host and username/password if required.
+3. Click the Load Projects button.
+4. Select the Sonar project associated with the module and hit OK.
+5. Open the Sonar tab at the bottom.
+6. Navigate to a Java file that has violations.
+7. Assuming everything is configured correctly, you should see the violations show up in the table.
+
+
+Usability Notes
+------------------
+- The violation list and source code for a Java file are cached. If the violation is fixed and another Sonar analysis is complete, IntelliJ will have to be restarted in order for the violation to disappear in IntelliJ.
+- There is very little error handling for a bad configuration.

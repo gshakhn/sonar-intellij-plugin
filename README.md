@@ -15,11 +15,18 @@ I am building the plugin locally using IntelliJ 11.0.1 (Build 111.67). To build 
 
     mvn install:install-file -Dfile=<path-to-file> -DgroupId=com.intellij -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=jar
 
+Alternatively, you can run the install-intellij-libs.sh script that [simonbrandhof] created.
+
+    ./install-intellij-libs.sh <path to IntelliJ 11.0.1>
+
+
 After you install all the jars this plugin needs into your local repo, just run
 
     mvn package
 
 The resulting zip file will be located in the target folder.
+
+[simonbrandhof]: https://github.com/simonbrandhof
 
 
 Using the plugin

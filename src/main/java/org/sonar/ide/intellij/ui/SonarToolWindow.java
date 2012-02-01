@@ -4,7 +4,6 @@ import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.AsyncResult;
@@ -66,8 +65,8 @@ public class SonarToolWindow implements LoadingSonarFilesListener {
               @Override
               public void run(DataContext dataContext) {
                 Project project = DataKeys.PROJECT.getData(dataContext);
-                OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getCurrentVirtualFile(), selectedViolation.getLine(), 0);
-                FileEditorManager.getInstance(project).openTextEditor(descriptor, false);
+                OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getCurrentVirtualFile(), selectedViolation.getLine() - 1, 0);
+                descriptor.navigate(false);
               }
             });
           }

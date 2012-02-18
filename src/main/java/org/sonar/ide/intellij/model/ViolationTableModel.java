@@ -90,10 +90,10 @@ public class ViolationTableModel extends AbstractTableModel {
       case 2:
         return violation.getLine();
       case 3:
-        if (this.source == null) {
+        if (this.source == null || violation.getLine() == null) {
           return "UNKNOWN";
         } else {
-          Integer lineNumber = violation.getLine();
+          int lineNumber = violation.getLine();
           return this.source.getLine(lineNumber);
         }
       case 4:

@@ -121,7 +121,7 @@ public class SonarModuleConfiguration extends BaseConfigurable implements Refres
   public void apply() throws ConfigurationException {
     sonarModuleComponent.getState().host = txtHost.getText();
     sonarModuleComponent.getState().user = txtUser.getText();
-    sonarModuleComponent.getState().password = txtPassword.getPassword().toString();
+    sonarModuleComponent.getState().password = new String(txtPassword.getPassword());
     sonarModuleComponent.getState().projectKey = ((SonarProject) (cmbProject.getSelectedItem())).getResource().getKey();
     sonarModuleComponent.getState().configured = true;
   }
@@ -137,7 +137,7 @@ public class SonarModuleConfiguration extends BaseConfigurable implements Refres
   public Sonar getSonar() {
     String host = txtHost.getText();
     String user = txtUser.getText();
-    String password = txtPassword.getPassword().toString();
+    String password = new String(txtPassword.getPassword());
     return new Sonar(new HttpClient4Connector(new Host(host, user, password)));
   }
 

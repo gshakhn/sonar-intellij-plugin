@@ -50,7 +50,7 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
     } else {
       synchronized (this.currentlyLoadingViolations) {
         if (!this.currentlyLoadingViolations.contains(newFile)) {
-            this.currentlyLoadingViolations.add(newFile);
+          this.currentlyLoadingViolations.add(newFile);
 
           RefreshViolationsWorker refreshViolationsWorker = new RefreshViolationsWorker(this.project, newFile);
           refreshViolationsWorker.addListener(this);

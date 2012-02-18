@@ -134,7 +134,7 @@ public class SonarModuleConfiguration extends BaseConfigurable implements Refres
   public void disposeUIResources() {
   }
 
-  public Sonar getSonar() {
+  private Sonar getSonar() {
     String host = txtHost.getText();
     String user = txtUser.getText();
     String password = new String(txtPassword.getPassword());

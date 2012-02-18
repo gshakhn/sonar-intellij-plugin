@@ -2,7 +2,6 @@ package org.sonar.ide.intellij.ui;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
@@ -29,9 +28,6 @@ import java.awt.*;
 import java.util.List;
 
 public class SonarToolWindow implements LoadingSonarFilesListener {
-  
-  private Project project;
-  private ToolWindow toolWindow;
 
   private JXBusyLabel loadingLabel;
 
@@ -39,10 +35,7 @@ public class SonarToolWindow implements LoadingSonarFilesListener {
     return new SonarToolWindow(project, toolWindow);
   }
 
-  private SonarToolWindow(Project project, ToolWindow toolWindow) {
-    this.project = project;
-    this.toolWindow = toolWindow;
-
+  private SonarToolWindow(final Project project, ToolWindow toolWindow) {
     final ViolationTableModel violationTableModel = new ViolationTableModel();
 
     final JXTable violationsTable = new JXTable(violationTableModel);
@@ -64,7 +57,6 @@ public class SonarToolWindow implements LoadingSonarFilesListener {
             DataManager.getInstance().getDataContextFromFocus().doWhenDone(new AsyncResult.Handler<DataContext>() {
               @Override
               public void run(DataContext dataContext) {
-                Project project = DataKeys.PROJECT.getData(dataContext);
                 OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getCurrentVirtualFile(), violation.getLine() - 1, 0);
                 descriptor.navigate(false);
               }

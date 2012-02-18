@@ -20,6 +20,7 @@ import org.sonar.ide.intellij.component.SonarProjectComponent;
 import org.sonar.ide.intellij.listener.LoadingSonarFilesListener;
 import org.sonar.ide.intellij.model.ToolWindowModel;
 import org.sonar.ide.intellij.model.ViolationTableModel;
+import org.sonar.wsclient.services.Violation;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -57,14 +58,14 @@ public class SonarToolWindow implements LoadingSonarFilesListener {
         ListSelectionModel listSelectionModel = (ListSelectionModel) e.getSource();
         if (!listSelectionModel.isSelectionEmpty()) {
           Integer selectionIndex = listSelectionModel.getMinSelectionIndex();
-          final Integer lineNumber = (Integer) violationTableModel.getValueAt(violationsTable.convertRowIndexToModel(selectionIndex), 2);
+          final Violation violation = violationTableModel.getViolation(violationsTable.convertRowIndexToModel(selectionIndex));
 
-          if (lineNumber != null) {
+          if (violation.getLine() != null) {
             DataManager.getInstance().getDataContextFromFocus().doWhenDone(new AsyncResult.Handler<DataContext>() {
               @Override
               public void run(DataContext dataContext) {
                 Project project = DataKeys.PROJECT.getData(dataContext);
-                OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getCurrentVirtualFile(), lineNumber - 1, 0);
+                OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getCurrentVirtualFile(), violation.getLine() - 1, 0);
                 descriptor.navigate(false);
               }
             });

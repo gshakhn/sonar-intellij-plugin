@@ -55,7 +55,7 @@ public class SonarModuleComponentImpl implements SonarModuleComponent, ModuleCom
 
   @Override
   public Sonar getSonar() {
-    return new Sonar(new HttpClient4Connector(new Host(myState.host)));
+    return new Sonar(new HttpClient4Connector(new Host(myState.host, myState.user, myState.password)));
   }
 
   @Override

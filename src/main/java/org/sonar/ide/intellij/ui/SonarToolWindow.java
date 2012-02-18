@@ -20,7 +20,6 @@ import org.sonar.ide.intellij.component.SonarProjectComponent;
 import org.sonar.ide.intellij.listener.LoadingSonarFilesListener;
 import org.sonar.ide.intellij.model.ToolWindowModel;
 import org.sonar.ide.intellij.model.ViolationTableModel;
-import org.sonar.wsclient.services.Violation;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -45,7 +44,7 @@ public class SonarToolWindow implements LoadingSonarFilesListener {
 
     final ViolationTableModel violationTableModel = new ViolationTableModel();
 
-    JXTable violationsTable = new JXTable(violationTableModel);
+    final JXTable violationsTable = new JXTable(violationTableModel);
     violationsTable.addHighlighter(new ToolTipHighlighter(HighlightPredicate.IS_TEXT_TRUNCATED));
     violationsTable.setFillsViewportHeight(true);
 
@@ -58,14 +57,14 @@ public class SonarToolWindow implements LoadingSonarFilesListener {
         ListSelectionModel listSelectionModel = (ListSelectionModel) e.getSource();
         if (!listSelectionModel.isSelectionEmpty()) {
           Integer selectionIndex = listSelectionModel.getMinSelectionIndex();
-          final Violation selectedViolation = violationTableModel.getViolation(selectionIndex);
+          final Integer lineNumber = (Integer) violationTableModel.getValueAt(violationsTable.convertRowIndexToModel(selectionIndex), 2);
 
-          if (selectedViolation.getLine() != null) {
+          if (lineNumber != null) {
             DataManager.getInstance().getDataContextFromFocus().doWhenDone(new AsyncResult.Handler<DataContext>() {
               @Override
               public void run(DataContext dataContext) {
                 Project project = DataKeys.PROJECT.getData(dataContext);
-                OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getCurrentVirtualFile(), selectedViolation.getLine() - 1, 0);
+                OpenFileDescriptor descriptor = new OpenFileDescriptor(project, violationTableModel.getCurrentVirtualFile(), lineNumber - 1, 0);
                 descriptor.navigate(false);
               }
             });

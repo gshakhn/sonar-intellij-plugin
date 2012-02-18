@@ -21,8 +21,8 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
   private Map<VirtualFile, List<Violation>> violationsCache = new HashMap<VirtualFile, List<Violation>>();
   private Map<VirtualFile, Source> sourceCache = new HashMap<VirtualFile, Source>();
   
-  private Set<VirtualFile> currentlyLoadingViolations = Collections.synchronizedSet(new HashSet<VirtualFile>());
-  private Set<VirtualFile> currentlyLoadingSources = Collections.synchronizedSet(new HashSet<VirtualFile>());
+  private final Set<VirtualFile> currentlyLoadingViolations = Collections.synchronizedSet(new HashSet<VirtualFile>());
+  private final Set<VirtualFile> currentlyLoadingSources = Collections.synchronizedSet(new HashSet<VirtualFile>());
   
   private Set<LoadingSonarFilesListener> listeners = new HashSet<LoadingSonarFilesListener>();
 
@@ -50,6 +50,8 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
     } else {
       synchronized (this.currentlyLoadingViolations) {
         if (!this.currentlyLoadingViolations.contains(newFile)) {
+            this.currentlyLoadingViolations.add(newFile);
+
           RefreshViolationsWorker refreshViolationsWorker = new RefreshViolationsWorker(this.project, newFile);
           refreshViolationsWorker.addListener(this);
           refreshViolationsWorker.execute();

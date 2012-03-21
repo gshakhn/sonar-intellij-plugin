@@ -27,7 +27,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.List;
 
-public class SonarToolWindow implements LoadingSonarFilesListener {
+public final class SonarToolWindow implements LoadingSonarFilesListener {
 
   private JXBusyLabel loadingLabel;
 
@@ -117,17 +117,21 @@ public class SonarToolWindow implements LoadingSonarFilesListener {
   private String generateToolTip(List<VirtualFile> filesLoading) {
     if (filesLoading.isEmpty()) {
       return StringUtils.EMPTY;
-    } else if (filesLoading.size() == 1) {
+    }
+    if (filesLoading.size() == 1) {
       return "Loading data for " + filesLoading.get(0).getName();
-    } else {
-      StringBuilder newTooltip = new StringBuilder();
-      newTooltip.append("Loading data for\n");
-      for (VirtualFile file : filesLoading) {
-        newTooltip.append(file.getName());
+    }
+    StringBuilder newTooltip = new StringBuilder();
+    newTooltip.append("Loading data for\n");
+    for (VirtualFile file : filesLoading) {
+      if (file==null) {
+        continue;
+      }
+      if (newTooltip.length() > 0) {
         newTooltip.append("\n");
       }
-      newTooltip.deleteCharAt(newTooltip.length() - 1);
-      return newTooltip.toString();
+      newTooltip.append(file.getName());
     }
+    return newTooltip.toString();
   }
 }

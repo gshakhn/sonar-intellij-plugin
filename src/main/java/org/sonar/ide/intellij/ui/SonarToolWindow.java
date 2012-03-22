@@ -10,7 +10,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import org.apache.commons.lang.StringUtils;
 import org.jdesktop.swingx.JXBusyLabel;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
@@ -27,9 +26,10 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.List;
 
-public class SonarToolWindow implements LoadingSonarFilesListener {
+public final class SonarToolWindow implements LoadingSonarFilesListener {
 
   private JXBusyLabel loadingLabel;
+  private FileNamesToolTipBuilder fileNamesToolTipBuilder = new FileNamesToolTipBuilder();
 
   public static SonarToolWindow createSonarToolWindow(Project project, ToolWindow toolWindow) {
     return new SonarToolWindow(project, toolWindow);
@@ -104,30 +104,13 @@ public class SonarToolWindow implements LoadingSonarFilesListener {
 
   @Override
   public void loadingFiles(final List<VirtualFile> filesLoading) {
-    final String newToolTip = generateToolTip(filesLoading);
-    ApplicationManager.getApplication().runWriteAction(new Runnable() {
+      ApplicationManager.getApplication().runWriteAction(new Runnable() {
       @Override
       public void run() {
         loadingLabel.setBusy(!filesLoading.isEmpty());
-        loadingLabel.setToolTipText(newToolTip);
+        loadingLabel.setToolTipText(fileNamesToolTipBuilder.generateToolTip(filesLoading));
       }
     });
   }
-  
-  private String generateToolTip(List<VirtualFile> filesLoading) {
-    if (filesLoading.isEmpty()) {
-      return StringUtils.EMPTY;
-    } else if (filesLoading.size() == 1) {
-      return "Loading data for " + filesLoading.get(0).getName();
-    } else {
-      StringBuilder newTooltip = new StringBuilder();
-      newTooltip.append("Loading data for\n");
-      for (VirtualFile file : filesLoading) {
-        newTooltip.append(file.getName());
-        newTooltip.append("\n");
-      }
-      newTooltip.deleteCharAt(newTooltip.length() - 1);
-      return newTooltip.toString();
-    }
-  }
+
 }

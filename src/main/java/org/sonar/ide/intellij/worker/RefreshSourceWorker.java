@@ -3,7 +3,7 @@ package org.sonar.ide.intellij.worker;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.sonar.ide.intellij.listener.RefreshSourceListener;
-import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.services.Query;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.SourceQuery;
 
@@ -24,18 +24,15 @@ public class RefreshSourceWorker extends RefreshSonarFileWorker<Source> {
   }
 
   @Override
-  protected Source doInBackground() throws Exception {
-    String resourceKey = getResourceKey();
-    Sonar sonar = getSonar();
-
-    SourceQuery sourceQuery = SourceQuery.create(resourceKey);
-    return sonar.find(sourceQuery);
+  protected Query<Source> getQuery(String resourceKey) {
+    return SourceQuery.create(resourceKey);
   }
 
   @Override
   protected void done() {
     try {
-      Source source = get();
+      List<Source> sources = get();
+      Source source = sources == null ? null : sources.get(0);
       for (RefreshSourceListener listener : this.listeners) {
         listener.doneRefreshSource(this.virtualFile, source);
       }

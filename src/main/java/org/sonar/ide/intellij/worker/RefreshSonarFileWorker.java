@@ -11,10 +11,13 @@ import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiManager;
 import org.sonar.ide.intellij.component.SonarModuleComponent;
 import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.services.Model;
+import org.sonar.wsclient.services.Query;
 
 import javax.swing.*;
+import java.util.List;
 
-public abstract class RefreshSonarFileWorker<T> extends SwingWorker<T, Void> {
+public abstract class RefreshSonarFileWorker<T extends Model> extends SwingWorker<List<T>, Void> {
   private Project project;
   protected VirtualFile virtualFile;
 
@@ -23,12 +26,29 @@ public abstract class RefreshSonarFileWorker<T> extends SwingWorker<T, Void> {
     this.virtualFile = virtualFile;
   }
 
-  protected Sonar getSonar() {
+  @Override
+  protected List<T> doInBackground() throws Exception {
+    String resourceKey = getResourceKey();
+    if (resourceKey == null) {
+      return null;
+    }
+    Sonar sonar = getSonar();
+
+    Query<T> query = getQuery(resourceKey);
+    return sonar.findAll(query);
+  }
+  
+  protected abstract Query<T> getQuery(String resourceKey);
+
+  private Sonar getSonar() {
     return getSonarModuleComponent().getSonar();
   }
 
-  protected String getResourceKey() {
+  private String getResourceKey() {
     final SonarModuleComponent sonarModuleComponent = getSonarModuleComponent();
+    if (sonarModuleComponent == null) { // There is no module for this file
+      return null;
+    }
 
     if (!sonarModuleComponent.isConfigured()) {
       return null;
@@ -60,6 +80,10 @@ public abstract class RefreshSonarFileWorker<T> extends SwingWorker<T, Void> {
 
   private SonarModuleComponent getSonarModuleComponent() {
     Module module = ModuleUtil.findModuleForFile(this.virtualFile, this.project);
-    return module.getComponent(SonarModuleComponent.class);
+    if (module == null) { // This file doesn't belong to a module.
+      return null;
+    } else {
+      return module.getComponent(SonarModuleComponent.class);
+    }
   }
 }

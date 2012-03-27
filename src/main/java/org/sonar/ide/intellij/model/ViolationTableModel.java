@@ -10,9 +10,9 @@ import java.util.List;
 
 public class ViolationTableModel extends AbstractTableModel {
 
-  private List<Violation> violations;
   private VirtualFile currentVirtualFile;
-  private Source source;
+  protected List<Violation> violations;
+  protected Source source;
 
   public ViolationTableModel() {
     reset();

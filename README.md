@@ -45,3 +45,17 @@ Usability Notes
 ------------------
 - The violation list and source code for a Java file are cached. If the violation is fixed and another Sonar analysis is complete, IntelliJ will have to be restarted in order for the violation to disappear in IntelliJ.
 - There is very little error handling for a bad configuration.
+
+License
+------------------
+
+This plugin is licensed under [LGPL Version 3].
+
+Feel free to fork and submit pull requests. I'll try to get them into the mainline ASAP.
+
+
+This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+In other words, this plugin won't break your computer as far as I know, but use at your own risk.
+
+[LGPL Version 3]: http://www.gnu.org/licenses/lgpl-3.0.txt

@@ -84,8 +84,9 @@ public class SonarModuleConfiguration extends BaseConfigurable implements Refres
     ApplicationManager.getApplication().runWriteAction(new Runnable() {
       @Override
       public void run() {
-        projectComboBoxModel.refreshProjectList(newProjectList, sonarModuleComponent.getState().projectKey);
-
+        if (newProjectList != null) {
+          projectComboBoxModel.refreshProjectList(newProjectList, sonarModuleComponent.getState().projectKey);
+        }
         lblRefreshingProjects.setBusy(false);
         btnRefreshProjects.setEnabled(true);
         txtHost.setEnabled(true);

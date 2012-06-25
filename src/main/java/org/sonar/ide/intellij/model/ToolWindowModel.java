@@ -1,6 +1,5 @@
 package org.sonar.ide.intellij.model;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -12,25 +11,28 @@ import org.sonar.ide.intellij.worker.RefreshViolationsWorker;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
 
+import javax.swing.SwingUtilities;
 import java.util.*;
 
 public class ToolWindowModel implements RefreshViolationsListener, RefreshSourceListener {
   private Project project;
   private ViolationTableModel violationTableModel;
+  private SonarTreeModel violationTreeModel;
 
   private Map<VirtualFile, List<Violation>> violationsCache = new HashMap<VirtualFile, List<Violation>>();
   private Map<VirtualFile, Source> sourceCache = new HashMap<VirtualFile, Source>();
-  
+
   private final Set<VirtualFile> currentlyLoadingViolations = Collections.synchronizedSet(new HashSet<VirtualFile>());
   private final Set<VirtualFile> currentlyLoadingSources = Collections.synchronizedSet(new HashSet<VirtualFile>());
-  
+
   private Set<LoadingSonarFilesListener> listeners = new HashSet<LoadingSonarFilesListener>();
 
-  public ToolWindowModel(Project project, ViolationTableModel violationTableModel) {
+  public ToolWindowModel(Project project, ViolationTableModel violationTableModel, SonarTreeModel violationTreeModel) {
     this.project = project;
     this.violationTableModel = violationTableModel;
+    this.violationTreeModel = violationTreeModel;
   }
-  
+
   public void addListener(LoadingSonarFilesListener listener) {
     this.listeners.add(listener);
   }
@@ -83,13 +85,16 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
   @Override
   public void doneRefreshViolations(final VirtualFile virtualFile, final List<Violation> violations) {
     this.currentlyLoadingViolations.remove(virtualFile);
-    ApplicationManager.getApplication().runWriteAction(new Runnable() {
+    SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
         violationsCache.put(virtualFile, violations);
 
         if (isFileCurrentlySelected(virtualFile)) {
           violationTableModel.setViolations(virtualFile, violations);
+          Map<VirtualFile, List<Violation>> map = new HashMap<VirtualFile, List<Violation>>();
+          map.put(virtualFile, violations);
+          violationTreeModel.setViolations(map);
         }
       }
     });
@@ -100,7 +105,7 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
   @Override
   public void doneRefreshSource(final VirtualFile virtualFile, final Source source) {
     this.currentlyLoadingSources.remove(virtualFile);
-    ApplicationManager.getApplication().runWriteAction(new Runnable() {
+    SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
         sourceCache.put(virtualFile, source);

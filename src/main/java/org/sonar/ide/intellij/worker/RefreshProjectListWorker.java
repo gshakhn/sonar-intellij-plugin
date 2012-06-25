@@ -32,7 +32,12 @@ public class RefreshProjectListWorker extends SwingWorker<List<SonarProject>, Vo
     query.setQualifiers("TRK,BRC");
     query.setDepth(1);
 
-    List<Resource> resources = this.sonar.findAll(query);
+    List<Resource> resources;
+    try {
+        resources = this.sonar.findAll(query);
+    } catch(Exception e) {
+        return null;
+    }
 
     List<SonarProject> projects = new ArrayList<SonarProject>();
 

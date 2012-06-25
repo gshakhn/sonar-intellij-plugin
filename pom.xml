@@ -80,6 +80,11 @@
       <version>4.10</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -88,6 +93,7 @@
         <directory>src/main/resources/</directory>
         <includes>
           <include>META-INF/plugin.xml</include>
+          <include>icons/</include>
         </includes>
         <filtering>true</filtering>
       </resource>

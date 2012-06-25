@@ -1,6 +1,5 @@
 package org.sonar.ide.intellij.ui;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
@@ -81,7 +80,7 @@ public class SonarModuleConfiguration extends BaseConfigurable implements Refres
 
   @Override
   public void doneRefreshProjects(final List<SonarProject> newProjectList) {
-    ApplicationManager.getApplication().runWriteAction(new Runnable() {
+    SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
         if (newProjectList != null) {

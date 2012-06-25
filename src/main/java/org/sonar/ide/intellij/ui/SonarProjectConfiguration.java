@@ -1,6 +1,5 @@
 package org.sonar.ide.intellij.ui;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.options.BaseConfigurable;
@@ -141,7 +140,7 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
   }
 
   public void updateModules(final boolean emptyOnly) {
-    ApplicationManager.getApplication().runWriteAction(new Runnable() {
+    SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
         if (projectList == null)

@@ -2,7 +2,6 @@ package org.sonar.ide.intellij.ui;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.AsyncResult;
@@ -194,7 +193,7 @@ public final class SonarToolWindow implements LoadingSonarFilesListener {
 
   @Override
   public void loadingFiles(final List<VirtualFile> filesLoading) {
-    ApplicationManager.getApplication().runWriteAction(new Runnable() {
+    SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
         loadingLabel.setBusy(!filesLoading.isEmpty());

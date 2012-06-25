@@ -16,11 +16,11 @@ import org.sonar.ide.intellij.worker.RefreshViolationsWorker;
 import org.sonar.wsclient.services.Violation;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class SonarViolationInspection extends AbstractSonarInspection {
   @Nls
@@ -41,43 +41,30 @@ public class SonarViolationInspection extends AbstractSonarInspection {
 
   @Nullable
   public ProblemDescriptor[] checkFile(final @NotNull PsiFile file, final @NotNull InspectionManager manager, final boolean isOnTheFly) {
-    final Map<VirtualFile, List<Violation>> violations = this.violations;
-    List<ProblemDescriptor> problems = ApplicationManager.getApplication().runReadAction(new Computable<List<ProblemDescriptor>>() {
+    List<Violation> violationList = ApplicationManager.getApplication().runReadAction(new Computable<List<Violation>>() {
       @Override
-      public List<ProblemDescriptor> compute() {
+      public List<Violation> compute() {
         RefreshViolationsWorker refreshViolationsWorker = new RefreshViolationsWorker(file.getProject(), file.getVirtualFile());
         refreshViolationsWorker.execute();
         try {
-          List<Violation> violationList = refreshViolationsWorker.get(5, TimeUnit.SECONDS);
-          if (!isOnTheFly && violationList != null)
-            violations.put(file.getVirtualFile(), violationList);
-          return buildProblemDescriptors(
-              violationList,
-              manager,
-              file,
-              isOnTheFly
-          );
+          return refreshViolationsWorker.get();
         } catch (InterruptedException e) {
           e.printStackTrace();
         } catch (ExecutionException e) {
           e.printStackTrace();
-        } catch (TimeoutException e) {
-          e.printStackTrace();
-          ProblemDescriptor timeoutDescriptor = manager.createProblemDescriptor(
-              file,
-              "Timeout",
-              LocalQuickFix.EMPTY_ARRAY,
-              ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
-              isOnTheFly,
-              false
-          );
-          List<ProblemDescriptor> descriptors = new LinkedList<ProblemDescriptor>();
-          descriptors.add(timeoutDescriptor);
-          return descriptors;
         }
         return null;
       }
     });
+    if (!isOnTheFly && violationList != null)
+      violations.put(file.getVirtualFile(), violationList);
+    List<ProblemDescriptor> problems = buildProblemDescriptors(
+        violationList,
+        manager,
+        file,
+        isOnTheFly
+    );
+
     if (problems == null) {
       return null;
     }

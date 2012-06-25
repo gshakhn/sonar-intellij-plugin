@@ -1,6 +1,5 @@
 package org.sonar.ide.intellij.model;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -12,6 +11,7 @@ import org.sonar.ide.intellij.worker.RefreshViolationsWorker;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
 
+import javax.swing.SwingUtilities;
 import java.util.*;
 
 public class ToolWindowModel implements RefreshViolationsListener, RefreshSourceListener {
@@ -85,7 +85,7 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
   @Override
   public void doneRefreshViolations(final VirtualFile virtualFile, final List<Violation> violations) {
     this.currentlyLoadingViolations.remove(virtualFile);
-    ApplicationManager.getApplication().runWriteAction(new Runnable() {
+    SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
         violationsCache.put(virtualFile, violations);
@@ -105,7 +105,7 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
   @Override
   public void doneRefreshSource(final VirtualFile virtualFile, final Source source) {
     this.currentlyLoadingSources.remove(virtualFile);
-    ApplicationManager.getApplication().runWriteAction(new Runnable() {
+    SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
         sourceCache.put(virtualFile, source);

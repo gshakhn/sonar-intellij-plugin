@@ -143,7 +143,7 @@ public class SonarTreeModel implements TreeModel {
           }
         });
         if (ruleLabel == null) {
-          ruleLabel = new RuleLabel(ruleName, violation.getSeverity());
+          ruleLabel = new RuleLabel(ruleName, violation.getSeverity(), violation.getRuleKey());
           ruleLabels.add(ruleLabel);
           fileLabelsMap.put(ruleLabel, new LinkedList<FileLabel>());
         }
@@ -228,10 +228,12 @@ public class SonarTreeModel implements TreeModel {
   public class RuleLabel {
     private String ruleName;
     private String severity;
+    private String ruleKey;
 
-    public RuleLabel(String ruleName, String severity) {
+    public RuleLabel(String ruleName, String severity, String ruleKey) {
       this.ruleName = ruleName;
       this.severity = severity;
+      this.ruleKey = ruleKey;
     }
 
     public String toString() {
@@ -244,6 +246,10 @@ public class SonarTreeModel implements TreeModel {
 
     public String getSeverity() {
       return severity;
+    }
+
+    public String getRuleKey() {
+      return ruleKey;
     }
   }
 

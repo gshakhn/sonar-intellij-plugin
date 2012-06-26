@@ -5,6 +5,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.module.ModuleComponent;
 import org.jetbrains.annotations.NotNull;
+import org.sonar.ide.intellij.utils.SonarUtils;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
@@ -55,7 +56,7 @@ public class SonarModuleComponentImpl implements SonarModuleComponent, ModuleCom
 
   @Override
   public Sonar getSonar() {
-    return new Sonar(new HttpClient4Connector(new Host(myState.host, myState.user, myState.password)));
+    return new Sonar(new HttpClient4Connector(new Host(SonarUtils.fixHostName(myState.host), myState.user, myState.password)));
   }
 
   @Override

@@ -9,6 +9,10 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.sonar.ide.intellij.listener.SonarFileEditorManagerListener;
 import org.sonar.ide.intellij.model.ToolWindowModel;
+import org.sonar.ide.intellij.utils.SonarUtils;
+import org.sonar.wsclient.Host;
+import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.connectors.HttpClient4Connector;
 
 @State(name = "SonarConfiguration", storages = {@Storage(id = "other", file = "$PROJECT_FILE$")})
 public class SonarProjectComponentImpl implements SonarProjectComponent, ProjectComponent, PersistentStateComponent<SonarProjectComponent.SonarProjectState> {
@@ -62,5 +66,10 @@ public class SonarProjectComponentImpl implements SonarProjectComponent, Project
   @Override
   public void setToolWindowModel(ToolWindowModel model) {
     this.toolWindowModel = model;
+  }
+
+  @Override
+  public Sonar getSonar() {
+    return new Sonar(new HttpClient4Connector(new Host(SonarUtils.fixHostName(state.host), state.user, state.password)));
   }
 }

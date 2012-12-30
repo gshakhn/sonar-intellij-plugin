@@ -174,11 +174,6 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
   }
 
   @Override
-  public Icon getIcon() {
-    return null;
-  }
-
-  @Override
   public String getHelpTopic() {
     return null;
   }
@@ -209,6 +204,12 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
     String host = txtHost.getText();
     String user = txtUser.getText();
     String password = new String(txtPassword.getPassword());
-    return new Sonar(new HttpClient4Connector(new Host(host, user, password)));
+    Host hostServer = new Host(host);
+    if (user != null && password != null) {
+        hostServer.setUsername(user);
+        hostServer.setPassword(password);
+    }
+      final HttpClient4Connector connector = new HttpClient4Connector(hostServer);
+      return new Sonar(connector);
   }
 }

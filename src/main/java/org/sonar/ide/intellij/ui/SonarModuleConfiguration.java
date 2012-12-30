@@ -103,11 +103,6 @@ public class SonarModuleConfiguration extends BaseConfigurable implements Refres
   }
 
   @Override
-  public Icon getIcon() {
-    return null;
-  }
-
-  @Override
   public String getHelpTopic() {
     return null;
   }

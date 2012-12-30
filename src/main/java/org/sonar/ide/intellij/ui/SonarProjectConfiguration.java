@@ -12,6 +12,7 @@ import org.sonar.ide.intellij.component.SonarModuleComponent;
 import org.sonar.ide.intellij.component.SonarProjectComponent;
 import org.sonar.ide.intellij.listener.RefreshProjectListListener;
 import org.sonar.ide.intellij.model.SonarProject;
+import org.sonar.ide.intellij.utils.SonarUtils;
 import org.sonar.ide.intellij.worker.RefreshProjectListWorker;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
@@ -133,7 +134,9 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
         txtPassword.setEnabled(false);
         useProxyBox.setEnabled(false);
 
-        RefreshProjectListWorker refreshProjectListWorker = new RefreshProjectListWorker(this.getSonar());
+        Sonar sonarConn = SonarUtils.getSonar(txtHost.getText(), txtUser.getText(), new String(txtPassword.getPassword()),
+                                          useProxyBox.isSelected());
+        RefreshProjectListWorker refreshProjectListWorker = new RefreshProjectListWorker(sonarConn);
         refreshProjectListWorker.addListener(this);
         refreshProjectListWorker.execute();
     }
@@ -242,21 +245,5 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
     @Override
     public void disposeUIResources()
     {
-    }
-
-    private Sonar getSonar()
-    {
-        String host = txtHost.getText();
-        String user = txtUser.getText();
-        String password = new String(txtPassword.getPassword());
-        Host hostServer = new Host(host);
-        // use credentials for Sonar in case they are specified
-        if (user != null && password != null)
-        {
-            hostServer.setUsername(user);
-            hostServer.setPassword(password);
-        }
-        final HttpClient4Connector connector = new HttpClient4Connector(hostServer);
-        return new Sonar(connector);
     }
 }

@@ -10,6 +10,7 @@ import org.sonar.ide.intellij.component.SonarModuleComponent;
 import org.sonar.ide.intellij.listener.RefreshProjectListListener;
 import org.sonar.ide.intellij.model.ProjectComboBoxModel;
 import org.sonar.ide.intellij.model.SonarProject;
+import org.sonar.ide.intellij.utils.SonarUtils;
 import org.sonar.ide.intellij.worker.RefreshProjectListWorker;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
@@ -78,7 +79,9 @@ public class SonarModuleConfiguration extends BaseConfigurable implements Refres
     useProxyBox.setEnabled(false);
     cmbProject.setEnabled(false);
 
-    RefreshProjectListWorker refreshProjectListWorker = new RefreshProjectListWorker(this.getSonar());
+    Sonar sonarConn = SonarUtils.getSonar(txtHost.getText(), txtUser.getText(), new String(txtPassword.getPassword()),
+                                            useProxyBox.isSelected());
+    RefreshProjectListWorker refreshProjectListWorker = new RefreshProjectListWorker(sonarConn);
     refreshProjectListWorker.addListener(this);
     refreshProjectListWorker.execute();
   }
@@ -135,12 +138,4 @@ public class SonarModuleConfiguration extends BaseConfigurable implements Refres
   @Override
   public void disposeUIResources() {
   }
-
-  private Sonar getSonar() {
-    String host = txtHost.getText();
-    String user = txtUser.getText();
-    String password = new String(txtPassword.getPassword());
-    return new Sonar(new HttpClient4Connector(new Host(host, user, password)));
-  }
-
 }

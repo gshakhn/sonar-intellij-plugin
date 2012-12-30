@@ -108,6 +108,11 @@
           <text value="Proxy:"/>
         </properties>
       </component>
+      <vspacer id="79090">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
     </children>
   </grid>
 </form>

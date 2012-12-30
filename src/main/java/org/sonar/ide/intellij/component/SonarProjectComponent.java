@@ -11,6 +11,7 @@ public interface SonarProjectComponent {
     public String password;
     public boolean assignProject;
     public boolean configured;
+    public boolean useProxy;
   }
   void setToolWindowModel(ToolWindowModel model);
   ToolWindowModel getToolWindowModel();

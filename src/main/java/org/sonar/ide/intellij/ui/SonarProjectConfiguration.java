@@ -37,6 +37,7 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
     private JButton applyToAllModulesButton;
     private JButton applyToNotConfiguredButton;
     private JButton testButton;
+    private JCheckBox useProxyBox;
     private List<SonarProject> projectList = null;
 
     private SonarProjectComponent sonarProjectComponent;
@@ -118,6 +119,7 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
             txtHost.setText(sonarProjectComponent.getState().host);
             txtUser.setText(sonarProjectComponent.getState().user);
             txtPassword.setText(sonarProjectComponent.getState().password);
+            useProxyBox.setSelected(sonarProjectComponent.getState().useProxy);
         }
     }
 
@@ -129,6 +131,7 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
         txtHost.setEnabled(false);
         txtUser.setEnabled(false);
         txtPassword.setEnabled(false);
+        useProxyBox.setEnabled(false);
 
         RefreshProjectListWorker refreshProjectListWorker = new RefreshProjectListWorker(this.getSonar());
         refreshProjectListWorker.addListener(this);
@@ -146,6 +149,7 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
             txtHost.setEnabled(true);
             txtUser.setEnabled(true);
             txtPassword.setEnabled(true);
+            useProxyBox.setEnabled(true);
         }
         else
         {
@@ -156,6 +160,7 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
             txtHost.setEnabled(true);
             txtUser.setEnabled(true);
             txtPassword.setEnabled(true);
+            useProxyBox.setEnabled(true);
             setModified(true);
         }
     }
@@ -186,6 +191,7 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
                         sonarModuleState.host = txtHost.getText();
                         sonarModuleState.user = txtUser.getText();
                         sonarModuleState.password = new String(txtPassword.getPassword());
+                        sonarModuleState.useProxy = useProxyBox.isSelected();
                         sonarModuleState.configured = true;
                         String key = module.getName();
                         if (sonarProjectMap.get(key).size() == 1)
@@ -223,6 +229,7 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
         sonarProjectComponent.getState().host = txtHost.getText();
         sonarProjectComponent.getState().user = txtUser.getText();
         sonarProjectComponent.getState().password = new String(txtPassword.getPassword());
+        sonarProjectComponent.getState().useProxy = useProxyBox.isSelected();
         sonarProjectComponent.getState().configured = true;
     }
 
@@ -243,6 +250,7 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
         String user = txtUser.getText();
         String password = new String(txtPassword.getPassword());
         Host hostServer = new Host(host);
+        // use credentials for Sonar in case they are specified
         if (user != null && password != null)
         {
             hostServer.setUsername(user);

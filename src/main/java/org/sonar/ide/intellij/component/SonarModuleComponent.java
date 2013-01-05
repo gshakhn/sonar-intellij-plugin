@@ -13,6 +13,7 @@ public interface SonarModuleComponent {
     public String password;
     public String projectKey;
     public boolean configured;
+    public boolean useProxy;
   }
 
   Sonar getSonar();

@@ -56,6 +56,9 @@ Usability Notes
 Changelog
 ---------
 
+Version 1.0.1
+- fixed IndexOutOfBoundsException in RefreshSourceWorker.done()
+
 Version 1.0
 - added support for [IntelliJ IDEA] 12 (Leda 12.0.2)
 - added handling of proxy configuration

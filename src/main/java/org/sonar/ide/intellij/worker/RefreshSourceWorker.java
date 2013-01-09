@@ -32,7 +32,7 @@ public class RefreshSourceWorker extends RefreshSonarFileWorker<Source> {
   protected void done() {
     try {
       List<Source> sources = get();
-      Source source = sources == null ? null : sources.get(0);
+      Source source = (sources == null || sources.isEmpty()) ? null : sources.get(0);
       for (RefreshSourceListener listener : this.listeners) {
         listener.doneRefreshSource(this.virtualFile, source);
       }

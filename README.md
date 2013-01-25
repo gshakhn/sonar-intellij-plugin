@@ -10,9 +10,10 @@ This is an [IntelliJ IDEA] plugin for [Sonar]. There was a plugin called [SONAR 
 
 Download
 --------
-At the moment there is a precompiled ZIP for your convenience. You can simply download the ZIP and use the "Install from disk..." feature in IDEA.
-The ZIP is available here: [https://github.com/gshakhn/sonar-intellij-plugin/tree/master/download](https://github.com/gshakhn/sonar-intellij-plugin/raw/master/download/sonar-intellij-plugin-1.0.2.zip)
 
+You can install the plugin through the official JetBrains repo. You can also manually download it [here].
+
+[here]: http://plugins.jetbrains.com/plugin?pr=idea&pluginId=7168
 
 Building the plugin
 ------------------

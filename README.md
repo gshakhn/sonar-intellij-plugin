@@ -17,7 +17,7 @@ The ZIP is available here: [https://github.com/gshakhn/sonar-intellij-plugin/tre
 Building the plugin
 ------------------
 
-I am building the plugin locally using IntelliJ 12.0.2 (Build 123.100). To build it locally on your machine, modify idea.version and idea.build in pom.xml to match your local install. Unfortunately, I'm unable to find any versions of OpenAPI in Maven past 7.0.3. You'll have to install the various Intellij jars located in the lib folder of your IntelliJ install into your local Maven repository via:
+I am building the plugin locally using IntelliJ 12.0.2 (Build 123.123). To build it locally on your machine, modify idea.version and idea.build in pom.xml to match your local install. Unfortunately, I'm unable to find any versions of OpenAPI in Maven past 7.0.3. You'll have to install the various Intellij jars located in the lib folder of your IntelliJ install into your local Maven repository via:
 
     mvn install:install-file -Dfile=<path-to-file> -DgroupId=com.intellij -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=jar
 
@@ -55,6 +55,9 @@ Usability Notes
 
 Changelog
 ---------
+
+Version 1.0.2
+- Update build dependencies
 
 Version 1.0.1
 - fixed IndexOutOfBoundsException in RefreshSourceWorker.done()

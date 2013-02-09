@@ -25,7 +25,18 @@
   </module-components>
 
   <actions>
-    <!-- Add your actions here -->
+
+      <group id="SonarFileActions">
+          <action id="Show.SonarAsWebbView" class="org.sonar.ide.intellij.actions.ShowSonarAsWebbView" text="Open in browser"/>
+      </group>
+
+      <group id="Sonar.ContextMenu" class="org.sonar.ide.intellij.actions.SonarContextMenu" popup="true" text="_Sonar" icon="/icons/sonar.png">
+
+          <reference ref="SonarFileActions"/>
+          <add-to-group group-id="EditorPopupMenu"/>
+          <add-to-group group-id="ProjectViewPopupMenu"/>
+          <add-to-group group-id="EditorTabPopupMenu"/>
+      </group>
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">

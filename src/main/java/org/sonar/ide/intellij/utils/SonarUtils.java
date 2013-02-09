@@ -11,6 +11,7 @@ import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
 
 public class SonarUtils {
+
   public static String fixHostName(String hostName) {
     String host = hostName;
     if (host.indexOf("://") == -1)

@@ -57,6 +57,9 @@ Usability Notes
 Changelog
 ---------
 
+Version 1.0.3-SNAPSHOT
+- Add 'Open in browser' functionality. Thanks [ggili]!
+
 Version 1.0.2
 - Update build dependencies
 
@@ -69,6 +72,8 @@ Version 1.0
 
 Version 0.1
 - first release for [IntelliJ IDEA] 11.0.1
+
+[simonbrandhof]: https://github.com/ggili
 
 
 License

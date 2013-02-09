@@ -18,13 +18,13 @@ You can install the plugin through the official JetBrains repo. You can also man
 Building the plugin
 ------------------
 
-I am building the plugin locally using IntelliJ 12.0.2 (Build 123.123). To build it locally on your machine, modify idea.version and idea.build in pom.xml to match your local install. Unfortunately, I'm unable to find any versions of OpenAPI in Maven past 7.0.3. You'll have to install the various Intellij jars located in the lib folder of your IntelliJ install into your local Maven repository via:
+I am building the plugin locally using IntelliJ 12.0.3 (Build 123.155). To build it locally on your machine, modify idea.version and idea.build in pom.xml to match your local install. Unfortunately, I'm unable to find any versions of OpenAPI in Maven past 7.0.3. You'll have to install the various Intellij jars located in the lib folder of your IntelliJ install into your local Maven repository via:
 
     mvn install:install-file -Dfile=<path-to-file> -DgroupId=com.intellij -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=jar
 
 Alternatively, you can run the install-intellij-libs.sh script that [simonbrandhof] created.
 
-    ./install-intellij-libs.sh <path to IntelliJ 12.0.2>
+    ./install-intellij-libs.sh <path to IntelliJ 12.0.3>
 
 
 After you install all the jars this plugin needs into your local repo, just run

@@ -73,7 +73,7 @@ Version 1.0
 Version 0.1
 - first release for [IntelliJ IDEA] 11.0.1
 
-[simonbrandhof]: https://github.com/ggili
+[ggili]: https://github.com/ggili
 
 
 License

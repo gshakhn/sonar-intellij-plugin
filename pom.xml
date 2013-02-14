@@ -18,7 +18,7 @@
     <idea.version>12.0.3</idea.version>
     <idea.build>123.155</idea.build>
 
-    <sonar.version>3.4</sonar.version>
+    <sonar.version>3.4.1</sonar.version>
   </properties>
 
   <dependencies>

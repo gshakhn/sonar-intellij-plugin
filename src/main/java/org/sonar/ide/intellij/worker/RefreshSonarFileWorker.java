@@ -38,14 +38,14 @@ public abstract class RefreshSonarFileWorker<T extends Model> extends SwingWorke
   }
 
   protected String getResourceKey() {
-      return SonarResourceKeyUtils.createFileResourceKey(this.project, virtualFile);
+    return SonarResourceKeyUtils.createFileResourceKey(this.project, virtualFile);
   }
 
   private SonarModuleComponent getSonarModuleComponent() {
     return SonarResourceKeyUtils.getSonarModuleComponent(project, virtualFile);
   }
 
-    protected Project getProject() {
-        return project;
-    }
+  protected Project getProject() {
+    return project;
+  }
 }

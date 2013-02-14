@@ -8,7 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.Nullable;
 import org.sonar.ide.intellij.component.SonarModuleComponent;
 import org.sonar.ide.intellij.worker.ResourceLookupWorker;
-import org.sonar.ide.intellij.worker.SonarResourceKeyUtils;
+import org.sonar.ide.intellij.utils.SonarResourceKeyUtils;
 import org.sonar.wsclient.services.Resource;
 
 

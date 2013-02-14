@@ -3,6 +3,7 @@ package org.sonar.ide.intellij.worker;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.sonar.ide.intellij.component.SonarModuleComponent;
+import org.sonar.ide.intellij.utils.SonarResourceKeyUtils;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Model;
 import org.sonar.wsclient.services.Query;

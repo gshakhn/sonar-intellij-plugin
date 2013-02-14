@@ -1,4 +1,4 @@
-package org.sonar.ide.intellij.worker;
+package org.sonar.ide.intellij.utils;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
@@ -40,7 +40,7 @@ public class SonarResourceKeyUtils {
                     item = psiManager.findFile(virtualFile);
                 }
 
-                return item;
+                return null;
             }
         });
 

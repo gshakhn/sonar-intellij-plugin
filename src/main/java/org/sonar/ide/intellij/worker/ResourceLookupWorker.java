@@ -3,6 +3,7 @@ package org.sonar.ide.intellij.worker;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.Nullable;
+import org.sonar.ide.intellij.utils.SonarResourceKeyUtils;
 import org.sonar.wsclient.services.Query;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;

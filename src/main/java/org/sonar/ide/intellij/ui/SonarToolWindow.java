@@ -32,6 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
@@ -257,25 +258,28 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-      Object selection = tree.getSelectionModel().getSelectionPath().getLastPathComponent();
-      if (selection instanceof SonarTreeModel.RuleLabel) {
-        if (rulesToolTipMap != null && rulesToolTipMap.size() != 0) {
-          final SonarTreeModel.RuleLabel ruleLabel = (SonarTreeModel.RuleLabel) selection;
-          String toolTipText = rulesToolTipMap.get(ruleLabel.getRuleKey());
-          if (toolTipText != null) {
-            Balloon popup = JBPopupFactory.getInstance().createHtmlTextBalloonBuilder(toolTipText, MessageType.INFO, null)
+      TreePath selectionPath = tree.getSelectionModel().getSelectionPath();
+      if (selectionPath != null) {
+        Object selection = selectionPath.getLastPathComponent();
+          if (selection instanceof SonarTreeModel.RuleLabel) {
+            if (rulesToolTipMap != null && rulesToolTipMap.size() != 0) {
+              final SonarTreeModel.RuleLabel ruleLabel = (SonarTreeModel.RuleLabel) selection;
+              String toolTipText = rulesToolTipMap.get(ruleLabel.getRuleKey());
+              if (toolTipText != null) {
+                Balloon popup = JBPopupFactory.getInstance().createHtmlTextBalloonBuilder(toolTipText, MessageType.INFO, null)
+                    .createBalloon();
+                JComponent component = toolWindow.getComponent();
+                popup.show(new RelativePoint(component, new Point()), Balloon.Position.above);
+                return;
+              }
+            }
+            Balloon popup = JBPopupFactory.getInstance()
+                .createHtmlTextBalloonBuilder("<p>Can't show description</p><p>Check your sonar project configuration</p>", MessageType.WARNING, null)
                 .createBalloon();
             JComponent component = toolWindow.getComponent();
             popup.show(new RelativePoint(component, new Point()), Balloon.Position.above);
-            return;
+            downloadRules();
           }
-        }
-        Balloon popup = JBPopupFactory.getInstance()
-            .createHtmlTextBalloonBuilder("<p>Can't show description</p><p>Check your sonar project configuration</p>", MessageType.WARNING, null)
-            .createBalloon();
-        JComponent component = toolWindow.getComponent();
-        popup.show(new RelativePoint(component, new Point()), Balloon.Position.above);
-        downloadRules();
       }
     }
   };

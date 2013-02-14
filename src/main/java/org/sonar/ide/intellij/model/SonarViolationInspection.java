@@ -12,7 +12,7 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.sonar.ide.intellij.worker.RefreshViolationsWorker;
+import org.sonar.ide.intellij.component.SonarProjectComponent;
 import org.sonar.wsclient.services.Violation;
 
 import javax.swing.*;
@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 
 public class SonarViolationInspection extends AbstractSonarInspection {
   @Nls
@@ -44,16 +43,7 @@ public class SonarViolationInspection extends AbstractSonarInspection {
     List<Violation> violationList = ApplicationManager.getApplication().runReadAction(new Computable<List<Violation>>() {
       @Override
       public List<Violation> compute() {
-        RefreshViolationsWorker refreshViolationsWorker = new RefreshViolationsWorker(file.getProject(), file.getVirtualFile());
-        refreshViolationsWorker.execute();
-        try {
-          return refreshViolationsWorker.get();
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        } catch (ExecutionException e) {
-          e.printStackTrace();
-        }
-        return null;
+        return file.getProject().getComponent(SonarProjectComponent.class).getResourceCache().getViolations(file.getVirtualFile());
       }
     });
     if (!isOnTheFly && violationList != null)

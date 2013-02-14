@@ -1,6 +1,7 @@
 package org.sonar.ide.intellij.component;
 
 import org.sonar.ide.intellij.model.ToolWindowModel;
+import org.sonar.ide.intellij.utils.ResourceCache;
 import org.sonar.wsclient.Sonar;
 
 public interface SonarProjectComponent {
@@ -16,4 +17,5 @@ public interface SonarProjectComponent {
   void setToolWindowModel(ToolWindowModel model);
   ToolWindowModel getToolWindowModel();
   Sonar getSonar();
+  ResourceCache getResourceCache();
 }

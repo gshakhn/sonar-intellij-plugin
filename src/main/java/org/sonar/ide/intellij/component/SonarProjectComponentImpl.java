@@ -9,6 +9,7 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.sonar.ide.intellij.listener.SonarFileEditorManagerListener;
 import org.sonar.ide.intellij.model.ToolWindowModel;
+import org.sonar.ide.intellij.utils.ResourceCache;
 import org.sonar.ide.intellij.utils.SonarUtils;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
@@ -19,10 +20,12 @@ public class SonarProjectComponentImpl implements SonarProjectComponent, Project
   private ToolWindowModel toolWindowModel;
   private SonarProjectState state;
   private Project project;
+  private ResourceCache resourceCache;
 
   public SonarProjectComponentImpl(Project project) {
     this.project = project;
     this.state = new SonarProjectState();
+    this.resourceCache = new ResourceCache(project);
   }
 
   @Override
@@ -72,5 +75,10 @@ public class SonarProjectComponentImpl implements SonarProjectComponent, Project
   public Sonar getSonar() {
       Sonar sonarConn = SonarUtils.getSonar(state.host, state.user, state.password, state.useProxy);
       return sonarConn;
+  }
+
+  @Override
+  public ResourceCache getResourceCache() {
+    return resourceCache;
   }
 }

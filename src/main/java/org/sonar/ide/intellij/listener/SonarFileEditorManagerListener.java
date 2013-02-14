@@ -23,7 +23,7 @@ public class SonarFileEditorManagerListener implements FileEditorManagerListener
 
   @Override
   public void selectionChanged(FileEditorManagerEvent event) {
-    if (sonarProjectComponent != null && sonarProjectComponent.getToolWindowModel() != null) {
+    if (sonarProjectComponent != null && sonarProjectComponent.getToolWindowModel() != null && event.getNewFile() != null) {
       sonarProjectComponent.getToolWindowModel().refreshViolationsTable(event.getNewFile());
     }
   }

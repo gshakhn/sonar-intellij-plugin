@@ -205,7 +205,7 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
     toolWindow.getContentManager().addContent(content);
 
     SonarProjectComponent projectComponent = project.getComponent(SonarProjectComponent.class);
-    ToolWindowModel toolWindowModel = new ToolWindowModel(project, violationTableModel, localTreeModel, projectComponent.getResourceCache());
+    ToolWindowModel toolWindowModel = new ToolWindowModel(project, violationTableModel, localTreeModel, projectComponent.getSonarCache());
     projectComponent.setToolWindowModel(toolWindowModel);
     LastInspectionResult.getInstance().addListener(new ViolatationChangedListener() {
       @Override
@@ -217,7 +217,7 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
     localViolationsTree.addMouseListener(new TreeMousePressedListener(localViolationsTree, localDisplayDescriptionAction));
 
 
-    projectComponent.getResourceCache().addLoadingFileListener(this);
+    projectComponent.getSonarCache().addLoadingFileListener(this);
   }
 
   private void downloadRules() {

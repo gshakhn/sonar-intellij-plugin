@@ -13,7 +13,7 @@ import org.sonar.wsclient.services.Violation;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-public class ResourceCache implements RefreshViolationsListener, RefreshSourceListener {
+public class SonarCache implements RefreshViolationsListener, RefreshSourceListener {
   private Project project;
 
   private final Map<VirtualFile, List<Violation>> violationsCache = new HashMap<VirtualFile, List<Violation>>();
@@ -26,7 +26,7 @@ public class ResourceCache implements RefreshViolationsListener, RefreshSourceLi
   private final Map<VirtualFile, List<RefreshViolationsListener>> refreshViolationListeners = Collections.synchronizedMap(new HashMap<VirtualFile, List<RefreshViolationsListener>>());
   private final Map<VirtualFile, List<RefreshSourceListener>> refreshSourceListeners = Collections.synchronizedMap(new HashMap<VirtualFile, List<RefreshSourceListener>>());
 
-  public ResourceCache(Project project) {
+  public SonarCache(Project project) {
     this.project = project;
   }
 

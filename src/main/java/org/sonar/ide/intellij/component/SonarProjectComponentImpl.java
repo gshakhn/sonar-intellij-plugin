@@ -9,23 +9,21 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.sonar.ide.intellij.listener.SonarFileEditorManagerListener;
 import org.sonar.ide.intellij.model.ToolWindowModel;
-import org.sonar.ide.intellij.utils.ResourceCache;
+import org.sonar.ide.intellij.utils.SonarCache;
 import org.sonar.ide.intellij.utils.SonarUtils;
-import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.connectors.HttpClient4Connector;
 
 @State(name = "SonarConfiguration", storages = {@Storage(id = "other", file = "$PROJECT_FILE$")})
 public class SonarProjectComponentImpl implements SonarProjectComponent, ProjectComponent, PersistentStateComponent<SonarProjectComponent.SonarProjectState> {
   private ToolWindowModel toolWindowModel;
   private SonarProjectState state;
   private Project project;
-  private ResourceCache resourceCache;
+  private SonarCache sonarCache;
 
   public SonarProjectComponentImpl(Project project) {
     this.project = project;
     this.state = new SonarProjectState();
-    this.resourceCache = new ResourceCache(project);
+    this.sonarCache = new SonarCache(project);
   }
 
   @Override
@@ -78,7 +76,7 @@ public class SonarProjectComponentImpl implements SonarProjectComponent, Project
   }
 
   @Override
-  public ResourceCache getResourceCache() {
-    return resourceCache;
+  public SonarCache getSonarCache() {
+    return sonarCache;
   }
 }

@@ -43,7 +43,7 @@ public class SonarViolationInspection extends AbstractSonarInspection {
     List<Violation> violationList = ApplicationManager.getApplication().runReadAction(new Computable<List<Violation>>() {
       @Override
       public List<Violation> compute() {
-        return file.getProject().getComponent(SonarProjectComponent.class).getResourceCache().getViolations(file.getVirtualFile());
+        return file.getProject().getComponent(SonarProjectComponent.class).getSonarCache().getViolations(file.getVirtualFile());
       }
     });
     if (!isOnTheFly && violationList != null)

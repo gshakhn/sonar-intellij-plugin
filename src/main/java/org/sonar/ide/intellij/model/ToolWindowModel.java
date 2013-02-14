@@ -3,12 +3,9 @@ package org.sonar.ide.intellij.model;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.sonar.ide.intellij.listener.LoadingSonarFilesListener;
 import org.sonar.ide.intellij.listener.RefreshSourceListener;
 import org.sonar.ide.intellij.listener.RefreshViolationsListener;
-import org.sonar.ide.intellij.utils.ResourceCache;
-import org.sonar.ide.intellij.worker.RefreshSourceWorker;
-import org.sonar.ide.intellij.worker.RefreshViolationsWorker;
+import org.sonar.ide.intellij.utils.SonarCache;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
 
@@ -19,13 +16,13 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
   private Project project;
   private ViolationTableModel violationTableModel;
   private SonarTreeModel violationTreeModel;
-  private ResourceCache resourceCache;
+  private SonarCache sonarCache;
 
-  public ToolWindowModel(Project project, ViolationTableModel violationTableModel, SonarTreeModel violationTreeModel, ResourceCache resourceCache) {
+  public ToolWindowModel(Project project, ViolationTableModel violationTableModel, SonarTreeModel violationTreeModel, SonarCache sonarCache) {
     this.project = project;
     this.violationTableModel = violationTableModel;
     this.violationTreeModel = violationTreeModel;
-    this.resourceCache = resourceCache;
+    this.sonarCache = sonarCache;
   }
 
   public ViolationTableModel getViolationTableModel() {
@@ -33,8 +30,8 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
   }
 
   public void refreshViolationsTable(VirtualFile newFile) {
-    resourceCache.loadViolations(newFile, this);
-    resourceCache.loadSource(newFile, this);
+    sonarCache.loadViolations(newFile, this);
+    sonarCache.loadSource(newFile, this);
   }
 
 

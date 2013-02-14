@@ -40,7 +40,7 @@ public class SonarResourceKeyUtils {
                     item = psiManager.findFile(virtualFile);
                 }
 
-                return null;
+                return item;
             }
         });
 

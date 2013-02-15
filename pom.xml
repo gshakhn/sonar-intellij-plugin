@@ -15,8 +15,8 @@
 
     <jdk.min.version>1.6</jdk.min.version>
 
-    <idea.version>12.0.3</idea.version>
-    <idea.build>123.155</idea.build>
+    <idea.version>12.0.4</idea.version>
+    <idea.build>123.169</idea.build>
 
     <sonar.version>3.4.1</sonar.version>
   </properties>

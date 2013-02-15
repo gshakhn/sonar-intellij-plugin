@@ -58,7 +58,7 @@ Usability Notes
 Changelog
 ---------
 
-Version 1.0.3-SNAPSHOT
+Version 1.0.3
 - Add 'Open in browser' functionality. Thanks [ggili]!
 - Cache violations for inspection purposes. Should hit the sonar server much less now.
 

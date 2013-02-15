@@ -26,6 +26,7 @@ Alternatively, you can run the install-intellij-libs.sh script that [simonbrandh
 
     ./install-intellij-libs.sh <path to IntelliJ 12.0.4>
 
+You'll also need to install a custom version of [ideauidesigner-maven-plugin]. See that readme for installation instructions.
 
 After you install all the jars this plugin needs into your local repo, just run
 
@@ -34,7 +35,7 @@ After you install all the jars this plugin needs into your local repo, just run
 The resulting zip file will be located in the target folder.
 
 [simonbrandhof]: https://github.com/simonbrandhof
-
+[ideauidesigner-maven-plugin]: https://github.com/gshakhn/ideauidesigner-maven-plugin
 
 Using the plugin
 ------------------

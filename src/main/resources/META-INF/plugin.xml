@@ -28,6 +28,7 @@
 
       <group id="SonarFileActions">
           <action id="Show.SonarAsWebView" class="org.sonar.ide.intellij.actions.ShowSonarAsWebView" text="Open in browser"/>
+          <action id="Show.ClearSonarCache" class="org.sonar.ide.intellij.actions.ClearSonarCache" text="Clear cache"/>
       </group>
 
       <group id="Sonar.ContextMenu" class="org.sonar.ide.intellij.actions.SonarContextMenu" popup="true" text="_Sonar" icon="/icons/sonar.png">

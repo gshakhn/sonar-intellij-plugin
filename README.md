@@ -61,6 +61,7 @@ Changelog
 Version 1.0.4-SNAPSHOT
 - Add a quick fix that removes a violation.
   If you've fixed a violation locally, but haven't run an analysis yet, you can mark the violation fixed locally.
+- Add menu item to clear cache. If cached violation data is stale, it can be refreshed now.
 
 Version 1.0.3
 - Add 'Open in browser' functionality. Thanks [ggili]!

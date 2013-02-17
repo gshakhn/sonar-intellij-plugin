@@ -64,6 +64,11 @@ public class SonarCache {
     this.loadingFilesListeners.add(listener);
   }
 
+  public void clearCache() {
+    this.violationCache.clear();
+    this.sourceCache.clear();
+  }
+
   private abstract class Cache<T extends Model> {
 
     private final Map<VirtualFile, List<T>> cache = new HashMap<VirtualFile, List<T>>();
@@ -157,6 +162,10 @@ public class SonarCache {
       }
 
       refreshLoadingSonarFiles();
+    }
+
+    public void clear() {
+      this.cache.clear();
     }
   }
 

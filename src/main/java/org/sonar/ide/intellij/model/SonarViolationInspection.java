@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.sonar.ide.intellij.component.SonarProjectComponent;
+import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
 
 import javax.swing.*;
@@ -46,13 +47,21 @@ public class SonarViolationInspection extends AbstractSonarInspection {
         return file.getProject().getComponent(SonarProjectComponent.class).getSonarCache().getViolations(file.getVirtualFile());
       }
     });
+    Source source = ApplicationManager.getApplication().runReadAction(new Computable<Source>() {
+      @Override
+      public Source compute() {
+        return file.getProject().getComponent(SonarProjectComponent.class).getSonarCache().getSource(file.getVirtualFile());
+      }
+    });
+
     if (!isOnTheFly && violationList != null)
       violations.put(file.getVirtualFile(), violationList);
     List<ProblemDescriptor> problems = buildProblemDescriptors(
         violationList,
         manager,
         file,
-        isOnTheFly
+        isOnTheFly,
+        source
     );
 
     if (problems == null) {
@@ -66,8 +75,8 @@ public class SonarViolationInspection extends AbstractSonarInspection {
       @Nullable List<Violation> violations,
       @NotNull InspectionManager manager,
       PsiElement element,
-      boolean isOnTheFly
-  ) {
+      boolean isOnTheFly,
+      Source source) {
     if (violations == null) {
       return null;
     }
@@ -83,10 +92,11 @@ public class SonarViolationInspection extends AbstractSonarInspection {
     for (Violation violation : violations) {
       Integer line = violation.getLine();
       if (line != null) {
+        String message = violation.getMessage() + "\n\nOriginal Source:\n" + source.getLine(line);
         ProblemDescriptor problemDescriptor = manager.createProblemDescriptor(
             element,
             getTextRange(document, line - 1),
-            violation.getMessage(),
+            message,
             ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
             isOnTheFly,
             LocalQuickFix.EMPTY_ARRAY

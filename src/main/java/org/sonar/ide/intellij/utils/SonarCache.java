@@ -33,6 +33,15 @@ public class SonarCache {
     this.violationCache.load(virtualFile, listener);
   }
 
+  public Source getSource(VirtualFile virtualFile) {
+    List<Source> sources = sourceCache.get(virtualFile);
+    if (sources.isEmpty()) {
+      return null;
+    } else {
+      return sources.get(0);
+    }
+  }
+
   public void loadSource(VirtualFile virtualFile, RefreshListener<Source> listener) {
     this.sourceCache.load(virtualFile, listener);
   }

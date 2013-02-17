@@ -41,7 +41,7 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-    <toolWindow id="Sonar" anchor="bottom" factoryClass="org.sonar.ide.intellij.ui.SonarToolWindowFactory"/>
+    <toolWindow id="Sonar" anchor="bottom" factoryClass="org.sonar.ide.intellij.ui.SonarToolWindowFactory" icon="/icons/sonar.png"/>
     <moduleConfigurable id="SonarConfigurable" instance="org.sonar.ide.intellij.ui.SonarModuleConfiguration"/>
     <projectConfigurable id="SonarProjectConfigurable" instance="org.sonar.ide.intellij.ui.SonarProjectConfiguration"/>
     <inspectionToolProvider implementation="org.sonar.ide.intellij.inspection.SonarInspectionProvider"/>

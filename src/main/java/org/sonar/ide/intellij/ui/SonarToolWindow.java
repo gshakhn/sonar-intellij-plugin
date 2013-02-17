@@ -20,6 +20,7 @@ import org.jdesktop.swingx.JXTree;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.ToolTipHighlighter;
 import org.sonar.ide.intellij.component.SonarProjectComponent;
+import org.sonar.ide.intellij.inspection.LastInspectionResult;
 import org.sonar.ide.intellij.listener.LoadingSonarFilesListener;
 import org.sonar.ide.intellij.listener.RefreshRuleListener;
 import org.sonar.ide.intellij.model.*;

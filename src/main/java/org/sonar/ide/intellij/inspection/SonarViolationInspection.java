@@ -1,4 +1,4 @@
-package org.sonar.ide.intellij.model;
+package org.sonar.ide.intellij.inspection;
 
 import com.intellij.codeInspection.*;
 import com.intellij.openapi.application.ApplicationManager;

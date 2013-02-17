@@ -43,6 +43,6 @@
     <toolWindow id="Sonar" anchor="bottom" factoryClass="org.sonar.ide.intellij.ui.SonarToolWindowFactory"/>
     <moduleConfigurable id="SonarConfigurable" instance="org.sonar.ide.intellij.ui.SonarModuleConfiguration"/>
     <projectConfigurable id="SonarProjectConfigurable" instance="org.sonar.ide.intellij.ui.SonarProjectConfiguration"/>
-    <inspectionToolProvider implementation="org.sonar.ide.intellij.model.SonarInspectionProvider"/>
+    <inspectionToolProvider implementation="org.sonar.ide.intellij.inspection.SonarInspectionProvider"/>
   </extensions>
 </idea-plugin>

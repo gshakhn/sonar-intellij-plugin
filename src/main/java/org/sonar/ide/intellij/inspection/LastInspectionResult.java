@@ -1,6 +1,7 @@
-package org.sonar.ide.intellij.model;
+package org.sonar.ide.intellij.inspection;
 
 import com.intellij.openapi.vfs.VirtualFile;
+import org.sonar.ide.intellij.model.ViolatationChangedListener;
 import org.sonar.wsclient.services.Violation;
 
 import java.util.LinkedList;

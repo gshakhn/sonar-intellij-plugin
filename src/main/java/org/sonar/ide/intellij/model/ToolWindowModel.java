@@ -52,7 +52,7 @@ public class ToolWindowModel {
         SwingUtilities.invokeLater(new Runnable() {
           @Override
           public void run() {
-            if (isFileCurrentlySelected(virtualFile) && !source.isEmpty()) {
+            if (isFileCurrentlySelected(virtualFile) && source != null && !source.isEmpty()) {
               violationTableModel.setSource(virtualFile, source.get(0));
             }
           }

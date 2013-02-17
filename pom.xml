@@ -161,6 +161,11 @@
     <profile>
       <!-- activate this profile to compile against IDEA 11 libraries -->
       <id>idea11</id>
+      <activation>
+        <property>
+          <name>11.x</name>
+        </property>
+      </activation>
       <properties>
         <idea.version.major>11</idea.version.major>
         <idea.version.minor>0.2</idea.version.minor>

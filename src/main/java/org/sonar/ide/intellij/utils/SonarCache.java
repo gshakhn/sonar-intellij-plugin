@@ -40,9 +40,9 @@ public class SonarCache implements RefreshViolationsListener, RefreshSourceListe
       try {
         return refreshViolationsWorker.get();
       } catch (InterruptedException e) {
-        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        e.printStackTrace();
       } catch (ExecutionException e) {
-        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        e.printStackTrace();
       }
       return null;
     }

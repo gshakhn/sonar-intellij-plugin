@@ -19,7 +19,7 @@ public class SonarCache implements RefreshViolationsListener, RefreshSourceListe
   private final Map<VirtualFile, List<Violation>> violationsCache = new HashMap<VirtualFile, List<Violation>>();
   private final Map<VirtualFile, Source> sourceCache = new HashMap<VirtualFile, Source>();
 
-  private final Set<VirtualFile> currentlyLoadingViolations = Collections.synchronizedSet(new HashSet<VirtualFile>());
+  private final Map<VirtualFile, RefreshViolationsWorker> currentlyLoadingViolations = Collections.synchronizedMap(new HashMap<VirtualFile, RefreshViolationsWorker>());
   private final Set<VirtualFile> currentlyLoadingSources = Collections.synchronizedSet(new HashSet<VirtualFile>());
 
   private final Set<LoadingSonarFilesListener> loadingFilesListeners = new HashSet<LoadingSonarFilesListener>();
@@ -30,13 +30,11 @@ public class SonarCache implements RefreshViolationsListener, RefreshSourceListe
     this.project = project;
   }
 
-  public List<Violation> getViolations(VirtualFile virtualFile){
+  public List<Violation> getViolations(VirtualFile virtualFile) {
     if (violationsCache.containsKey(virtualFile)) {
       return violationsCache.get(virtualFile);
     } else {
-      RefreshViolationsWorker refreshViolationsWorker = new RefreshViolationsWorker(this.project, virtualFile);
-      refreshViolationsWorker.addListener(this);
-      refreshViolationsWorker.execute();
+      RefreshViolationsWorker refreshViolationsWorker = createAndExecuteRefreshViolationsWorker(virtualFile);
       try {
         return refreshViolationsWorker.get();
       } catch (InterruptedException e) {
@@ -59,15 +57,24 @@ public class SonarCache implements RefreshViolationsListener, RefreshSourceListe
 
         refreshViolationListeners.get(virtualFile).add(listener);
       }
-      synchronized (this.currentlyLoadingViolations) {
-        if (!this.currentlyLoadingViolations.contains(virtualFile)) {
-          this.currentlyLoadingViolations.add(virtualFile);
-          refreshLoadingSonarFiles();
+      createAndExecuteRefreshViolationsWorker(virtualFile);
+    }
+  }
 
-          RefreshViolationsWorker refreshViolationsWorker = new RefreshViolationsWorker(this.project, virtualFile);
-          refreshViolationsWorker.addListener(this);
-          refreshViolationsWorker.execute();
-        }
+  private RefreshViolationsWorker createAndExecuteRefreshViolationsWorker(VirtualFile virtualFile) {
+    synchronized (this.currentlyLoadingViolations) {
+      if (!this.currentlyLoadingViolations.containsKey(virtualFile)) {
+        RefreshViolationsWorker refreshViolationsWorker = new RefreshViolationsWorker(this.project, virtualFile);
+
+        this.currentlyLoadingViolations.put(virtualFile, refreshViolationsWorker);
+        refreshLoadingSonarFiles();
+
+        refreshViolationsWorker.addListener(this);
+        refreshViolationsWorker.execute();
+
+        return refreshViolationsWorker;
+      } else {
+        return currentlyLoadingViolations.get(virtualFile);
       }
     }
   }
@@ -98,7 +105,7 @@ public class SonarCache implements RefreshViolationsListener, RefreshSourceListe
 
   private void refreshLoadingSonarFiles() {
     Set<VirtualFile> currentlyLoadingFiles = new HashSet<VirtualFile>();
-    currentlyLoadingFiles.addAll(this.currentlyLoadingViolations);
+    currentlyLoadingFiles.addAll(this.currentlyLoadingViolations.keySet());
     currentlyLoadingFiles.addAll(this.currentlyLoadingSources);
 
     for (LoadingSonarFilesListener listener : this.loadingFilesListeners) {

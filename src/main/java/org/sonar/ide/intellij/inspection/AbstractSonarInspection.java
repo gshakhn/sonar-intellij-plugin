@@ -33,4 +33,14 @@ public class AbstractSonarInspection extends LocalInspectionTool {
       return new TextRange(lineStartOffset, lineEndOffset);
     }
   }
+
+    // needed for IDEA 11
+    public String getDisplayName() {
+        return getGroupDisplayName();
+    }
+
+    // needed for IDEA 11
+    public String getShortName() {
+        return getGroupDisplayName();
+    }
 }

@@ -15,7 +15,9 @@
 
     <jdk.min.version>1.6</jdk.min.version>
 
-    <idea.version>12.0.4</idea.version>
+    <idea.version.major>12</idea.version.major>
+    <idea.version.minor>0.4</idea.version.minor>
+    <idea.version>${idea.version.major}.${idea.version.minor}</idea.version>
     <idea.build>123.169</idea.build>
 
     <sonar.version>3.4.1</sonar.version>
@@ -104,7 +106,7 @@
         <filtering>true</filtering>
       </resource>
     </resources>
-
+    <finalName>${project.artifactId}-idea${idea.version.major}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -155,4 +157,15 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <!-- activate this profile to compile against IDEA 11 libraries -->
+      <id>idea11</id>
+      <properties>
+        <idea.version.major>11</idea.version.major>
+        <idea.version.minor>0.2</idea.version.minor>
+        <idea.build>111.277</idea.build>
+      </properties>
+    </profile>
+  </profiles>
 </project>

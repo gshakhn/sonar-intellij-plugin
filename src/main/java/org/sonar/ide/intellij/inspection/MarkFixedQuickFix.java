@@ -1,6 +1,6 @@
 package org.sonar.ide.intellij.inspection;
 
-import com.intellij.codeInspection.LocalQuickFixBase;
+import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -8,13 +8,24 @@ import org.jetbrains.annotations.NotNull;
 import org.sonar.ide.intellij.component.SonarProjectComponent;
 import org.sonar.wsclient.services.Violation;
 
-public class MarkFixedQuickFix extends LocalQuickFixBase {
+public class MarkFixedQuickFix implements LocalQuickFix {
 
   private Violation violation;
 
   protected MarkFixedQuickFix(Violation violation) {
-    super("Mark fixed", "Sonar");
     this.violation = violation;
+  }
+
+  @NotNull
+  @Override
+  public String getName() {
+      return "Mark fixed";
+  }
+
+  @NotNull
+  @Override
+  public String getFamilyName() {
+      return "Sonar";
   }
 
   @Override

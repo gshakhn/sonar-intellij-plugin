@@ -138,4 +138,9 @@ public class SonarModuleConfiguration extends BaseConfigurable implements Refres
   @Override
   public void disposeUIResources() {
   }
+
+    // needed for IDEA 11
+    public Icon getIcon() {
+        return null;
+    }
 }

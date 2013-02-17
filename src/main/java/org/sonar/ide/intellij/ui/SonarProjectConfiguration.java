@@ -246,4 +246,9 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
     public void disposeUIResources()
     {
     }
+
+    // needed for IDEA 11
+    public Icon getIcon() {
+        return null;
+    }
 }

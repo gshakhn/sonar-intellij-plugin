@@ -99,7 +99,7 @@ public class SonarViolationInspection extends AbstractSonarInspection {
             message,
             ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
             isOnTheFly,
-            LocalQuickFix.EMPTY_ARRAY
+            new MarkFixedQuickFix(violation)
         );
         problems.add(problemDescriptor);
       }

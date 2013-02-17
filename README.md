@@ -58,6 +58,10 @@ Usability Notes
 Changelog
 ---------
 
+Version 1.0.4-SNAPSHOT
+- Add a quick fix that removes a violation.
+  If you've fixed a violation locally, but haven't run an analysis yet, you can mark the violation fixed locally.
+
 Version 1.0.3
 - Add 'Open in browser' functionality. Thanks [ggili]!
 - Cache violations for inspection purposes. Should hit the sonar server much less now.

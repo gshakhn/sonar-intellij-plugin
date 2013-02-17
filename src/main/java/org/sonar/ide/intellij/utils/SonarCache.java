@@ -33,6 +33,10 @@ public class SonarCache {
     this.violationCache.load(virtualFile, listener);
   }
 
+  public void removeViolation(VirtualFile virtualFile, Violation violation) {
+    violationCache.removeFromCache(virtualFile, violation);
+  }
+
   public Source getSource(VirtualFile virtualFile) {
     List<Source> sources = sourceCache.get(virtualFile);
     if (sources.isEmpty()) {
@@ -74,6 +78,10 @@ public class SonarCache {
 
     public Set<VirtualFile> getCurrentlyLoadingFiles() {
       return currentlyLoading.keySet();
+    }
+
+    public void removeFromCache(VirtualFile virtualFile, T t) {
+      this.cache.get(virtualFile).remove(t);
     }
 
     public List<T> get(VirtualFile virtualFile) {

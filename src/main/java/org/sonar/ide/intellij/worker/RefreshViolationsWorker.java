@@ -2,7 +2,6 @@ package org.sonar.ide.intellij.worker;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.sonar.ide.intellij.listener.RefreshViolationsListener;
 import org.sonar.wsclient.services.Query;
 import org.sonar.wsclient.services.Violation;
 import org.sonar.wsclient.services.ViolationQuery;
@@ -13,14 +12,8 @@ import java.util.concurrent.ExecutionException;
 
 public class RefreshViolationsWorker extends RefreshSonarFileWorker<Violation> {
 
-  private List<RefreshViolationsListener> listeners = new ArrayList<RefreshViolationsListener>();
-
   public RefreshViolationsWorker(Project project, VirtualFile virtualFile) {
     super(project, virtualFile);
-  }
-
-  public void addListener(RefreshViolationsListener listener) {
-    listeners.add(listener);
   }
 
   @Override
@@ -37,9 +30,7 @@ public class RefreshViolationsWorker extends RefreshSonarFileWorker<Violation> {
       if (violations == null) {
         violations = new ArrayList<Violation>();
       }
-      for (RefreshViolationsListener listener : this.listeners) {
-        listener.doneRefreshViolations(this.virtualFile, violations);
-      }
+      notifyListeners(violations);
     } catch (InterruptedException e) {
       e.printStackTrace();
     } catch (ExecutionException e) {

@@ -3,8 +3,7 @@ package org.sonar.ide.intellij.model;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.sonar.ide.intellij.listener.RefreshSourceListener;
-import org.sonar.ide.intellij.listener.RefreshViolationsListener;
+import org.sonar.ide.intellij.listener.RefreshListener;
 import org.sonar.ide.intellij.utils.SonarCache;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
@@ -12,7 +11,7 @@ import org.sonar.wsclient.services.Violation;
 import javax.swing.SwingUtilities;
 import java.util.*;
 
-public class ToolWindowModel implements RefreshViolationsListener, RefreshSourceListener {
+public class ToolWindowModel {
   private Project project;
   private ViolationTableModel violationTableModel;
   private SonarTreeModel violationTreeModel;
@@ -30,34 +29,34 @@ public class ToolWindowModel implements RefreshViolationsListener, RefreshSource
   }
 
   public void refreshViolationsTable(VirtualFile newFile) {
-    sonarCache.loadViolations(newFile, this);
-    sonarCache.loadSource(newFile, this);
-  }
-
-
-  @Override
-  public void doneRefreshViolations(final VirtualFile virtualFile, final List<Violation> violations) {
-    SwingUtilities.invokeLater(new Runnable() {
+    sonarCache.loadViolations(newFile, new RefreshListener<Violation>() {
       @Override
-      public void run() {
-        if (isFileCurrentlySelected(virtualFile)) {
-          violationTableModel.setViolations(virtualFile, violations);
-          Map<VirtualFile, List<Violation>> map = new HashMap<VirtualFile, List<Violation>>();
-          map.put(virtualFile, violations);
-          violationTreeModel.setViolations(map);
-        }
+      public void doneRefresh(final VirtualFile virtualFile, final List<Violation> violations) {
+        SwingUtilities.invokeLater(new Runnable() {
+          @Override
+          public void run() {
+            if (isFileCurrentlySelected(virtualFile)) {
+              violationTableModel.setViolations(virtualFile, violations);
+              Map<VirtualFile, List<Violation>> map = new HashMap<VirtualFile, List<Violation>>();
+              map.put(virtualFile, violations);
+              violationTreeModel.setViolations(map);
+            }
+          }
+        });
       }
     });
-  }
 
-  @Override
-  public void doneRefreshSource(final VirtualFile virtualFile, final Source source) {
-    SwingUtilities.invokeLater(new Runnable() {
+    sonarCache.loadSource(newFile, new RefreshListener<Source>() {
       @Override
-      public void run() {
-        if (isFileCurrentlySelected(virtualFile)) {
-          violationTableModel.setSource(virtualFile, source);
-        }
+      public void doneRefresh(final VirtualFile virtualFile, final List<Source> source) {
+        SwingUtilities.invokeLater(new Runnable() {
+          @Override
+          public void run() {
+            if (isFileCurrentlySelected(virtualFile) && !source.isEmpty()) {
+              violationTableModel.setSource(virtualFile, source.get(0));
+            }
+          }
+        });
       }
     });
   }

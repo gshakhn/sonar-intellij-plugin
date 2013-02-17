@@ -3,157 +3,165 @@ package org.sonar.ide.intellij.utils;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.sonar.ide.intellij.listener.LoadingSonarFilesListener;
-import org.sonar.ide.intellij.listener.RefreshSourceListener;
-import org.sonar.ide.intellij.listener.RefreshViolationsListener;
+import org.sonar.ide.intellij.listener.RefreshListener;
+import org.sonar.ide.intellij.worker.RefreshSonarFileWorker;
 import org.sonar.ide.intellij.worker.RefreshSourceWorker;
 import org.sonar.ide.intellij.worker.RefreshViolationsWorker;
+import org.sonar.wsclient.services.Model;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-public class SonarCache implements RefreshViolationsListener, RefreshSourceListener {
-  private Project project;
-
-  private final Map<VirtualFile, List<Violation>> violationsCache = new HashMap<VirtualFile, List<Violation>>();
-  private final Map<VirtualFile, Source> sourceCache = new HashMap<VirtualFile, Source>();
-
-  private final Map<VirtualFile, RefreshViolationsWorker> currentlyLoadingViolations = Collections.synchronizedMap(new HashMap<VirtualFile, RefreshViolationsWorker>());
-  private final Set<VirtualFile> currentlyLoadingSources = Collections.synchronizedSet(new HashSet<VirtualFile>());
+public class SonarCache {
+  private Cache<Violation> violationCache;
+  private Cache<Source> sourceCache;
 
   private final Set<LoadingSonarFilesListener> loadingFilesListeners = new HashSet<LoadingSonarFilesListener>();
-  private final Map<VirtualFile, List<RefreshViolationsListener>> refreshViolationListeners = Collections.synchronizedMap(new HashMap<VirtualFile, List<RefreshViolationsListener>>());
-  private final Map<VirtualFile, List<RefreshSourceListener>> refreshSourceListeners = Collections.synchronizedMap(new HashMap<VirtualFile, List<RefreshSourceListener>>());
 
-  public SonarCache(Project project) {
-    this.project = project;
+  public SonarCache(final Project project) {
+    this.violationCache = new ViolationsCache(project);
+    this.sourceCache = new SourceCache(project);
   }
 
   public List<Violation> getViolations(VirtualFile virtualFile) {
-    if (violationsCache.containsKey(virtualFile)) {
-      return violationsCache.get(virtualFile);
-    } else {
-      RefreshViolationsWorker refreshViolationsWorker = createAndExecuteRefreshViolationsWorker(virtualFile);
-      try {
-        return refreshViolationsWorker.get();
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      } catch (ExecutionException e) {
-        e.printStackTrace();
-      }
-      return null;
-    }
+    return this.violationCache.get(virtualFile);
   }
 
-  public void loadViolations(VirtualFile virtualFile, RefreshViolationsListener listener) {
-    if (this.violationsCache.containsKey(virtualFile)) {
-      listener.doneRefreshViolations(virtualFile, this.violationsCache.get(virtualFile));
-    } else {
-      synchronized (refreshViolationListeners) {
-        if (!refreshViolationListeners.containsKey(virtualFile)) {
-          refreshViolationListeners.put(virtualFile, new ArrayList<RefreshViolationsListener>());
-        }
-
-        refreshViolationListeners.get(virtualFile).add(listener);
-      }
-      createAndExecuteRefreshViolationsWorker(virtualFile);
-    }
+  public void loadViolations(VirtualFile virtualFile, RefreshListener<Violation> listener) {
+    this.violationCache.load(virtualFile, listener);
   }
 
-  private RefreshViolationsWorker createAndExecuteRefreshViolationsWorker(VirtualFile virtualFile) {
-    synchronized (this.currentlyLoadingViolations) {
-      if (!this.currentlyLoadingViolations.containsKey(virtualFile)) {
-        RefreshViolationsWorker refreshViolationsWorker = new RefreshViolationsWorker(this.project, virtualFile);
-
-        this.currentlyLoadingViolations.put(virtualFile, refreshViolationsWorker);
-        refreshLoadingSonarFiles();
-
-        refreshViolationsWorker.addListener(this);
-        refreshViolationsWorker.execute();
-
-        return refreshViolationsWorker;
-      } else {
-        return currentlyLoadingViolations.get(virtualFile);
-      }
-    }
-  }
-
-  public void loadSource(VirtualFile virtualFile, RefreshSourceListener listener) {
-    if (this.sourceCache.containsKey(virtualFile)) {
-      listener.doneRefreshSource(virtualFile, this.sourceCache.get(virtualFile));
-    } else {
-      synchronized (refreshSourceListeners) {
-        if (!refreshSourceListeners.containsKey(virtualFile)) {
-          refreshSourceListeners.put(virtualFile, new ArrayList<RefreshSourceListener>());
-        }
-
-        refreshSourceListeners.get(virtualFile).add(listener);
-      }
-      synchronized (this.currentlyLoadingSources) {
-        if (!this.currentlyLoadingSources.contains(virtualFile)) {
-          this.currentlyLoadingSources.add(virtualFile);
-          refreshLoadingSonarFiles();
-
-          RefreshSourceWorker refreshSourceWorker = new RefreshSourceWorker(this.project, virtualFile);
-          refreshSourceWorker.addListener(this);
-          refreshSourceWorker.execute();
-        }
-      }
-    }
+  public void loadSource(VirtualFile virtualFile, RefreshListener<Source> listener) {
+    this.sourceCache.load(virtualFile, listener);
   }
 
   private void refreshLoadingSonarFiles() {
     Set<VirtualFile> currentlyLoadingFiles = new HashSet<VirtualFile>();
-    currentlyLoadingFiles.addAll(this.currentlyLoadingViolations.keySet());
-    currentlyLoadingFiles.addAll(this.currentlyLoadingSources);
+    currentlyLoadingFiles.addAll(this.violationCache.getCurrentlyLoadingFiles());
+    currentlyLoadingFiles.addAll(this.sourceCache.getCurrentlyLoadingFiles());
 
     for (LoadingSonarFilesListener listener : this.loadingFilesListeners) {
       listener.loadingFiles(new ArrayList<VirtualFile>(currentlyLoadingFiles));
     }
   }
 
-  @Override
-  public void doneRefreshViolations(VirtualFile virtualFile, List<Violation> violations) {
-    this.violationsCache.put(virtualFile, violations);
-
-    synchronized (this.currentlyLoadingViolations) {
-      this.currentlyLoadingViolations.remove(virtualFile);
-    }
-
-    synchronized (this.refreshViolationListeners) {
-      if (this.refreshViolationListeners.containsKey(virtualFile)) {
-        for (RefreshViolationsListener listener : this.refreshViolationListeners.get(virtualFile)) {
-          listener.doneRefreshViolations(virtualFile, violations);
-        }
-        this.refreshViolationListeners.get(virtualFile).clear();
-      }
-    }
-
-    refreshLoadingSonarFiles();
-  }
-
-  @Override
-  public void doneRefreshSource(VirtualFile virtualFile, Source source) {
-    this.sourceCache.put(virtualFile, source);
-
-    synchronized (this.currentlyLoadingSources) {
-      this.currentlyLoadingSources.remove(virtualFile);
-    }
-
-    synchronized (this.refreshSourceListeners) {
-      if (this.refreshSourceListeners.containsKey(virtualFile)) {
-        for (RefreshSourceListener listener : this.refreshSourceListeners.get(virtualFile)) {
-          listener.doneRefreshSource(virtualFile, source);
-        }
-        this.refreshSourceListeners.get(virtualFile).clear();
-      }
-    }
-
-    refreshLoadingSonarFiles();
-  }
-
   public void addLoadingFileListener(LoadingSonarFilesListener listener) {
     this.loadingFilesListeners.add(listener);
+  }
+
+  private abstract class Cache<T extends Model> {
+
+    private final Map<VirtualFile, List<T>> cache = new HashMap<VirtualFile, List<T>>();
+    private final Map<VirtualFile, RefreshSonarFileWorker<T>> currentlyLoading = Collections.synchronizedMap(new HashMap<VirtualFile, RefreshSonarFileWorker<T>>());
+    private final Map<VirtualFile, List<RefreshListener<T>>> loadListeners = Collections.synchronizedMap(new HashMap<VirtualFile, List<RefreshListener<T>>>());
+
+    protected Project project;
+
+    public Cache(Project project) {
+      this.project = project;
+    }
+
+    public Set<VirtualFile> getCurrentlyLoadingFiles() {
+      return currentlyLoading.keySet();
+    }
+
+    public List<T> get(VirtualFile virtualFile) {
+      if (cache.containsKey(virtualFile)) {
+        return cache.get(virtualFile);
+      } else {
+        RefreshSonarFileWorker<T> worker = createAndExecuteRefreshWorker(virtualFile);
+        try {
+          return worker.get();
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        } catch (ExecutionException e) {
+          e.printStackTrace();
+        }
+        return null;
+      }
+    }
+
+    public void load(VirtualFile virtualFile, RefreshListener<T> listener) {
+      if (this.cache.containsKey(virtualFile)) {
+        listener.doneRefresh(virtualFile, this.cache.get(virtualFile));
+      } else {
+        synchronized (loadListeners) {
+          if (!loadListeners.containsKey(virtualFile)) {
+            loadListeners.put(virtualFile, new ArrayList<RefreshListener<T>>());
+          }
+
+          loadListeners.get(virtualFile).add(listener);
+        }
+        createAndExecuteRefreshWorker(virtualFile);
+      }
+    }
+
+    protected abstract RefreshSonarFileWorker<T> createWorker(VirtualFile virtualFile);
+
+    private RefreshSonarFileWorker<T> createAndExecuteRefreshWorker(VirtualFile virtualFile) {
+      synchronized (this.currentlyLoading) {
+        if (!this.currentlyLoading.containsKey(virtualFile)) {
+          RefreshSonarFileWorker<T> worker = createWorker(virtualFile);
+
+          this.currentlyLoading.put(virtualFile, worker);
+          refreshLoadingSonarFiles();
+
+          worker.addListener(new RefreshListener<T>() {
+            @Override
+            public void doneRefresh(VirtualFile virtualFile, List<T> ts) {
+              finishRefresh(virtualFile, ts);
+            }
+          });
+          worker.execute();
+
+          return worker;
+        } else {
+          return currentlyLoading.get(virtualFile);
+        }
+      }
+    }
+
+    private void finishRefresh(VirtualFile virtualFile, List<T> t) {
+      this.cache.put(virtualFile, t);
+
+      synchronized (this.currentlyLoading) {
+        this.currentlyLoading.remove(virtualFile);
+      }
+
+      synchronized (this.loadListeners) {
+        if (this.loadListeners.containsKey(virtualFile)) {
+          for (RefreshListener<T> listener : this.loadListeners.get(virtualFile)) {
+            listener.doneRefresh(virtualFile, t);
+          }
+          this.loadListeners.get(virtualFile).clear();
+        }
+      }
+
+      refreshLoadingSonarFiles();
+    }
+  }
+
+  private class ViolationsCache extends Cache<Violation> {
+    private ViolationsCache(Project project) {
+      super(project);
+    }
+
+    @Override
+    protected RefreshSonarFileWorker<Violation> createWorker(VirtualFile virtualFile) {
+      return new RefreshViolationsWorker(this.project, virtualFile);
+    }
+  }
+
+  private class SourceCache extends Cache<Source> {
+    private SourceCache(Project project) {
+      super(project);
+    }
+
+    @Override
+    protected RefreshSonarFileWorker<Source> createWorker(VirtualFile virtualFile) {
+      return new RefreshSourceWorker(this.project, virtualFile);
+    }
   }
 }

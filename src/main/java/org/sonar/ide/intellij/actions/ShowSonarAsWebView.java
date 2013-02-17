@@ -12,7 +12,7 @@ import org.sonar.ide.intellij.utils.SonarResourceKeyUtils;
 import org.sonar.wsclient.services.Resource;
 
 
-public class ShowSonarAsWebbView extends DumbAwareAction {
+public class ShowSonarAsWebView extends DumbAwareAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {

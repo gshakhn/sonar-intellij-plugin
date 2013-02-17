@@ -27,7 +27,7 @@
   <actions>
 
       <group id="SonarFileActions">
-          <action id="Show.SonarAsWebbView" class="org.sonar.ide.intellij.actions.ShowSonarAsWebbView" text="Open in browser"/>
+          <action id="Show.SonarAsWebView" class="org.sonar.ide.intellij.actions.ShowSonarAsWebView" text="Open in browser"/>
       </group>
 
       <group id="Sonar.ContextMenu" class="org.sonar.ide.intellij.actions.SonarContextMenu" popup="true" text="_Sonar" icon="/icons/sonar.png">

@@ -64,17 +64,17 @@ Version 1.0.4
 - Add menu item to clear cache. If cached violation data is stale, it can be refreshed now.
 
 Version 1.0.3
-- Add 'Open in browser' functionality. Thanks [ggili]!
+- Add 'Open in browser' functionality (see [#11](https://github.com/gshakhn/sonar-intellij-plugin/issues/11)). Thanks [ggili]!
 - Cache violations for inspection purposes. Should hit the sonar server much less now.
 
 Version 1.0.2
 - Update build dependencies
 
 Version 1.0.1
-- fixed IndexOutOfBoundsException in RefreshSourceWorker.done()
+- fixed IndexOutOfBoundsException in RefreshSourceWorker.done() (see [#9](https://github.com/gshakhn/sonar-intellij-plugin/issues/9))
 
 Version 1.0
-- added support for [IntelliJ IDEA] 12 (Leda 12.0.2)
+- added support for [IntelliJ IDEA] 12 (Leda 12.0.2)  (see [#7](https://github.com/gshakhn/sonar-intellij-plugin/issues/7))
 - added handling of proxy configuration
 
 Version 0.1

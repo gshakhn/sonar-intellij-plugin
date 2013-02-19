@@ -39,7 +39,7 @@ public class SonarCache {
 
   public Source getSource(VirtualFile virtualFile) {
     List<Source> sources = sourceCache.get(virtualFile);
-    if (sources.isEmpty()) {
+    if (sources == null || sources.isEmpty()) {
       return null;
     } else {
       return sources.get(0);

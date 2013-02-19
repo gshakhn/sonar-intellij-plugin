@@ -92,7 +92,10 @@ public class SonarViolationInspection extends AbstractSonarInspection {
     for (Violation violation : violations) {
       Integer line = violation.getLine();
       if (line != null) {
-        String message = violation.getMessage() + "\n\nOriginal Source:\n" + source.getLine(line);
+        String message = violation.getMessage();
+        if (source != null) {
+          message += "\n\nOriginal Source:\n" + source.getLine(line);
+        }
         ProblemDescriptor problemDescriptor = manager.createProblemDescriptor(
             element,
             getTextRange(document, line - 1),

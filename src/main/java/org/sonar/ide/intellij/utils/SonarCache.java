@@ -39,7 +39,7 @@ public class SonarCache {
 
   public Source getSource(VirtualFile virtualFile) {
     List<Source> sources = sourceCache.get(virtualFile);
-    if (sources.isEmpty()) {
+    if (sources == null || sources.isEmpty()) {
       return null;
     } else {
       return sources.get(0);
@@ -62,6 +62,11 @@ public class SonarCache {
 
   public void addLoadingFileListener(LoadingSonarFilesListener listener) {
     this.loadingFilesListeners.add(listener);
+  }
+
+  public void clearCache() {
+    this.violationCache.clear();
+    this.sourceCache.clear();
   }
 
   private abstract class Cache<T extends Model> {
@@ -157,6 +162,10 @@ public class SonarCache {
       }
 
       refreshLoadingSonarFiles();
+    }
+
+    public void clear() {
+      this.cache.clear();
     }
   }
 

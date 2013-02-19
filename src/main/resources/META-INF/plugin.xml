@@ -27,7 +27,8 @@
   <actions>
 
       <group id="SonarFileActions">
-          <action id="Show.SonarAsWebbView" class="org.sonar.ide.intellij.actions.ShowSonarAsWebbView" text="Open in browser"/>
+          <action id="Show.SonarAsWebView" class="org.sonar.ide.intellij.actions.ShowSonarAsWebView" text="Open in browser"/>
+          <action id="Show.ClearSonarCache" class="org.sonar.ide.intellij.actions.ClearSonarCache" text="Clear cache"/>
       </group>
 
       <group id="Sonar.ContextMenu" class="org.sonar.ide.intellij.actions.SonarContextMenu" popup="true" text="_Sonar" icon="/icons/sonar.png">
@@ -40,7 +41,7 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-    <toolWindow id="Sonar" anchor="bottom" factoryClass="org.sonar.ide.intellij.ui.SonarToolWindowFactory"/>
+    <toolWindow id="Sonar" anchor="bottom" factoryClass="org.sonar.ide.intellij.ui.SonarToolWindowFactory" icon="/icons/sonar.png"/>
     <moduleConfigurable id="SonarConfigurable" instance="org.sonar.ide.intellij.ui.SonarModuleConfiguration"/>
     <projectConfigurable id="SonarProjectConfigurable" instance="org.sonar.ide.intellij.ui.SonarProjectConfiguration"/>
     <inspectionToolProvider implementation="org.sonar.ide.intellij.inspection.SonarInspectionProvider"/>

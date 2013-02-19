@@ -58,6 +58,9 @@ Usability Notes
 Changelog
 ---------
 
+Version 1.0.5-SNAPSHOT
+- Fix NPE if looking at file that isn't analyzed by sonar. (see [#17](https://github.com/gshakhn/sonar-intellij-plugin/issues/17))
+
 Version 1.0.4
 - Add a quick fix that removes a violation.
   If you've fixed a violation locally, but haven't run an analysis yet, you can mark the violation fixed locally.

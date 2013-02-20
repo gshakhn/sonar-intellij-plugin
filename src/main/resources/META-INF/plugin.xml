@@ -2,7 +2,7 @@
   <name>Sonar IntelliJ</name>
   <description>${project.description}</description>
   <version>${project.version}</version>
-  <vendor>George Shakhnazaryan</vendor>
+  <vendor url="https://github.com/gshakhn/sonar-intellij-plugin">George Shakhnazaryan</vendor>
   <idea-version since-build="${idea.build}"/>
   <!--<idea-version since-build="111.167"/>-->
 

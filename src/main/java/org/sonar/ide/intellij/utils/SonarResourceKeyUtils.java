@@ -53,16 +53,36 @@ public class SonarResourceKeyUtils {
     }
 
     public static String createFileResourceKey(final Project project, final VirtualFile virtualFile) {
-        return createResourceKey(project,virtualFile, new SonarResourceKeyMaker() {
+        return createResourceKey(project, virtualFile, new SonarResourceKeyMaker() {
             @Override
             public String makeResourceKey(PsiFileSystemItem psiFile, SonarModuleComponent sonarModuleComponent) {
                 if (!(psiFile instanceof PsiJavaFile)) {
                     return null;
                 }
 
-                return SonarResourceKeyUtils.makeFileKey((PsiJavaFile)psiFile, sonarModuleComponent);
+                return SonarResourceKeyUtils.makeFileKey((PsiJavaFile) psiFile, sonarModuleComponent);
             }
         });
+    }
+
+    public static String createPartialResourceKey(final Project project, final VirtualFile virtualFile) {
+        return createResourceKey(project, virtualFile, new SonarResourceKeyMaker() {
+            @Override
+            public String makeResourceKey(PsiFileSystemItem psiFile, SonarModuleComponent sonarModuleComponent) {
+                if (!(psiFile instanceof PsiJavaFile)) {
+                    return null;
+                }
+
+                return SonarResourceKeyUtils.makePartialKey((PsiJavaFile) psiFile);
+            }
+        });
+    }
+
+    private static String makePartialKey(PsiJavaFile psiFile) {
+        String packageName = psiFile.getPackageName();
+        String className = psiFile.getClasses()[0].getName();
+
+        return packageName + "." + className;
     }
 
     private static String makeFileKey(PsiJavaFile psiFile, SonarModuleComponent sonarModuleComponent) {

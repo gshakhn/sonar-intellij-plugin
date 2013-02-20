@@ -1,12 +1,14 @@
 package org.sonar.ide.intellij.component;
 
 import org.sonar.ide.intellij.model.ToolWindowModel;
-import org.sonar.ide.intellij.utils.SonarCache;
+import org.sonar.ide.intellij.utils.SonarAnalysis;
+import org.sonar.ide.intellij.utils.SonarLocalAnalysisAnalysis;
 import org.sonar.wsclient.Sonar;
 
 public interface SonarProjectComponent {
   SonarProjectState getState();
-  class SonarProjectState {
+
+    class SonarProjectState {
     public String host;
     public String user;
     public String password;
@@ -17,5 +19,7 @@ public interface SonarProjectComponent {
   void setToolWindowModel(ToolWindowModel model);
   ToolWindowModel getToolWindowModel();
   Sonar getSonar();
-  SonarCache getSonarCache();
+  SonarAnalysis getSonarAnalysis();
+
+    void switchToLocalAnalysis(SonarAnalysis result);
 }

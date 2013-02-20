@@ -14,13 +14,17 @@ import org.sonar.wsclient.services.Violation;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-public class SonarCache {
+/**
+ * Represents the source and violations data which was done remotely
+ */
+public class SonarRemoteAnalysis implements SonarAnalysis {
+
   private Cache<Violation> violationCache;
   private Cache<Source> sourceCache;
 
   private final Set<LoadingSonarFilesListener> loadingFilesListeners = new HashSet<LoadingSonarFilesListener>();
 
-  public SonarCache(final Project project) {
+  public SonarRemoteAnalysis(final Project project) {
     this.violationCache = new ViolationsCache(project);
     this.sourceCache = new SourceCache(project);
   }
@@ -64,7 +68,7 @@ public class SonarCache {
     this.loadingFilesListeners.add(listener);
   }
 
-  public void clearCache() {
+  public void clear() {
     this.violationCache.clear();
     this.sourceCache.clear();
   }

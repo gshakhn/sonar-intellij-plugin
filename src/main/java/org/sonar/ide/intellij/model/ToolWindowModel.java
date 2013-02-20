@@ -4,7 +4,7 @@ import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.sonar.ide.intellij.listener.RefreshListener;
-import org.sonar.ide.intellij.utils.SonarCache;
+import org.sonar.ide.intellij.utils.SonarAnalysis;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
 
@@ -15,21 +15,17 @@ public class ToolWindowModel {
   private Project project;
   private ViolationTableModel violationTableModel;
   private SonarTreeModel violationTreeModel;
-  private SonarCache sonarCache;
+  private SonarAnalysis sonarAnalysis;
 
-  public ToolWindowModel(Project project, ViolationTableModel violationTableModel, SonarTreeModel violationTreeModel, SonarCache sonarCache) {
+  public ToolWindowModel(Project project, ViolationTableModel violationTableModel, SonarTreeModel violationTreeModel, SonarAnalysis sonarAnalysis) {
     this.project = project;
     this.violationTableModel = violationTableModel;
     this.violationTreeModel = violationTreeModel;
-    this.sonarCache = sonarCache;
-  }
-
-  public ViolationTableModel getViolationTableModel() {
-    return this.violationTableModel;
+    this.sonarAnalysis = sonarAnalysis;
   }
 
   public void refreshViolationsTable(VirtualFile newFile) {
-    sonarCache.loadViolations(newFile, new RefreshListener<Violation>() {
+    sonarAnalysis.loadViolations(newFile, new RefreshListener<Violation>() {
       @Override
       public void doneRefresh(final VirtualFile virtualFile, final List<Violation> violations) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -46,7 +42,7 @@ public class ToolWindowModel {
       }
     });
 
-    sonarCache.loadSource(newFile, new RefreshListener<Source>() {
+    sonarAnalysis.loadSource(newFile, new RefreshListener<Source>() {
       @Override
       public void doneRefresh(final VirtualFile virtualFile, final List<Source> source) {
         SwingUtilities.invokeLater(new Runnable() {

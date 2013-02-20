@@ -10,6 +10,6 @@ public class ClearSonarCache extends DumbAwareAction {
   @Override
   public void actionPerformed(AnActionEvent anActionEvent) {
     final Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
-    project.getComponent(SonarProjectComponent.class).getSonarCache().clearCache();
+    project.getComponent(SonarProjectComponent.class).getSonarAnalysis().clear();
   }
 }

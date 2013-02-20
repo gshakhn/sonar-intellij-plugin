@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
 
   <name>sonar-intellij-plugin</name>
-  <description>Adds Sonar integration to IntelliJ. See https://github.com/gshakhn/sonar-intellij-plugin for latest changes.</description>
+  <description>Adds Sonar integration to IntelliJ.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -84,6 +84,12 @@
           <version>3.2.1</version>
       </dependency>
 
+      <dependency>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+          <version>2.4</version>
+      </dependency>
+
       <!-- Test -->
       <dependency>
           <groupId>junit</groupId>
@@ -103,6 +109,12 @@
         </includes>
         <filtering>true</filtering>
       </resource>
+        <resource>
+            <directory>src/main/resources/</directory>
+            <includes>
+                <include>**/*.jar</include>
+            </includes>
+        </resource>
     </resources>
 
     <plugins>
@@ -119,7 +131,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>ideauidesigner-maven-plugin</artifactId>
-        <version>1.0-beta-2-12.0.4</version>
+        <version>1.0-beta-1</version>
         <executions>
           <execution>
             <goals>

@@ -1,4 +1,4 @@
-package org.sonar.ide.intellij.utils;
+package org.sonar.ide.intellij.analysis;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import org.sonar.ide.intellij.listener.LoadingSonarFilesListener;
@@ -26,4 +26,6 @@ public interface SonarAnalysis {
     void loadSource(VirtualFile newFile, RefreshListener<Source> refreshListener);
 
     void clear();
+
+    boolean isLocalAnalysis();
 }

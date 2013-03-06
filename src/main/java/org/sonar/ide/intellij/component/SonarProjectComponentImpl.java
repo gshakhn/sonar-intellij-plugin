@@ -7,12 +7,13 @@ import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
+import org.sonar.ide.intellij.analysis.SonarAnalysis;
+import org.sonar.ide.intellij.analysis.SonarCompactAnalysis;
 import org.sonar.ide.intellij.listener.SonarFileEditorManagerListener;
 import org.sonar.ide.intellij.model.ToolWindowModel;
-import org.sonar.ide.intellij.utils.SonarAnalysis;
-import org.sonar.ide.intellij.utils.SonarCompactAnalysis;
 import org.sonar.ide.intellij.utils.SonarUtils;
 import org.sonar.wsclient.Sonar;
+
 
 @State(name = "SonarConfiguration", storages = {@Storage(id = "other", file = "$PROJECT_FILE$")})
 public class SonarProjectComponentImpl implements SonarProjectComponent, ProjectComponent, PersistentStateComponent<SonarProjectComponent.SonarProjectState> {
@@ -84,5 +85,25 @@ public class SonarProjectComponentImpl implements SonarProjectComponent, Project
     @Override
     public void switchToLocalAnalysis(SonarAnalysis result) {
         sonarAnalysis.switchToLocalAnalysis(result);
+        EventBus.notifyEvent(EventKind.LOCAL_ANALYSIS_ACTIVATED);
+
+    }
+
+    @Override
+    public void switchToExistingLocalAnalysis() {
+        sonarAnalysis.switchToCurrentLocalAnalysis();
+        EventBus.notifyEvent(EventKind.LOCAL_ANALYSIS_ACTIVATED);
+    }
+
+
+    @Override
+    public void switchToRemoteAnalysis() {
+        sonarAnalysis.switchToRemoteAnalysis();
+        EventBus.notifyEvent(EventKind.REMOTE_ANALYSIS_ACTIVATED);
+    }
+
+    @Override
+    public boolean isLocalAnalysisAvailable() {
+        return sonarAnalysis.isLocalAnalysisAvailable();
     }
 }

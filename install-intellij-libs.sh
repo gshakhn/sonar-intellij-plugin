@@ -22,3 +22,4 @@ mvn install:install-file -Dfile="$INTELLIJ_HOME/lib/util.jar" -DgroupId=com.inte
 mvn install:install-file -Dfile="$INTELLIJ_HOME/lib/extensions.jar" -DgroupId=com.intellij -DartifactId=extensions -Dversion=12.0.4 -Dpackaging=jar
 mvn install:install-file -Dfile="$INTELLIJ_HOME/lib/annotations.jar" -DgroupId=com.intellij -DartifactId=annotations -Dversion=12.0.4 -Dpackaging=jar
 mvn install:install-file -Dfile="$INTELLIJ_HOME/lib/forms_rt.jar" -DgroupId=com.intellij -DartifactId=forms_rt -Dversion=12.0.4 -Dpackaging=jar
+mvn install:install-file -Dfile="$INTELLIJ_HOME/lib/idea.jar" -DgroupId=com.intellij -DartifactId=idea -Dversion=12.0.4 -Dpackaging=jar

@@ -1,10 +1,8 @@
 package org.sonar.ide.intellij.runner;
 
 
-import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.JavaParameters;
 import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.execution.process.ProcessListener;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ProjectRootManager;
@@ -18,20 +16,16 @@ public class SonarRunner {
 
     public static final String SONAR_RUNNER_MAIN_CLASS = "org.sonar.runner.Main";
 
-    private ProcessListener sonarRunnerMonitor;
+    private SonarRunnerMonitor sonarRunnerMonitor;
 
-    class SonarRunnerException extends RuntimeException {
-
-        SonarRunnerException(String s) {
-            super(s);
-        }
+    public static class SonarRunnerException extends RuntimeException {
 
         SonarRunnerException(String s, Throwable throwable) {
             super(s, throwable);
         }
     }
 
-    public SonarRunner(ProcessListener sonarRunnerMonitor) {
+    public SonarRunner(SonarRunnerMonitor sonarRunnerMonitor) {
         this.sonarRunnerMonitor = sonarRunnerMonitor;
     }
 
@@ -40,14 +34,25 @@ public class SonarRunner {
         File sonarAnalyser = null;
         try {
             sonarAnalyser = unpackSonarRunner();
+            cleanupOldResults(project);
             executeSonarRunner(project, runParameters, sonarAnalyser);
 
             return new File(project.getBasePath(), runParameters.getResultFile());
         } catch (IOException e) {
-            throw new SonarRunnerException("Error extracting sonar runner", e);
+            throw new SonarRunnerException("Error unpacking sonar runner", e);
         } finally {
-            FileUtils.deleteQuietly(sonarAnalyser);
+            try {
+                if (sonarAnalyser != null) {
+                    FileUtils.forceDeleteOnExit(sonarAnalyser);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private void cleanupOldResults(Project project) throws IOException {
+        FileUtils.deleteQuietly(new File(project.getBasePath(), ".sonar"));
     }
 
     private void executeSonarRunner(Project project, SonarRunnerJavaParameters runParameters, File sonarRunnerPath) {
@@ -63,15 +68,20 @@ public class SonarRunner {
 
 
             OSProcessHandler osProcessHandler = javaParameters.createOSProcessHandler();
-
             osProcessHandler.addProcessListener(sonarRunnerMonitor);
             osProcessHandler.startNotify();
+            while (!osProcessHandler.isProcessTerminated()) {
+
+                if (sonarRunnerMonitor.shouldCancelRequest()) {
+                    osProcessHandler.getProcess().destroy();
+                } else {
+                    Thread.sleep(300);
+                }
+            }
             osProcessHandler.waitFor();
 
-        } catch (ExecutionException e) {
-            throw new SonarRunnerException("Error running sonar runner", e);
-        } catch (RuntimeException e) {
-            throw new SonarRunnerException("Error running sonar runner", e);
+        } catch (Exception e) {
+            throw new SonarRunnerException("Error running sonar runner check log files", e);
         }
     }
 

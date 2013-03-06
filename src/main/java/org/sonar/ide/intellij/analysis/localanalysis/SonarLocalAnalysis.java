@@ -1,16 +1,18 @@
-package org.sonar.ide.intellij.utils;
+package org.sonar.ide.intellij.analysis.localanalysis;
 
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiFileSystemItem;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.sonar.ide.intellij.analysis.SonarAnalysis;
 import org.sonar.ide.intellij.listener.LoadingSonarFilesListener;
 import org.sonar.ide.intellij.listener.RefreshListener;
-import org.sonar.wsclient.JdkUtils;
+import org.sonar.ide.intellij.utils.IntellijIdeaUtils;
+import org.sonar.ide.intellij.utils.SonarResourceKeyUtils;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
-import org.sonar.wsclient.services.WSUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,16 +20,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SonarLocalAnalysisAnalysis implements SonarAnalysis {
+public class SonarLocalAnalysis implements SonarAnalysis {
 
     private JSONObject rawViolations;
 
     private Project project;
 
-    private Map<VirtualFile, List<Violation>> violationSet = new ConcurrentHashMap<VirtualFile, List<Violation>>();
+    private final Map<VirtualFile, List<Violation>> violationSet = new ConcurrentHashMap<VirtualFile, List<Violation>>();
 
+    private final Map<VirtualFile, Source> sourceSet = new ConcurrentHashMap<VirtualFile, Source>();
 
-    public SonarLocalAnalysisAnalysis(Project project, JSONObject rawViolations) {
+    public SonarLocalAnalysis(Project project, JSONObject rawViolations) {
         this.project = project;
         this.rawViolations = rawViolations;
     }
@@ -47,14 +50,37 @@ public class SonarLocalAnalysisAnalysis implements SonarAnalysis {
 
     @Override
     public Source getSource(VirtualFile virtualFile) {
-        return null;
+
+        if (sourceSet.containsKey(virtualFile)) {
+            return sourceSet.get(virtualFile);
+        } else {
+            synchronized (sourceSet) {
+                if (sourceSet.containsKey(virtualFile)) {
+                    return sourceSet.get(virtualFile);
+                }
+                return fillSourceCache(virtualFile);
+            }
+        }
+    }
+
+    private Source fillSourceCache(VirtualFile virtualFile) {
+        PsiFileSystemItem psiFileItem = IntellijIdeaUtils.findPsiFileItem(project, virtualFile);
+        Source source = new Source();
+        String[] lines = psiFileItem.getText().split("\n");
+        int index = 0;
+        for (String line : lines) {
+            source.addLine(index, line);
+            index++;
+        }
+
+        sourceSet.put(virtualFile, source);
+
+        return source;
     }
 
     @Override
     public void removeViolation(VirtualFile virtualFile, Violation violation) {
-
-        // TODO(AGAL): implement this to remve from result .. could be easy if we could delete from rawViolation
-        throw new RuntimeException("Cannot remove violation in local analysis");
+        throw new RuntimeException("Remove violation is not available in local analysis");
     }
 
     @Override
@@ -90,12 +116,25 @@ public class SonarLocalAnalysisAnalysis implements SonarAnalysis {
 
     @Override
     public void loadSource(VirtualFile newFile, RefreshListener<Source> refreshListener) {
-        refreshListener.doneRefresh(newFile, null);
+        refreshListener.doneRefresh(newFile, Collections.singletonList(getSource(newFile)));
     }
 
     @Override
     public void clear() {
-        rawViolations.clear();
         violationSet.clear();
+        sourceSet.clear();
+    }
+
+    @Override
+    public boolean isLocalAnalysis() {
+        return true;
+    }
+
+    Map<VirtualFile, List<Violation>> getViolationSet() {
+        return violationSet;
+    }
+
+    Map<VirtualFile, Source> getSourceSet() {
+        return sourceSet;
     }
 }

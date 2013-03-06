@@ -29,20 +29,7 @@ public class SonarResourceKeyUtils {
             return null;
         }
 
-        final PsiManager psiManager = PsiManager.getInstance(project);
-        final PsiFileSystemItem psiFile = ApplicationManager.getApplication().runReadAction(new Computable<PsiFileSystemItem>() {
-            @Override
-            public PsiFileSystemItem compute() {
-                PsiFileSystemItem item;
-                if (virtualFile.isDirectory()) {
-                    item = psiManager.findDirectory(virtualFile);
-                } else {
-                    item = psiManager.findFile(virtualFile);
-                }
-
-                return item;
-            }
-        });
+        final PsiFileSystemItem psiFile = IntellijIdeaUtils.findPsiFileItem(project, virtualFile);
 
         return ApplicationManager.getApplication().runReadAction(new Computable<String>() {
             @Override

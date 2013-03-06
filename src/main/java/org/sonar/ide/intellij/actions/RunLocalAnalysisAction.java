@@ -5,13 +5,22 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.sonar.ide.intellij.component.SonarProjectComponent;
-import org.sonar.ide.intellij.listener.JobDoneListener;
-import org.sonar.ide.intellij.runner.SonarRunnerMonitor;
-import org.sonar.ide.intellij.utils.SonarLocalAnalysisAnalysis;
-import org.sonar.ide.intellij.worker.LocalAnalysisWorker;
+import org.sonar.ide.intellij.analysis.localanalysis.SonarLocalAnalyzer;
+import org.sonar.ide.intellij.component.EventBus;
+import org.sonar.ide.intellij.component.EventKind;
+import org.sonar.ide.intellij.component.EventListener;
+import org.sonar.ide.intellij.model.SonarConsole;
+import org.sonar.ide.intellij.runner.SonarRunnerConsoleMonitor;
 
 public class RunLocalAnalysisAction extends DumbAwareAction {
+
+    private static final SonarLocalAnalyzer sonarLocalAnalyzer = new SonarLocalAnalyzer();
+
+
+    public static SonarLocalAnalyzer getSonarLocalAnalyzer() {
+        return sonarLocalAnalyzer;
+    }
+
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
 
@@ -25,13 +34,24 @@ public class RunLocalAnalysisAction extends DumbAwareAction {
             return;
         }
 
-        LocalAnalysisWorker localAnalysisWorker = new LocalAnalysisWorker(project, file, new SonarRunnerMonitor(), new JobDoneListener<SonarLocalAnalysisAnalysis>() {
+        SonarConsole.getInstance().clear();
+
+        final SonarRunnerConsoleMonitor sonarRunnerMonitor = new SonarRunnerConsoleMonitor();
+        EventBus.subscribe(EventKind.CANCEL_LOCAL_ANALYSIS, new EventListener() {
             @Override
-            public void jobDone(SonarLocalAnalysisAnalysis result) {
-                SonarProjectComponent sonarProjectComponent = project.getComponent(SonarProjectComponent.class);
-                sonarProjectComponent.switchToLocalAnalysis(result);
+            public void handleEvent(EventKind eventKind) {
+                if (sonarLocalAnalyzer.isLocalAnalysisRunning()) {
+                    sonarRunnerMonitor.cancelAnalysis();
+                }
             }
         });
-        localAnalysisWorker.execute();
+        sonarLocalAnalyzer.runLocalAnalysis(project, file, sonarRunnerMonitor);
+
     }
+
+    @Override
+    public void update(AnActionEvent e) {
+        e.getPresentation().setEnabled(!sonarLocalAnalyzer.isLocalAnalysisRunning());
+    }
+
 }

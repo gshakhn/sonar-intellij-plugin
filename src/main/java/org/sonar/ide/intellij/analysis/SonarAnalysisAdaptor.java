@@ -1,4 +1,4 @@
-package org.sonar.ide.intellij.utils;
+package org.sonar.ide.intellij.analysis;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import org.sonar.ide.intellij.listener.LoadingSonarFilesListener;
@@ -56,5 +56,10 @@ public class SonarAnalysisAdaptor implements SonarAnalysis {
     @Override
     public void clear() {
         sonarAnalysis.clear();
+    }
+
+    @Override
+    public boolean isLocalAnalysis() {
+        return sonarAnalysis.isLocalAnalysis();
     }
 }

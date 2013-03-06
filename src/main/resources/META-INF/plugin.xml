@@ -1,49 +1,56 @@
 <idea-plugin version="2">
-  <name>Sonar IntelliJ</name>
-  <description>${project.description}</description>
-  <version>${project.version}</version>
-  <vendor url="https://github.com/gshakhn/sonar-intellij-plugin">George Shakhnazaryan</vendor>
-  <idea-version since-build="${idea.build}"/>
-  <!--<idea-version since-build="111.167"/>-->
+    <name>Sonar IntelliJ</name>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor url="https://github.com/gshakhn/sonar-intellij-plugin">George Shakhnazaryan</vendor>
+    <idea-version since-build="${idea.build}"/>
+    <!--<idea-version since-build="111.167"/>-->
 
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
 
-  <project-components>
-    <component>
-      <interface-class>org.sonar.ide.intellij.component.SonarProjectComponent</interface-class>
-      <implementation-class>org.sonar.ide.intellij.component.SonarProjectComponentImpl</implementation-class>
-    </component>
-  </project-components>
+    <project-components>
+        <component>
+            <interface-class>org.sonar.ide.intellij.component.SonarProjectComponent</interface-class>
+            <implementation-class>org.sonar.ide.intellij.component.SonarProjectComponentImpl</implementation-class>
+        </component>
+    </project-components>
 
-  <module-components>
-    <component>
-      <interface-class>org.sonar.ide.intellij.component.SonarModuleComponent</interface-class>
-      <implementation-class>org.sonar.ide.intellij.component.SonarModuleComponentImpl</implementation-class>
-    </component>
-  </module-components>
+    <module-components>
+        <component>
+            <interface-class>org.sonar.ide.intellij.component.SonarModuleComponent</interface-class>
+            <implementation-class>org.sonar.ide.intellij.component.SonarModuleComponentImpl</implementation-class>
+        </component>
+    </module-components>
 
-  <actions>
+    <actions>
 
-      <group id="SonarFileActions">
-          <action id="Show.SonarAsWebView" class="org.sonar.ide.intellij.actions.ShowSonarAsWebView" text="Open in browser"/>
-          <action id="Show.ClearSonarCache" class="org.sonar.ide.intellij.actions.ClearSonarCache" text="Clear cache"/>
-      </group>
+        <group id="SonarFileActions">
+            <action id="Show.SonarAsWebView" class="org.sonar.ide.intellij.actions.ShowSonarAsWebView"
+                    text="Open in browser"/>
+            <action id="Show.ClearSonarCache" class="org.sonar.ide.intellij.actions.ClearSonarCache"
+                    text="Clear cache"/>
+            <action id="Show.RunLocalAnalysis" class="org.sonar.ide.intellij.actions.RunLocalAnalysisAction"
+                    text="Run local analysis"/>
+        </group>
 
-      <group id="Sonar.ContextMenu" class="org.sonar.ide.intellij.actions.SonarContextMenu" popup="true" text="_Sonar" icon="/icons/sonar.png">
+        <group id="Sonar.ContextMenu" class="org.sonar.ide.intellij.actions.SonarContextMenu" popup="true" text="_Sonar"
+               icon="/icons/sonar.png">
 
-          <reference ref="SonarFileActions"/>
-          <add-to-group group-id="EditorPopupMenu"/>
-          <add-to-group group-id="ProjectViewPopupMenu"/>
-          <add-to-group group-id="EditorTabPopupMenu"/>
-      </group>
-  </actions>
+            <reference ref="SonarFileActions"/>
+            <add-to-group group-id="EditorPopupMenu"/>
+            <add-to-group group-id="ProjectViewPopupMenu"/>
+            <add-to-group group-id="EditorTabPopupMenu"/>
+        </group>
+    </actions>
 
-  <extensions defaultExtensionNs="com.intellij">
-    <toolWindow id="Sonar" anchor="bottom" factoryClass="org.sonar.ide.intellij.ui.SonarToolWindowFactory" icon="/icons/sonar.png"/>
-    <moduleConfigurable id="SonarConfigurable" instance="org.sonar.ide.intellij.ui.SonarModuleConfiguration"/>
-    <projectConfigurable id="SonarProjectConfigurable" instance="org.sonar.ide.intellij.ui.SonarProjectConfiguration"/>
-    <inspectionToolProvider implementation="org.sonar.ide.intellij.inspection.SonarInspectionProvider"/>
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Sonar" anchor="bottom" factoryClass="org.sonar.ide.intellij.ui.SonarToolWindowFactory"
+                    icon="/icons/sonar.png"/>
+        <moduleConfigurable id="SonarConfigurable" instance="org.sonar.ide.intellij.ui.SonarModuleConfiguration"/>
+        <projectConfigurable id="SonarProjectConfigurable"
+                             instance="org.sonar.ide.intellij.ui.SonarProjectConfiguration"/>
+        <inspectionToolProvider implementation="org.sonar.ide.intellij.inspection.SonarInspectionProvider"/>
+    </extensions>
 </idea-plugin>

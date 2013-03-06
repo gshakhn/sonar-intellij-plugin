@@ -13,36 +13,36 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class RefreshRuleWorker extends SwingWorker<List<Rule>, Void> {
-  private Project project;
+    private Project project;
 
-  private List<RefreshRuleListener> listeners = new LinkedList<RefreshRuleListener>();
+    private List<RefreshRuleListener> listeners = new LinkedList<RefreshRuleListener>();
 
-  public RefreshRuleWorker(Project project) {
-    this.project = project;
-  }
-
-  @Override
-  protected List<Rule> doInBackground() throws Exception {
-    SonarProjectComponent component = project.getComponent(SonarProjectComponent.class);
-    Sonar sonar = component.getSonar();
-    return sonar.findAll(new RuleQuery("java"));
-  }
-
-  @Override
-  protected void done() {
-    try {
-      List<Rule> rules = get();
-      for (RefreshRuleListener listener : listeners)
-        listener.doneRefreshRules(rules);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
+    public RefreshRuleWorker(Project project) {
+        this.project = project;
     }
-  }
 
-  public void addListener(RefreshRuleListener listener) {
-    listeners.add(listener);
-  }
+    @Override
+    protected List<Rule> doInBackground() throws Exception {
+        SonarProjectComponent component = project.getComponent(SonarProjectComponent.class);
+        Sonar sonar = component.getSonar();
+        return sonar.findAll(new RuleQuery("java"));
+    }
+
+    @Override
+    protected void done() {
+        try {
+            List<Rule> rules = get();
+            for (RefreshRuleListener listener : listeners)
+                listener.doneRefreshRules(rules);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addListener(RefreshRuleListener listener) {
+        listeners.add(listener);
+    }
 
 }

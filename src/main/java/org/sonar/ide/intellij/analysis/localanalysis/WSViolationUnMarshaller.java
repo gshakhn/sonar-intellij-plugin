@@ -1,4 +1,4 @@
-package org.sonar.ide.intellij.utils;
+package org.sonar.ide.intellij.analysis.localanalysis;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.json.simple.JSONObject;
@@ -20,7 +20,7 @@ public class WSViolationUnMarshaller {
         violation.setLine(line != null ? line.intValue() : null);
         violation.setMessage(ObjectUtils.toString(jsonViolation.get("message")));
         violation.setSeverity(ObjectUtils.toString(jsonViolation.get("severity")));
-        violation.setRuleKey(ObjectUtils.toString(jsonViolation.get("rule_key")));
+        violation.setRuleKey(ObjectUtils.toString(jsonViolation.get("rule_repository") + ":" + jsonViolation.get("rule_key")));
         violation.setRuleName(ObjectUtils.toString(jsonViolation.get("rule_name")));
 
         return violation;

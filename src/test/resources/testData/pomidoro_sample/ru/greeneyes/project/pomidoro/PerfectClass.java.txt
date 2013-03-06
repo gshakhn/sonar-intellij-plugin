@@ -1,0 +1,21 @@
+package ru.greeneyes.project.pomidoro;
+
+/**
+*  This class should not have any violation
+*/
+class PerfectClass {
+
+    public int number = 0;
+
+
+    public void incrementNumber() {
+        number++;
+    }
+
+    public void decrementNumber() {
+        number--;
+    }
+
+
+
+}

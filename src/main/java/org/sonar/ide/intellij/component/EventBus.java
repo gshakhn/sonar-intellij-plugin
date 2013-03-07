@@ -26,7 +26,11 @@ public class EventBus {
 
     public static void notifyEvent(EventKind eventKind) {
         for (EventListener eventListener : Listeners.get(eventKind)) {
-            eventListener.handleEvent(eventKind);
+            try {
+                eventListener.handleEvent(eventKind);
+            } catch (Exception e) { // don't want any error to prevent continuing the logic so notifyEvent must not throw any error
+                e.printStackTrace();
+            }
         }
 
     }

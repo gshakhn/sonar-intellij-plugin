@@ -45,6 +45,8 @@ public class SonarLocalAnalyzer {
                     localAnalysisWorker = null;
                 }
             });
+
+            EventBus.notifyEvent(EventKind.LOCAL_ANALYSIS_STARTED);
         }
 
         localAnalysisWorker.execute();

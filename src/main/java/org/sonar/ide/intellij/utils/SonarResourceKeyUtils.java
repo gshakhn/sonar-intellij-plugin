@@ -5,6 +5,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Computable;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import org.sonar.ide.intellij.component.SonarModuleComponent;
@@ -66,7 +67,7 @@ public class SonarResourceKeyUtils {
     }
 
     private static String makePartialKey(PsiJavaFile psiFile) {
-        String packageName = psiFile.getPackageName();
+        String packageName = StringUtil.isEmpty(psiFile.getPackageName()) ? "[default]" : psiFile.getPackageName();
         String className = psiFile.getClasses()[0].getName();
 
         return packageName + "." + className;

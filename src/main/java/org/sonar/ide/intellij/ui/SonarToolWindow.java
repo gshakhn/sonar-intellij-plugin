@@ -1,6 +1,5 @@
 package org.sonar.ide.intellij.ui;
 
-import com.intellij.icons.AllIcons;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
@@ -10,6 +9,7 @@ import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.util.AsyncResult;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.PopupHandler;
@@ -49,7 +49,7 @@ import java.util.Map;
 
 public final class SonarToolWindow implements LoadingSonarFilesListener, RefreshRuleListener {
 
-    private final ImageIcon imageIcon = new ImageIcon("/icons/inspect.png");
+    private final Icon INSPECT_ICON = IconLoader.getIcon("/icons/inspect.png");
 
     private ActionToolbar toolbar;
     private final ToggleAction localAnalysisButton = new ShowLocalAnalysisAction();
@@ -150,6 +150,13 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
         tabbedPane.addTab("Current file", simpleToolWindowPanel);
         tabbedPane.addTab("Last inspection", scrollPaneTree);
         tabbedPane.addTab("Console", console.getMainPanel());
+
+        EventBus.subscribe(EventKind.LOCAL_ANALYSIS_STARTED, new EventListener() {
+            @Override
+            public void handleEvent(EventKind eventKind) {
+                tabbedPane.setSelectedIndex(2);
+            }
+        });
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gridBagConstraintsScrollPane = new GridBagConstraints();
@@ -344,12 +351,6 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
 
     }
 
-    private ActionToolbar createViewFileInspectionToolbar() {
-        DefaultActionGroup group = new DefaultActionGroup();
-        group.add(localAnalysisButton);
-
-        return ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, group, false);
-    }
 
     private ActionToolbar createToolbar() {
         DefaultActionGroup group = new DefaultActionGroup();
@@ -363,7 +364,7 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
         private boolean state = false;
 
         ShowLocalAnalysisAction() {
-            super("Show local analysis", "Toggle to switch to local analysis", AllIcons.Actions.Search);
+            super("Show local analysis", "Toggle to switch to local analysis", INSPECT_ICON);
         }
 
         @Override

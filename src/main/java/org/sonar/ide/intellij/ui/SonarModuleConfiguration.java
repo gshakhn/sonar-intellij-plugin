@@ -12,9 +12,7 @@ import org.sonar.ide.intellij.model.ProjectComboBoxModel;
 import org.sonar.ide.intellij.model.SonarProject;
 import org.sonar.ide.intellij.utils.SonarUtils;
 import org.sonar.ide.intellij.worker.RefreshProjectListWorker;
-import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.connectors.HttpClient4Connector;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -123,12 +121,14 @@ public class SonarModuleConfiguration extends BaseConfigurable implements Refres
 
   @Override
   public void apply() throws ConfigurationException {
-    sonarModuleComponent.getState().host = txtHost.getText();
-    sonarModuleComponent.getState().user = txtUser.getText();
-    sonarModuleComponent.getState().password = new String(txtPassword.getPassword());
-    sonarModuleComponent.getState().projectKey = ((SonarProject) (cmbProject.getSelectedItem())).getResource().getKey();
-    sonarModuleComponent.getState().useProxy = useProxyBox.isSelected();
-    sonarModuleComponent.getState().configured = true;
+      if (cmbProject.getSelectedItem() != null) {
+          sonarModuleComponent.getState().host = txtHost.getText();
+          sonarModuleComponent.getState().user = txtUser.getText();
+          sonarModuleComponent.getState().password = new String(txtPassword.getPassword());
+          sonarModuleComponent.getState().projectKey = ((SonarProject) (cmbProject.getSelectedItem())).getResource().getKey();
+          sonarModuleComponent.getState().useProxy = useProxyBox.isSelected();
+          sonarModuleComponent.getState().configured = true;
+      }
   }
 
   @Override

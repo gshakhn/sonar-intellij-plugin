@@ -15,68 +15,68 @@ import org.sonar.wsclient.Sonar;
 
 @State(name = "SonarConfiguration", storages = {@Storage(id = "other", file = "$PROJECT_FILE$")})
 public class SonarProjectComponentImpl implements SonarProjectComponent, ProjectComponent, PersistentStateComponent<SonarProjectComponent.SonarProjectState> {
-  private ToolWindowModel toolWindowModel;
-  private SonarProjectState state;
-  private Project project;
-  private SonarCache sonarCache;
+    private ToolWindowModel toolWindowModel;
+    private SonarProjectState state;
+    private Project project;
+    private SonarCache sonarCache;
 
-  public SonarProjectComponentImpl(Project project) {
-    this.project = project;
-    this.state = new SonarProjectState();
-    this.sonarCache = new SonarCache(project);
-  }
+    public SonarProjectComponentImpl(Project project) {
+        this.project = project;
+        this.state = new SonarProjectState();
+        this.sonarCache = new SonarCache(project);
+    }
 
-  @Override
-  public void projectOpened() {
-    project.getMessageBus().connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new SonarFileEditorManagerListener(this));
-  }
+    @Override
+    public void projectOpened() {
+        project.getMessageBus().connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new SonarFileEditorManagerListener(this));
+    }
 
-  @Override
-  public void projectClosed() {
-  }
+    @Override
+    public void projectClosed() {
+    }
 
-  @Override
-  public void initComponent() {
-  }
+    @Override
+    public void initComponent() {
+    }
 
-  @Override
-  public void disposeComponent() {
-  }
+    @Override
+    public void disposeComponent() {
+    }
 
-  @NotNull
-  @Override
-  public String getComponentName() {
-    return "Sonar";
-  }
+    @NotNull
+    @Override
+    public String getComponentName() {
+        return "Sonar";
+    }
 
-  @Override
-  public ToolWindowModel getToolWindowModel() {
-    return toolWindowModel;
-  }
+    @Override
+    public ToolWindowModel getToolWindowModel() {
+        return toolWindowModel;
+    }
 
-  @Override
-  public SonarProjectState getState() {
-    return state;
-  }
+    @Override
+    public SonarProjectState getState() {
+        return state;
+    }
 
-  @Override
-  public void loadState(SonarProjectState state) {
-    this.state = state;
-  }
+    @Override
+    public void loadState(SonarProjectState state) {
+        this.state = state;
+    }
 
-  @Override
-  public void setToolWindowModel(ToolWindowModel model) {
-    this.toolWindowModel = model;
-  }
+    @Override
+    public void setToolWindowModel(ToolWindowModel model) {
+        this.toolWindowModel = model;
+    }
 
-  @Override
-  public Sonar getSonar() {
-      Sonar sonarConn = SonarUtils.getSonar(state.host, state.user, state.password, state.useProxy);
-      return sonarConn;
-  }
+    @Override
+    public Sonar getSonar() {
+        Sonar sonarConn = SonarUtils.getSonar(state.host, state.user, state.password, state.useProxy);
+        return sonarConn;
+    }
 
-  @Override
-  public SonarCache getSonarCache() {
-    return sonarCache;
-  }
+    @Override
+    public SonarCache getSonarCache() {
+        return sonarCache;
+    }
 }

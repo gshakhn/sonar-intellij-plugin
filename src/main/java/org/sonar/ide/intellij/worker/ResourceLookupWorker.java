@@ -22,7 +22,7 @@ public class ResourceLookupWorker extends RefreshSonarFileWorker<Resource> {
 
     public ResourceLookupWorker(Project project, VirtualFile virtualFile, ResourceLoadCallback callback) {
         super(project, virtualFile);
-            this.callback = callback;
+        this.callback = callback;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ResourceLookupWorker extends RefreshSonarFileWorker<Resource> {
             List<Resource> resources = get();
             if (resources != null && !resources.isEmpty()) {
                 callback.resourceLoaded(resources.get(0));
-            }   else {
+            } else {
                 callback.resourceLoaded(null);
             }
         } catch (InterruptedException e) {

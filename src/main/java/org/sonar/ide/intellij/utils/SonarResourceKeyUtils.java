@@ -53,14 +53,14 @@ public class SonarResourceKeyUtils {
     }
 
     public static String createFileResourceKey(final Project project, final VirtualFile virtualFile) {
-        return createResourceKey(project,virtualFile, new SonarResourceKeyMaker() {
+        return createResourceKey(project, virtualFile, new SonarResourceKeyMaker() {
             @Override
             public String makeResourceKey(PsiFileSystemItem psiFile, SonarModuleComponent sonarModuleComponent) {
                 if (!(psiFile instanceof PsiJavaFile)) {
                     return null;
                 }
 
-                return SonarResourceKeyUtils.makeFileKey((PsiJavaFile)psiFile, sonarModuleComponent);
+                return SonarResourceKeyUtils.makeFileKey((PsiJavaFile) psiFile, sonarModuleComponent);
             }
         });
     }

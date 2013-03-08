@@ -2,6 +2,7 @@ package org.sonar.ide.intellij.model;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.testFramework.LightVirtualFile;
+import com.intellij.testFramework.PlatformUltraLiteTestFixture;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,10 +14,13 @@ import java.util.List;
 
 public class ViolationTableModelTest {
 
-    ViolationTableModel model;
+    private ViolationTableModel model;
+    private PlatformUltraLiteTestFixture myFixture;
 
     @Before
     public void setUp() {
+        myFixture = PlatformUltraLiteTestFixture.getFixture();
+        myFixture.setUp();
         model = new ViolationTableModel();
     }
 

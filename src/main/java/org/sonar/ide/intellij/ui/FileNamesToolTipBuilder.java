@@ -6,21 +6,24 @@ import org.apache.commons.lang.StringUtils;
 import java.util.List;
 
 public class FileNamesToolTipBuilder {
+
+    private static final String PREFIX = "Loading data for\n";
+
     public String generateToolTip(List<VirtualFile> filesLoading) {
         if (filesLoading.isEmpty()) {
             return StringUtils.EMPTY;
         }
         StringBuilder newTooltip = new StringBuilder();
+        newTooltip.append(PREFIX);
         for (VirtualFile file : filesLoading) {
             if (file == null) {
                 continue;
             }
-            if (newTooltip.length() > 0) {
+            if (newTooltip.length() > PREFIX.length()) {
                 newTooltip.append("\n");
             }
             newTooltip.append(file.getName());
         }
-        newTooltip.insert(0, "Loading data for\n");
         return newTooltip.toString();
     }
 }

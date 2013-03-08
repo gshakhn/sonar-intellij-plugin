@@ -2,7 +2,10 @@ package org.sonar.ide.intellij.ui;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.testFramework.LightVirtualFile;
+import com.intellij.testFramework.PlatformUltraLiteTestFixture;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -12,6 +15,18 @@ public class FileNamesToolTipBuilderTest {
 
     private final FileNamesToolTipBuilder builder = new FileNamesToolTipBuilder();
     private List<VirtualFile> virtualFiles = new ArrayList<VirtualFile>();
+    private PlatformUltraLiteTestFixture myFixture;
+
+    @Before
+    public void setUp() throws Exception {
+        myFixture = PlatformUltraLiteTestFixture.getFixture();
+        myFixture.setUp();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        myFixture.tearDown();
+    }
 
     @Test
     public void testGenerateToolTipFromEmptyList() {
@@ -25,7 +40,7 @@ public class FileNamesToolTipBuilderTest {
 
     @Test
     public void testGenerateToolTipFromListWithOneRealElement() {
-        virtualFiles.add(new LightVirtualFile("first.txt"));
+        virtualFiles.add(new LightVirtualFile("first.txt", ""));
         Assert.assertEquals("Loading data for\nfirst.txt", builder.generateToolTip(virtualFiles));
     }
 

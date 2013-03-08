@@ -1,7 +1,9 @@
 package org.sonar.ide.intellij.actions;
 
+import com.intellij.ide.projectView.impl.ProjectRootsUtil;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -9,6 +11,7 @@ import org.sonar.ide.intellij.analysis.localanalysis.SonarLocalAnalyzer;
 import org.sonar.ide.intellij.component.EventBus;
 import org.sonar.ide.intellij.component.EventKind;
 import org.sonar.ide.intellij.component.EventListener;
+import org.sonar.ide.intellij.component.IntelliJSonarPluginCoreImpl;
 import org.sonar.ide.intellij.model.SonarConsole;
 import org.sonar.ide.intellij.runner.SonarRunnerConsoleMonitor;
 
@@ -37,6 +40,7 @@ public class RunLocalAnalysisAction extends DumbAwareAction {
         SonarConsole.getInstance().clear();
 
         final SonarRunnerConsoleMonitor sonarRunnerMonitor = new SonarRunnerConsoleMonitor();
+
         EventBus.subscribe(EventKind.CANCEL_LOCAL_ANALYSIS, new EventListener() {
             @Override
             public void handleEvent(EventKind eventKind) {
@@ -49,9 +53,19 @@ public class RunLocalAnalysisAction extends DumbAwareAction {
 
     }
 
+
     @Override
-    public void update(AnActionEvent e) {
-        e.getPresentation().setEnabled(!sonarLocalAnalyzer.isLocalAnalysisRunning());
+    public void update(AnActionEvent anActionEvent) {
+        Presentation presentation = anActionEvent.getPresentation();
+        presentation.setEnabled(!sonarLocalAnalyzer.isLocalAnalysisRunning());
+
+        final Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
+        VirtualFile file = anActionEvent.getData(PlatformDataKeys.VIRTUAL_FILE);
+
+        if ((project == null || project.isDefault()) || file == null ||
+                !IntelliJSonarPluginCoreImpl.getInstance().getSonarModuleComponent(project, file).isConfigured() || !ProjectRootsUtil.isModuleContentRoot(file, project)) {
+            presentation.setVisible(false);
+        }
     }
 
 }

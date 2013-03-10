@@ -12,29 +12,29 @@ import java.util.concurrent.ExecutionException;
 
 public class RefreshViolationsWorker extends RefreshSonarFileWorker<Violation> {
 
-  public RefreshViolationsWorker(Project project, VirtualFile virtualFile) {
-    super(project, virtualFile);
-  }
-
-  @Override
-  protected Query<Violation> getQuery(String resourceKey) {
-    ViolationQuery violationQuery = ViolationQuery.createForResource(resourceKey);
-    violationQuery.setDepth(-1);
-    return violationQuery;
-  }
-
-  @Override
-  protected void done() {
-    try {
-      List<Violation> violations = get();
-      if (violations == null) {
-        violations = new ArrayList<Violation>();
-      }
-      notifyListeners(violations);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
+    public RefreshViolationsWorker(Project project, VirtualFile virtualFile) {
+        super(project, virtualFile);
     }
-  }
+
+    @Override
+    protected Query<Violation> getQuery(String resourceKey) {
+        ViolationQuery violationQuery = ViolationQuery.createForResource(resourceKey);
+        violationQuery.setDepth(-1);
+        return violationQuery;
+    }
+
+    @Override
+    protected void done() {
+        try {
+            List<Violation> violations = get();
+            if (violations == null) {
+                violations = new ArrayList<Violation>();
+            }
+            notifyListeners(violations);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
 }

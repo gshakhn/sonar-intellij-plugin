@@ -5,11 +5,11 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 
 public class SonarToolWindowFactory implements ToolWindowFactory {
-  public SonarToolWindowFactory() {
-  }
+    public SonarToolWindowFactory() {
+    }
 
-  @Override
-  public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-    SonarToolWindow.createSonarToolWindow(project, toolWindow);
-  }
+    @Override
+    public void createToolWindowContent(Project project, ToolWindow toolWindow) {
+        SonarToolWindow.createSonarToolWindow(project, toolWindow);
+    }
 }

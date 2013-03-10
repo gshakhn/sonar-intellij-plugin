@@ -10,29 +10,29 @@ import org.sonar.wsclient.services.Violation;
 
 public class MarkFixedQuickFix implements LocalQuickFix {
 
-  private Violation violation;
+    private Violation violation;
 
-  protected MarkFixedQuickFix(Violation violation) {
-    this.violation = violation;
-  }
+    protected MarkFixedQuickFix(Violation violation) {
+        this.violation = violation;
+    }
 
-  @NotNull
-  @Override
-  public String getName() {
-      return "Mark fixed";
-  }
+    @NotNull
+    @Override
+    public String getName() {
+        return "Mark fixed";
+    }
 
-  @NotNull
-  @Override
-  public String getFamilyName() {
-      return "Sonar";
-  }
+    @NotNull
+    @Override
+    public String getFamilyName() {
+        return "Sonar";
+    }
 
-  @Override
-  public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-    SonarProjectComponent component = project.getComponent(SonarProjectComponent.class);
-    VirtualFile virtualFile = descriptor.getPsiElement().getContainingFile().getVirtualFile();
-    component.getSonarCache().removeViolation(virtualFile, this.violation);
-    component.getToolWindowModel().refreshViolationsTable(virtualFile);
-  }
+    @Override
+    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
+        SonarProjectComponent component = project.getComponent(SonarProjectComponent.class);
+        VirtualFile virtualFile = descriptor.getPsiElement().getContainingFile().getVirtualFile();
+        component.getSonarCache().removeViolation(virtualFile, this.violation);
+        component.getToolWindowModel().refreshViolationsTable(virtualFile);
+    }
 }

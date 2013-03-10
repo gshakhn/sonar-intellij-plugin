@@ -1,7 +1,7 @@
 Introduction
 -----------
 
-This is an [IntelliJ IDEA] plugin for [Sonar]. There was a plugin called [SONAR IDE], but it's development for [IntelliJ IDEA] has been discontinued with IntelliJ 9. Therefore I decided to write [my own plugin] as a learning experience while using the existing plugin as inspiration.
+This is the unofficial [IntelliJ IDEA] plugin for [Sonar]. There was a plugin called [SONAR IDE], but it's development for [IntelliJ IDEA] has been discontinued with IntelliJ 9. Therefore I decided to write [my own plugin] which experienced multiple contributions from the IDEA community on Github.
 
 [IntelliJ IDEA]: http://www.jetbrains.com/idea/
 [Sonar]: http://www.sonarsource.org/
@@ -18,15 +18,18 @@ You can install the plugin through the official JetBrains repo. You can also man
 Building the plugin
 ------------------
 
-I am building the plugin locally using IntelliJ 12.0.4 (Build 123.169). To build it locally on your machine, modify idea.version and idea.build in pom.xml to match your local install. Unfortunately, I'm unable to find any versions of OpenAPI in Maven past 7.0.3. You'll have to install the various Intellij jars located in the lib folder of your IntelliJ install into your local Maven repository via:
+To build the plugin on your machine you need to have at least a downloaded copy of IntelliJ 12.0.4 (Build 123.169).
+The plugin depends on multiple jars of IntelliJ IDEA but as these are not available via Maven Central, you'll have to
+install the various Intellij jars located in the lib folder of your IntelliJ install into your local Maven repository.
 
-    mvn install:install-file -Dfile=<path-to-file> -DgroupId=com.intellij -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=jar
+For your convienience we created a bash script which will do exactly this for you
+```
+    $ cd sonar-intellij-plugin/
+    $ ./install-intellij-libs.sh 12.0.4 <path to IntelliJ 12.0.4>
+```
 
-Alternatively, you can run the install-intellij-libs.sh script that [simonbrandhof] created.
-
-    ./install-intellij-libs.sh <path to IntelliJ 12.0.4>
-
-You'll also need to install a custom version of [ideauidesigner-maven-plugin]. See that readme for installation instructions.
+To run the maven build you'll also need to install an updated version of [ideauidesigner-maven-plugin]. See that readme for installation instructions.
+[ideauidesigner-maven-plugin]: https://github.com/gshakhn/ideauidesigner-maven-plugin
 
 After you install all the jars this plugin needs into your local repo, just run
 
@@ -34,8 +37,6 @@ After you install all the jars this plugin needs into your local repo, just run
 
 The resulting zip file will be located in the target folder.
 
-[simonbrandhof]: https://github.com/simonbrandhof
-[ideauidesigner-maven-plugin]: https://github.com/gshakhn/ideauidesigner-maven-plugin
 
 Using the plugin
 ------------------
@@ -57,6 +58,15 @@ Usability Notes
 
 Changelog
 ---------
+
+Version 1.0.6-SNAPSHOT
+- Fix Open in Browser if host doesn't have http:// (see [#23](https://github.com/gshakhn/sonar-intellij-plugin/issues/23) and [#26](https://github.com/gshakhn/sonar-intellij-plugin/pull/26))
+- Add URL to plugin.xml so website shows up in JetBrains repository. (see [#21](https://github.com/gshakhn/sonar-intellij-plugin/issues/21))
+- Change text in Project Configuration UI so it's more intuitive. (see [#24](https://github.com/gshakhn/sonar-intellij-plugin/issues/24))
+- Fixed "Running the build with IDEA 12.1 jars fails tests" (see [#27](https://github.com/gshakhn/sonar-intellij-plugin/issues/27))
+- Fixed "NullPointerException if project isn't in Sonar" (see [#30](https://github.com/gshakhn/sonar-intellij-plugin/issues/30))
+- Fixed "Code Formatting" (see [#28](https://github.com/gshakhn/sonar-intellij-plugin/issues/28))
+- Fixed "ToolWindow icons should be 13x13 - warning on a console" (see [#29](https://github.com/gshakhn/sonar-intellij-plugin/issues/29))
 
 Version 1.0.5
 - Fix NPE if looking at file that isn't analyzed by sonar. (see [#17](https://github.com/gshakhn/sonar-intellij-plugin/issues/17))

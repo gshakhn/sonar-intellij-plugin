@@ -61,7 +61,7 @@ Usability Notes
 Changelog
 ---------
 
-Version 1.0.6-SNAPSHOT
+Version 1.0.6
 - Fix Open in Browser if host doesn't have http:// ([#23](https://github.com/gshakhn/sonar-intellij-plugin/issues/23) and [#26](https://github.com/gshakhn/sonar-intellij-plugin/pull/26))
 - Add URL to plugin.xml so website shows up in JetBrains repository. ([#21](https://github.com/gshakhn/sonar-intellij-plugin/issues/21))
 - Change text in Project Configuration UI so it's more intuitive. ([#24](https://github.com/gshakhn/sonar-intellij-plugin/issues/24))

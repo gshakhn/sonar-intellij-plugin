@@ -12,6 +12,7 @@ import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 public class SonarCache {
@@ -71,9 +72,9 @@ public class SonarCache {
 
     private abstract class Cache<T extends Model> {
 
-        private final Map<VirtualFile, List<T>> cache = new HashMap<VirtualFile, List<T>>();
-        private final Map<VirtualFile, RefreshSonarFileWorker<T>> currentlyLoading = Collections.synchronizedMap(new HashMap<VirtualFile, RefreshSonarFileWorker<T>>());
-        private final Map<VirtualFile, List<RefreshListener<T>>> loadListeners = Collections.synchronizedMap(new HashMap<VirtualFile, List<RefreshListener<T>>>());
+        private final Map<VirtualFile, List<T>> cache = new ConcurrentHashMap<VirtualFile, List<T>>();
+        private final Map<VirtualFile, RefreshSonarFileWorker<T>> currentlyLoading = new ConcurrentHashMap<VirtualFile, RefreshSonarFileWorker<T>>();
+        private final Map<VirtualFile, List<RefreshListener<T>>> loadListeners = new ConcurrentHashMap<VirtualFile, List<RefreshListener<T>>>();
 
         protected Project project;
 
@@ -109,13 +110,11 @@ public class SonarCache {
             if (this.cache.containsKey(virtualFile)) {
                 listener.doneRefresh(virtualFile, this.cache.get(virtualFile));
             } else {
-                synchronized (loadListeners) {
-                    if (!loadListeners.containsKey(virtualFile)) {
-                        loadListeners.put(virtualFile, new ArrayList<RefreshListener<T>>());
-                    }
-
-                    loadListeners.get(virtualFile).add(listener);
+                if (!loadListeners.containsKey(virtualFile)) {
+                    loadListeners.put(virtualFile, new ArrayList<RefreshListener<T>>());
                 }
+
+                loadListeners.get(virtualFile).add(listener);
                 createAndExecuteRefreshWorker(virtualFile);
             }
         }
@@ -123,42 +122,36 @@ public class SonarCache {
         protected abstract RefreshSonarFileWorker<T> createWorker(VirtualFile virtualFile);
 
         private RefreshSonarFileWorker<T> createAndExecuteRefreshWorker(VirtualFile virtualFile) {
-            synchronized (this.currentlyLoading) {
-                if (!this.currentlyLoading.containsKey(virtualFile)) {
-                    RefreshSonarFileWorker<T> worker = createWorker(virtualFile);
+            if (!this.currentlyLoading.containsKey(virtualFile)) {
+                RefreshSonarFileWorker<T> worker = createWorker(virtualFile);
 
-                    this.currentlyLoading.put(virtualFile, worker);
-                    refreshLoadingSonarFiles();
+                this.currentlyLoading.put(virtualFile, worker);
+                refreshLoadingSonarFiles();
 
-                    worker.addListener(new RefreshListener<T>() {
-                        @Override
-                        public void doneRefresh(VirtualFile virtualFile, List<T> ts) {
-                            finishRefresh(virtualFile, ts);
-                        }
-                    });
-                    worker.execute();
+                worker.addListener(new RefreshListener<T>() {
+                    @Override
+                    public void doneRefresh(VirtualFile virtualFile, List<T> ts) {
+                        finishRefresh(virtualFile, ts);
+                    }
+                });
+                worker.execute();
 
-                    return worker;
-                } else {
-                    return currentlyLoading.get(virtualFile);
-                }
+                return worker;
+            } else {
+                return currentlyLoading.get(virtualFile);
             }
         }
 
         private void finishRefresh(VirtualFile virtualFile, List<T> t) {
             this.cache.put(virtualFile, t);
 
-            synchronized (this.currentlyLoading) {
-                this.currentlyLoading.remove(virtualFile);
-            }
+            this.currentlyLoading.remove(virtualFile);
 
-            synchronized (this.loadListeners) {
-                if (this.loadListeners.containsKey(virtualFile)) {
-                    for (RefreshListener<T> listener : this.loadListeners.get(virtualFile)) {
-                        listener.doneRefresh(virtualFile, t);
-                    }
-                    this.loadListeners.get(virtualFile).clear();
+            if (this.loadListeners.containsKey(virtualFile)) {
+                for (RefreshListener<T> listener : this.loadListeners.get(virtualFile)) {
+                    listener.doneRefresh(virtualFile, t);
                 }
+                this.loadListeners.get(virtualFile).clear();
             }
 
             refreshLoadingSonarFiles();

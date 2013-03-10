@@ -4,7 +4,7 @@
 
     <groupId>org.codehaus.sonar-ide.intellij</groupId>
     <artifactId>sonar-intellij-plugin</artifactId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>1.0.6</version>
     <packaging>jar</packaging>
 
     <name>sonar-intellij-plugin</name>

@@ -63,9 +63,10 @@ Version 1.0.6-SNAPSHOT
 - Fix Open in Browser if host doesn't have http:// (see [#23](https://github.com/gshakhn/sonar-intellij-plugin/issues/23) and [#26](https://github.com/gshakhn/sonar-intellij-plugin/pull/26))
 - Add URL to plugin.xml so website shows up in JetBrains repository. (see [#21](https://github.com/gshakhn/sonar-intellij-plugin/issues/21))
 - Change text in Project Configuration UI so it's more intuitive. (see [#24](https://github.com/gshakhn/sonar-intellij-plugin/issues/24))
-- Fixed "Running the build with IDEA 12.1 jars fails tests" [#27](https://github.com/gshakhn/sonar-intellij-plugin/issues/27)
-- Fixed "NullPointerException if project isn't in Sonar" [#30](https://github.com/gshakhn/sonar-intellij-plugin/issues/30)
-- Fixed "Code Formatting" [#28](https://github.com/gshakhn/sonar-intellij-plugin/issues/28)
+- Fixed "Running the build with IDEA 12.1 jars fails tests" (see [#27](https://github.com/gshakhn/sonar-intellij-plugin/issues/27))
+- Fixed "NullPointerException if project isn't in Sonar" (see [#30](https://github.com/gshakhn/sonar-intellij-plugin/issues/30))
+- Fixed "Code Formatting" (see [#28](https://github.com/gshakhn/sonar-intellij-plugin/issues/28))
+- Fixed "ToolWindow icons should be 13x13 - warning on a console" (see [#29](https://github.com/gshakhn/sonar-intellij-plugin/issues/29))
 
 Version 1.0.5
 - Fix NPE if looking at file that isn't analyzed by sonar. (see [#17](https://github.com/gshakhn/sonar-intellij-plugin/issues/17))

@@ -67,6 +67,7 @@ Version 1.0.6-SNAPSHOT
 - Fixed "NullPointerException if project isn't in Sonar" (see [#30](https://github.com/gshakhn/sonar-intellij-plugin/issues/30))
 - Fixed "Code Formatting" (see [#28](https://github.com/gshakhn/sonar-intellij-plugin/issues/28))
 - Fixed "ToolWindow icons should be 13x13 - warning on a console" (see [#29](https://github.com/gshakhn/sonar-intellij-plugin/issues/29))
+- Potentially fix deadlock issue in SonarCache.
 
 Version 1.0.5
 - Fix NPE if looking at file that isn't analyzed by sonar. (see [#17](https://github.com/gshakhn/sonar-intellij-plugin/issues/17))

@@ -15,58 +15,58 @@ import java.util.concurrent.ExecutionException;
 
 public class RefreshProjectListWorker extends SwingWorker<List<SonarProject>, Void> {
 
-  private Sonar sonar;
-  private List<RefreshProjectListListener> listeners = new ArrayList<RefreshProjectListListener>();
+    private Sonar sonar;
+    private List<RefreshProjectListListener> listeners = new ArrayList<RefreshProjectListListener>();
 
-  public RefreshProjectListWorker(Sonar sonar) {
-    this.sonar = sonar;
-  }
-
-  public void addListener(RefreshProjectListListener listener) {
-    listeners.add(listener);
-  }
-
-  @Override
-  protected List<SonarProject> doInBackground() throws Exception {
-    ResourceQuery query = new ResourceQuery();
-    query.setQualifiers("TRK,BRC");
-    query.setDepth(1);
-
-    List<Resource> resources;
-    try {
-        resources = this.sonar.findAll(query);
-    } catch(Exception e) {
-        return null;
+    public RefreshProjectListWorker(Sonar sonar) {
+        this.sonar = sonar;
     }
 
-    List<SonarProject> projects = new ArrayList<SonarProject>();
-
-    for (Resource resource : resources) {
-      SonarProject project = new SonarProject(resource);
-      projects.add(project);
+    public void addListener(RefreshProjectListListener listener) {
+        listeners.add(listener);
     }
 
-    Collections.sort(projects, new Comparator<SonarProject>() {
-      @Override
-      public int compare(SonarProject o1, SonarProject o2) {
-        return o1.toString().compareTo(o2.toString());
-      }
-    });
+    @Override
+    protected List<SonarProject> doInBackground() throws Exception {
+        ResourceQuery query = new ResourceQuery();
+        query.setQualifiers("TRK,BRC");
+        query.setDepth(1);
 
-    return projects;
-  }
+        List<Resource> resources;
+        try {
+            resources = this.sonar.findAll(query);
+        } catch (Exception e) {
+            return null;
+        }
 
-  @Override
-  protected void done() {
-    try {
-      List<SonarProject> projects = get();
-      for (RefreshProjectListListener listener : this.listeners) {
-        listener.doneRefreshProjects(projects);
-      }
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
+        List<SonarProject> projects = new ArrayList<SonarProject>();
+
+        for (Resource resource : resources) {
+            SonarProject project = new SonarProject(resource);
+            projects.add(project);
+        }
+
+        Collections.sort(projects, new Comparator<SonarProject>() {
+            @Override
+            public int compare(SonarProject o1, SonarProject o2) {
+                return o1.toString().compareTo(o2.toString());
+            }
+        });
+
+        return projects;
     }
-  }
+
+    @Override
+    protected void done() {
+        try {
+            List<SonarProject> projects = get();
+            for (RefreshProjectListListener listener : this.listeners) {
+                listener.doneRefreshProjects(projects);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
 }

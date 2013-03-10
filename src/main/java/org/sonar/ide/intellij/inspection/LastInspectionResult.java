@@ -9,36 +9,36 @@ import java.util.List;
 import java.util.Map;
 
 public class LastInspectionResult {
-  private static LastInspectionResult ourInstance = new LastInspectionResult();
+    private static LastInspectionResult ourInstance = new LastInspectionResult();
 
-  private static List<ViolatationChangedListener> listeners = new LinkedList<ViolatationChangedListener>();
+    private static List<ViolatationChangedListener> listeners = new LinkedList<ViolatationChangedListener>();
 
-  private Map<VirtualFile, List<Violation>> violations = null;
+    private Map<VirtualFile, List<Violation>> violations = null;
 
-  public static LastInspectionResult getInstance() {
-    return ourInstance;
-  }
-
-  private LastInspectionResult() {
-  }
-
-  public void setViolations(Map<VirtualFile, List<Violation>> violations) {
-    this.violations = violations;
-    for (ViolatationChangedListener listener : listeners) {
-      listener.violationChanged(violations);
+    public static LastInspectionResult getInstance() {
+        return ourInstance;
     }
-  }
 
-  public Map<VirtualFile, List<Violation>> getViolations() {
-    return violations;
-  }
+    private LastInspectionResult() {
+    }
 
-  public void addListener(ViolatationChangedListener listener) {
-    listeners.add(listener);
-  }
+    public void setViolations(Map<VirtualFile, List<Violation>> violations) {
+        this.violations = violations;
+        for (ViolatationChangedListener listener : listeners) {
+            listener.violationChanged(violations);
+        }
+    }
 
-  public void removeListener(ViolatationChangedListener listener) {
-    listeners.remove(listener);
-  }
+    public Map<VirtualFile, List<Violation>> getViolations() {
+        return violations;
+    }
+
+    public void addListener(ViolatationChangedListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(ViolatationChangedListener listener) {
+        listeners.remove(listener);
+    }
 
 }

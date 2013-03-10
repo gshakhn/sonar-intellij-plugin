@@ -1,10 +1,15 @@
 #!/bin/sh
+# This script will install all files in IntelliJ IDEA's lib/ folder to the local maven .m2 repository. This way we can use them during the build
+#
+# Usage:
+#   ./install-intellij-libs.sh 12.0.4 /Users/ahe/Applications/IntelliJ-IDEA-12.app/
 
-INTELLIJ_HOME=$1
+IDEA_VERSION=$1
+INTELLIJ_HOME=$2
 
 if [ -z "$INTELLIJ_HOME" ]
 then
-  echo "Please provide the path to Intellij home directory. For example: install-intellij-libs.sh /Applications/Nika-IU-111.228.app"
+  echo "Please provide the version and path to the IntelliJ home directory. For example: ./install-intellij-libs.sh 12.0.4 /Users/ahe/Applications/IntelliJ-IDEA-12.app/"
   exit 1
 fi
 
@@ -16,9 +21,10 @@ fi
 
 echo 'Installing Intellij artifacts to Maven local repository'
 echo "Intellij home: $INTELLIJ_HOME"
-
-mvn install:install-file -Dfile="$INTELLIJ_HOME/lib/openapi.jar" -DgroupId=com.intellij -DartifactId=openapi -Dversion=12.0.4 -Dpackaging=jar
-mvn install:install-file -Dfile="$INTELLIJ_HOME/lib/util.jar" -DgroupId=com.intellij -DartifactId=util -Dversion=12.0.4 -Dpackaging=jar
-mvn install:install-file -Dfile="$INTELLIJ_HOME/lib/extensions.jar" -DgroupId=com.intellij -DartifactId=extensions -Dversion=12.0.4 -Dpackaging=jar
-mvn install:install-file -Dfile="$INTELLIJ_HOME/lib/annotations.jar" -DgroupId=com.intellij -DartifactId=annotations -Dversion=12.0.4 -Dpackaging=jar
-mvn install:install-file -Dfile="$INTELLIJ_HOME/lib/forms_rt.jar" -DgroupId=com.intellij -DartifactId=forms_rt -Dversion=12.0.4 -Dpackaging=jar
+for i in `ls -1 ${INTELLIJ_HOME}/lib/*.jar`
+do
+    FOLDERS=(${i//\// })
+    FILE_POS=${#FOLDERS[@]}
+    JAR_FILE=${FOLDERS[${FILE_POS}-1]%.jar}
+    mvn install:install-file -Dfile="$INTELLIJ_HOME/lib/${JAR_FILE}.jar" -DgroupId=com.intellij -DartifactId=${JAR_FILE} -Dversion=${IDEA_VERSION} -Dpackaging=jar
+done

@@ -61,7 +61,7 @@ Usability Notes
 Changelog
 ---------
 
-Version 1.0.7-SNAPSHOT
+Version 1.0.7
 - Fix "NPE when starting Intellij 12" ([#32](https://github.com/gshakhn/sonar-intellij-plugin/issues/32))
 
 Version 1.0.6

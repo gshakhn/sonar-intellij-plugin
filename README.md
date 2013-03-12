@@ -61,6 +61,9 @@ Usability Notes
 Changelog
 ---------
 
+Version 1.0.7-SNAPSHOT
+- Fix "NPE when starting Intellij 12" ([#32](https://github.com/gshakhn/sonar-intellij-plugin/issues/32))
+
 Version 1.0.6
 - Fix Open in Browser if host doesn't have http:// ([#23](https://github.com/gshakhn/sonar-intellij-plugin/issues/23) and [#26](https://github.com/gshakhn/sonar-intellij-plugin/pull/26))
 - Add URL to plugin.xml so website shows up in JetBrains repository. ([#21](https://github.com/gshakhn/sonar-intellij-plugin/issues/21))

@@ -32,7 +32,7 @@ public abstract class RefreshSonarFileWorker<T extends Model> extends SwingWorke
     protected List<T> doInBackground() throws Exception {
         String resourceKey = getResourceKey();
         if (resourceKey == null) {
-            return null;
+            return new ArrayList<T>();
         }
         Sonar sonar = getSonar();
 

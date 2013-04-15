@@ -25,6 +25,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+
+
+
+
+
+
+
+
+
+
 public class SonarProjectConfiguration extends BaseConfigurable implements RefreshProjectListListener
 {
     private JLabel lblHost;
@@ -52,14 +62,6 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
         this.modules = ModuleManager.getInstance(this.project).getModules();
         sonarProjectComponent = project.getComponent(SonarProjectComponent.class);
 
-        testButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-
-            }
-        });
         testButton.addActionListener(new ActionListener()
         {
             @Override
@@ -129,43 +131,36 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
         lblRefreshingProjects.setBusy(true);
         applyToAllModulesButton.setEnabled(false);
         applyToNotConfiguredButton.setEnabled(false);
+        testButton.setEnabled(false);
         txtHost.setEnabled(false);
         txtUser.setEnabled(false);
         txtPassword.setEnabled(false);
         useProxyBox.setEnabled(false);
 
-        Sonar sonarConn = SonarUtils.getSonar(txtHost.getText(), txtUser.getText(), new String(txtPassword.getPassword()),
+        final Sonar sonarConn = SonarUtils.getSonar(txtHost.getText(), txtUser.getText(), new String(txtPassword.getPassword()),
                                           useProxyBox.isSelected());
-        RefreshProjectListWorker refreshProjectListWorker = new RefreshProjectListWorker(sonarConn);
+        final RefreshProjectListWorker refreshProjectListWorker = new RefreshProjectListWorker(sonarConn);
         refreshProjectListWorker.addListener(this);
         refreshProjectListWorker.execute();
     }
 
     @Override
-    public void doneRefreshProjects(List<SonarProject> newProjectList)
+    public void doneRefreshProjects(final List<SonarProject> newProjectList)
     {
-        if (newProjectList == null)
-        {
-            applyToAllModulesButton.setEnabled(false);
-            applyToNotConfiguredButton.setEnabled(false);
-            lblRefreshingProjects.setBusy(false);
-            txtHost.setEnabled(true);
-            txtUser.setEnabled(true);
-            txtPassword.setEnabled(true);
-            useProxyBox.setEnabled(true);
-        }
-        else
+        boolean modified = newProjectList != null;
+        applyToAllModulesButton.setEnabled(modified);
+        applyToNotConfiguredButton.setEnabled(modified);
+        if (modified)
         {
             projectList = newProjectList;
-            applyToAllModulesButton.setEnabled(true);
-            applyToNotConfiguredButton.setEnabled(true);
-            lblRefreshingProjects.setBusy(false);
-            txtHost.setEnabled(true);
-            txtUser.setEnabled(true);
-            txtPassword.setEnabled(true);
-            useProxyBox.setEnabled(true);
             setModified(true);
         }
+        txtHost.setEnabled(true);
+        txtUser.setEnabled(true);
+        txtPassword.setEnabled(true);
+        useProxyBox.setEnabled(true);
+        testButton.setEnabled(true);
+        lblRefreshingProjects.setBusy(false);
     }
 
     public void updateModules(final boolean emptyOnly)
@@ -229,11 +224,14 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
     @Override
     public void apply() throws ConfigurationException
     {
-        sonarProjectComponent.getState().host = txtHost.getText();
-        sonarProjectComponent.getState().user = txtUser.getText();
-        sonarProjectComponent.getState().password = new String(txtPassword.getPassword());
-        sonarProjectComponent.getState().useProxy = useProxyBox.isSelected();
-        sonarProjectComponent.getState().configured = true;
+        if (sonarProjectComponent != null && sonarProjectComponent.getState() != null)
+        {
+            sonarProjectComponent.getState().host = txtHost.getText();
+            sonarProjectComponent.getState().user = txtUser.getText();
+            sonarProjectComponent.getState().password = new String(txtPassword.getPassword());
+            sonarProjectComponent.getState().useProxy = useProxyBox.isSelected();
+            sonarProjectComponent.getState().configured = true;
+        }
     }
 
 

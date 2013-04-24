@@ -25,16 +25,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-
-
-
-
-
-
-
-
-
-
 public class SonarProjectConfiguration extends BaseConfigurable implements RefreshProjectListListener
 {
     private JLabel lblHost;

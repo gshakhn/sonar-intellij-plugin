@@ -71,8 +71,7 @@ public class SonarProjectComponentImpl implements SonarProjectComponent, Project
 
     @Override
     public Sonar getSonar() {
-        Sonar sonarConn = SonarUtils.getSonar(state.host, state.user, state.password, state.useProxy);
-        return sonarConn;
+        return SonarUtils.getSonar(state.host, state.user, state.password, state.useProxy);
     }
 
     @Override

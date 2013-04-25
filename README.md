@@ -43,6 +43,9 @@ The resulting zip file will be located in the target folder.
 Using the plugin
 ------------------
 
+**PREREQUISITES:**
+The plugin expects you to have access to a running instance of [Sonar] where you already performed an analysis for the sources you have locally. If you haven't done so, yet, please consider reading the Sonar documentation on how to integrate Sonar analysis e.g. [with your Maven build](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+Maven) first.
+
 1. Go to  File > Project Settings > Modules > Your Module > Sonar Configuration.
 2. Enter your host and username/password if required.
 3. Click the Load Projects button.

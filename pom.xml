@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.min.version>1.6</jdk.min.version>
         <ij.plugin>true</ij.plugin>
-        <idea.version>12.0.4</idea.version>
+        <idea.version>12.0.3</idea.version>
         <idea.build>123.169</idea.build>
         <sonar.version>3.4.1</sonar.version>
         <sonar.language>java</sonar.language>
@@ -98,7 +98,7 @@
             <groupId>com.intellij</groupId>
             <artifactId>idea</artifactId>
             <version>${idea.version}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Test -->
@@ -190,36 +190,24 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.14</version>
-                <configuration>
-                    <workingDirectory>/Users/g_gili/work/opensource/idea/intellij-community/</workingDirectory>
-                    <argLine>-ea -Xbootclasspath/p:../out/classes/production/boot -XX:+HeapDumpOnOutOfMemoryError
-                        -Xmx512m -XX:MaxPermSize=320m -Didea.system.path=../test-system -Didea.home.path=../
-                        -Didea.config.path=../test-config -Didea.test.group=ALL_EXCLUDE_DEFINED
-                    </argLine>
-                </configuration>
 
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>ideauidesigner-maven-plugin</artifactId>
+                <version>1.0-beta-2-12.0.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javac2</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <fork>true</fork>
+                    <debug>true</debug>
+                    <failOnError>true</failOnError>
+                </configuration>
             </plugin>
-            <!--<plugin>-->
-            <!--<groupId>org.codehaus.mojo</groupId>-->
-            <!--<artifactId>ideauidesigner-maven-plugin</artifactId>-->
-            <!--<version>1.0-beta-2-12.0.4</version>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<goals>-->
-            <!--<goal>javac2</goal>-->
-            <!--</goals>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--<configuration>-->
-            <!--<fork>true</fork>-->
-            <!--<debug>true</debug>-->
-            <!--<failOnError>true</failOnError>-->
-            <!--</configuration>-->
-            <!--</plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -26,6 +26,10 @@ public class ToolWindowModel {
         this.sonarAnalysis = sonarAnalysis;
     }
 
+    public ViolationTableModel getViolationTableModel() {
+        return this.violationTableModel;
+    }
+
     public void refreshViolationsTable(VirtualFile newFile) {
         sonarAnalysis.loadViolations(newFile, new RefreshListener<Violation>() {
             @Override

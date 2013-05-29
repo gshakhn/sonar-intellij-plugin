@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface ViolatationChangedListener {
-  void violationChanged(Map<VirtualFile, List<Violation>> violations);
+    void violationChanged(Map<VirtualFile, List<Violation>> violations);
 }

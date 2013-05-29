@@ -11,24 +11,24 @@ import java.util.concurrent.ExecutionException;
 
 public class RefreshSourceWorker extends RefreshSonarFileWorker<Source> {
 
-  public RefreshSourceWorker(Project project, VirtualFile virtualFile) {
-    super(project, virtualFile);
-  }
-
-  @Override
-  protected Query<Source> getQuery(String resourceKey) {
-    return SourceQuery.create(resourceKey);
-  }
-
-  @Override
-  protected void done() {
-    try {
-      List<Source> sources = get();
-      notifyListeners(sources);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
+    public RefreshSourceWorker(Project project, VirtualFile virtualFile) {
+        super(project, virtualFile);
     }
-  }
+
+    @Override
+    protected Query<Source> getQuery(String resourceKey) {
+        return SourceQuery.create(resourceKey);
+    }
+
+    @Override
+    protected void done() {
+        try {
+            List<Source> sources = get();
+            notifyListeners(sources);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
 }

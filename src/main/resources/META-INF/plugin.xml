@@ -1,10 +1,13 @@
-<idea-plugin version="2">
+<idea-plugin version="2" url="https://github.com/gshakhn/sonar-intellij-plugin">
     <name>Sonar IntelliJ</name>
     <description>${project.description}</description>
     <version>${project.version}</version>
     <vendor url="https://github.com/gshakhn/sonar-intellij-plugin">George Shakhnazaryan</vendor>
     <idea-version since-build="${idea.build}"/>
-    <!--<idea-version since-build="111.167"/>-->
+
+    <change-notes><![CDATA[
+    Please see online changelog at <a href="https://github.com/gshakhn/sonar-intellij-plugin/blob/master/README.md#changelog">https://github.com/gshakhn/sonar-intellij-plugin/blob/master/README.md#changelog</a>.
+]]></change-notes>
 
     <application-components>
         <!-- Add your application components here -->

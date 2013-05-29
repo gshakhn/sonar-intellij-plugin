@@ -8,23 +8,24 @@ import org.sonar.ide.intellij.component.SonarProjectComponent;
 
 public class SonarFileEditorManagerListener implements FileEditorManagerListener {
 
-  private SonarProjectComponent sonarProjectComponent;
-  public SonarFileEditorManagerListener(SonarProjectComponent sonarProjectComponent) {
-    this.sonarProjectComponent = sonarProjectComponent;
-  }
+    private SonarProjectComponent sonarProjectComponent;
 
-  @Override
-  public void fileOpened(FileEditorManager source, VirtualFile file) {
-  }
-
-  @Override
-  public void fileClosed(FileEditorManager source, VirtualFile file) {
-  }
-
-  @Override
-  public void selectionChanged(FileEditorManagerEvent event) {
-    if (sonarProjectComponent != null && sonarProjectComponent.getToolWindowModel() != null && event.getNewFile() != null) {
-      sonarProjectComponent.getToolWindowModel().refreshViolationsTable(event.getNewFile());
+    public SonarFileEditorManagerListener(SonarProjectComponent sonarProjectComponent) {
+        this.sonarProjectComponent = sonarProjectComponent;
     }
-  }
+
+    @Override
+    public void fileOpened(FileEditorManager source, VirtualFile file) {
+    }
+
+    @Override
+    public void fileClosed(FileEditorManager source, VirtualFile file) {
+    }
+
+    @Override
+    public void selectionChanged(FileEditorManagerEvent event) {
+        if (sonarProjectComponent != null && sonarProjectComponent.getToolWindowModel() != null && event.getNewFile() != null) {
+            sonarProjectComponent.getToolWindowModel().refreshViolationsTable(event.getNewFile());
+        }
+    }
 }

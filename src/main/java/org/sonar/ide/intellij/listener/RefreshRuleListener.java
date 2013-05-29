@@ -6,5 +6,5 @@ import org.sonar.wsclient.services.Rule;
 import java.util.List;
 
 public interface RefreshRuleListener {
-  void doneRefreshRules(List<Rule> rules);
+    void doneRefreshRules(List<Rule> rules);
 }

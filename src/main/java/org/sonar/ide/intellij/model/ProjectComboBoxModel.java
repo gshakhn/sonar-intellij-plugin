@@ -7,30 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectComboBoxModel extends DefaultComboBoxModel {
-  private List<SonarProject> projects = new ArrayList<SonarProject>();
+    private List<SonarProject> projects = new ArrayList<SonarProject>();
 
-  public void refreshProjectList(List<SonarProject> projects, String existingProjectKey) {
-    this.projects = projects;
+    public void refreshProjectList(List<SonarProject> projects, String existingProjectKey) {
+        this.projects = projects;
 
-    removeAllElements();
-    for (SonarProject project : projects) {
-      addElement(project);
+        removeAllElements();
+        for (SonarProject project : projects) {
+            addElement(project);
+        }
+
+        if (!StringUtils.isBlank(existingProjectKey)) {
+            SonarProject selectedProject = findProjectByKey(existingProjectKey);
+            setSelectedItem(selectedProject);
+        }
     }
 
-    if (!StringUtils.isBlank(existingProjectKey)) {
-      SonarProject selectedProject = findProjectByKey(existingProjectKey);
-      setSelectedItem(selectedProject);
-    }
-  }
+    private SonarProject findProjectByKey(String projectKey) {
+        for (SonarProject project : projects) {
+            if (project.getResource().getKey().equals(projectKey)) {
+                return project;
+            }
+        }
 
-  private SonarProject findProjectByKey(String projectKey) {
-    for (SonarProject project : projects) {
-      if (project.getResource().getKey().equals(projectKey)) {
-        return project;
-      }
+        return null;
     }
-
-    return null;
-  }
 
 }

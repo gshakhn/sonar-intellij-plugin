@@ -7,17 +7,17 @@ import org.sonar.ide.intellij.utils.SonarUtils;
 
 public class SonarNavigator {
 
-  protected static final String RESOURCE_PATH = "/dashboard/index/";
+    protected static final String RESOURCE_PATH = "/dashboard/index/";
 
-  public void navigateToDashboard(SonarModuleComponent sonarModuleComponent, String resourceId) {
+    public void navigateToDashboard(SonarModuleComponent sonarModuleComponent, String resourceId) {
 
-    if (sonarModuleComponent.isConfigured()) {
-      String url = generateUrl(sonarModuleComponent.getState().host, resourceId);
-      BrowserUtil.launchBrowser(url);
+        if (sonarModuleComponent.isConfigured()) {
+            String url = generateUrl(sonarModuleComponent.getState().host, resourceId);
+            BrowserUtil.launchBrowser(url);
+        }
     }
-  }
 
-  protected static String generateUrl(String host, String resourceId) {
-    return SonarUtils.fixHostName(host) + RESOURCE_PATH + resourceId;
-  }
+    protected static String generateUrl(String host, String resourceId) {
+        return SonarUtils.fixHostName(host) + RESOURCE_PATH + resourceId;
+    }
 }

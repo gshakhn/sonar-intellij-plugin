@@ -4,23 +4,24 @@
 
     <groupId>org.codehaus.sonar-ide.intellij</groupId>
     <artifactId>sonar-intellij-plugin</artifactId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>1.0.8-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>sonar-intellij-plugin</name>
     <description>Adds Sonar integration to IntelliJ. See https://github.com/gshakhn/sonar-intellij-plugin for latest
         changes.
     </description>
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/gshakhn/sonar-intellij-plugin/issues</url>
+    </issueManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <project.intellij.home>/Applications/IntelliJ\ IDEA\ 12.app</project.intellij.home>
         <jdk.min.version>1.6</jdk.min.version>
 
         <idea.version>12.0.4</idea.version>
         <idea.build>123.169</idea.build>
-
         <sonar.version>3.4.1</sonar.version>
     </properties>
 
@@ -56,12 +57,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>idea</artifactId>
-            <version>${idea.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.4</version>
@@ -92,12 +87,6 @@
             <version>3.2.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.4</version>
-        </dependency>
-
         <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
@@ -105,15 +94,26 @@
             <version>4.10</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.8.4</version>
+            <groupId>com.intellij</groupId>
+            <artifactId>idea</artifactId>
+            <version>${idea.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- needed by idea.jar -->
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>trove4j</artifactId>
+            <version>${idea.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>picocontainer</artifactId>
+            <version>${idea.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
         <resources>
             <resource>
@@ -124,17 +124,9 @@
                 </includes>
                 <filtering>true</filtering>
             </resource>
-            <resource>
-                <directory>src/main/resources/</directory>
-                <includes>
-                    <include>**/*.jar</include>
-                </includes>
-            </resource>
         </resources>
 
         <plugins>
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -148,7 +140,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>ideauidesigner-maven-plugin</artifactId>
-                <version>1.0-beta-1</version>
+                <version>1.0-beta-2-12.0.4</version>
                 <executions>
                     <execution>
                         <goals>

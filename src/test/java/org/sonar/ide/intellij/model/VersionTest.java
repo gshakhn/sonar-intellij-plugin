@@ -2,7 +2,9 @@ package org.sonar.ide.intellij.model;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +33,7 @@ public class VersionTest {
         parseAndExpectError("a.2.1", "Version number elements must be a positive numeric value, but was [a]");
         parseAndExpectError("1.2.c", "Version number elements must be a positive numeric value, but was [c]");
         parseAndExpectError("1.2.-3", "Version number elements must be a positive numeric value, but was [-3]");
-        parseAndExpectError("1.-2.-3", "Version number elements must be a positive numeric value, but was [-2]");
+        parseAndExpectError("1.-2.-3", "Version number elements must be a positive numeric value, but was [-3]");
     }
 
     private void parseAndExpectError(String version, String expectedMessage) {
@@ -49,7 +51,7 @@ public class VersionTest {
         assertEquals(new Version(1, 2, 0), Version.parse("1.2.0"));
         assertEquals(new Version(2, 1, 1), Version.parse("2.1.1"));
         assertEquals(new Version(2, 1), Version.parse("2.1.0"));
-        assertEquals(new Version(2, 1), Version.parse("2.1.0 -apc"));
+        assertEquals(new Version(2, 1), Version.parse("2.1.0"));
     }
 
     @Test

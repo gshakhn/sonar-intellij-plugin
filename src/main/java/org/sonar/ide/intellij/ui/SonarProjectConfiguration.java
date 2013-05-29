@@ -48,54 +48,43 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
         this.modules = ModuleManager.getInstance(this.project).getModules();
         sonarProjectComponent = project.getComponent(SonarProjectComponent.class);
 
-        testButton.addActionListener(new ActionListener()
-        {
+        testButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 startRefreshProjects();
             }
         });
-        applyToAllModulesButton.addActionListener(new ActionListener()
-        {
+        applyToAllModulesButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 updateModules(false);
             }
         });
-        applyToNotConfiguredButton.addActionListener(new ActionListener()
-        {
+        applyToNotConfiguredButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 updateModules(true);
             }
         });
-        DocumentListener documentListener = new DocumentListener()
-        {
-            public void onChange()
-            {
+        DocumentListener documentListener = new DocumentListener() {
+            public void onChange() {
                 applyToAllModulesButton.setEnabled(false);
                 applyToNotConfiguredButton.setEnabled(false);
                 setModified(false);
             }
 
             @Override
-            public void insertUpdate(DocumentEvent e)
-            {
+            public void insertUpdate(DocumentEvent e) {
                 onChange();
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e)
-            {
+            public void removeUpdate(DocumentEvent e) {
                 onChange();
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e)
-            {
+            public void changedUpdate(DocumentEvent e) {
                 onChange();
             }
         };
@@ -103,8 +92,7 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
         txtUser.getDocument().addDocumentListener(documentListener);
         txtPassword.getDocument().addDocumentListener(documentListener);
 
-        if (sonarProjectComponent != null)
-        {
+        if (sonarProjectComponent != null) {
             txtHost.setText(sonarProjectComponent.getState().host);
             txtUser.setText(sonarProjectComponent.getState().user);
             txtPassword.setText(sonarProjectComponent.getState().password);
@@ -112,8 +100,7 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
         }
     }
 
-    private void startRefreshProjects()
-    {
+    private void startRefreshProjects() {
         lblRefreshingProjects.setBusy(true);
         applyToAllModulesButton.setEnabled(false);
         applyToNotConfiguredButton.setEnabled(false);
@@ -124,20 +111,18 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
         useProxyBox.setEnabled(false);
 
         final Sonar sonarConn = SonarUtils.getSonar(txtHost.getText(), txtUser.getText(), new String(txtPassword.getPassword()),
-                                          useProxyBox.isSelected());
+                useProxyBox.isSelected());
         final RefreshProjectListWorker refreshProjectListWorker = new RefreshProjectListWorker(sonarConn);
         refreshProjectListWorker.addListener(this);
         refreshProjectListWorker.execute();
     }
 
     @Override
-    public void doneRefreshProjects(final List<SonarProject> newProjectList)
-    {
+    public void doneRefreshProjects(final List<SonarProject> newProjectList) {
         boolean modified = newProjectList != null;
         applyToAllModulesButton.setEnabled(modified);
         applyToNotConfiguredButton.setEnabled(modified);
-        if (modified)
-        {
+        if (modified) {
             projectList = newProjectList;
             setModified(true);
         }
@@ -149,37 +134,29 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
         lblRefreshingProjects.setBusy(false);
     }
 
-    public void updateModules(final boolean emptyOnly)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
+    public void updateModules(final boolean emptyOnly) {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
-                if (projectList == null)
-                {
+            public void run() {
+                if (projectList == null) {
                     return;
                 }
                 MultiMap<String, String> sonarProjectMap = new MultiMap<String, String>();
-                for (SonarProject project : projectList)
-                {
+                for (SonarProject project : projectList) {
                     String fullKey = project.getResource().getKey();
                     sonarProjectMap.putValue(fullKey.substring(fullKey.indexOf(":") + 1), fullKey);
                 }
-                for (Module module : modules)
-                {
+                for (Module module : modules) {
                     SonarModuleComponent.SonarModuleState sonarModuleState = module.getComponent(
                             SonarModuleComponent.class).getState();
-                    if (!emptyOnly || !sonarModuleState.configured)
-                    {
+                    if (!emptyOnly || !sonarModuleState.configured) {
                         sonarModuleState.host = txtHost.getText();
                         sonarModuleState.user = txtUser.getText();
                         sonarModuleState.password = new String(txtPassword.getPassword());
                         sonarModuleState.useProxy = useProxyBox.isSelected();
                         sonarModuleState.configured = true;
                         String key = module.getName();
-                        if (sonarProjectMap.get(key).size() == 1)
-                        {
+                        if (sonarProjectMap.get(key).size() == 1) {
                             sonarModuleState.projectKey = sonarProjectMap.get(key).iterator().next();
                         }
                     }
@@ -190,28 +167,23 @@ public class SonarProjectConfiguration extends BaseConfigurable implements Refre
 
     @Nls
     @Override
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return "Sonar Configuration";
     }
 
     @Override
-    public String getHelpTopic()
-    {
+    public String getHelpTopic() {
         return null;
     }
 
     @Override
-    public JComponent createComponent()
-    {
+    public JComponent createComponent() {
         return pnlMain;
     }
 
     @Override
-    public void apply() throws ConfigurationException
-    {
-        if (sonarProjectComponent != null && sonarProjectComponent.getState() != null)
-        {
+    public void apply() throws ConfigurationException {
+        if (sonarProjectComponent != null && sonarProjectComponent.getState() != null) {
             sonarProjectComponent.getState().host = txtHost.getText();
             sonarProjectComponent.getState().user = txtUser.getText();
             sonarProjectComponent.getState().password = new String(txtPassword.getPassword());

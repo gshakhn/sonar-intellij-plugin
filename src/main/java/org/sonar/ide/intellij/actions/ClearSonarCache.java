@@ -7,9 +7,9 @@ import com.intellij.openapi.project.Project;
 import org.sonar.ide.intellij.component.SonarProjectComponent;
 
 public class ClearSonarCache extends DumbAwareAction {
-    @Override
-    public void actionPerformed(AnActionEvent anActionEvent) {
-        final Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
-        project.getComponent(SonarProjectComponent.class).getSonarCache().clearCache();
-    }
+  @Override
+  public void actionPerformed(AnActionEvent anActionEvent) {
+    final Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
+    project.getComponent(SonarProjectComponent.class).getSonarAnalysis().clear();
+  }
 }

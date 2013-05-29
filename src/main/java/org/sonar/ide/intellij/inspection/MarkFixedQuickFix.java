@@ -21,7 +21,7 @@ public class MarkFixedQuickFix extends LocalQuickFixBase {
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
         SonarProjectComponent component = project.getComponent(SonarProjectComponent.class);
         VirtualFile virtualFile = descriptor.getPsiElement().getContainingFile().getVirtualFile();
-        component.getSonarCache().removeViolation(virtualFile, this.violation);
+        component.getSonarAnalysis().removeViolation(virtualFile, this.violation);
         component.getToolWindowModel().refreshViolationsTable(virtualFile);
     }
 }

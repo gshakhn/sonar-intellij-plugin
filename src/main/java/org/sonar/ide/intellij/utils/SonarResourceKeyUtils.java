@@ -5,6 +5,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Computable;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import org.sonar.ide.intellij.component.SonarModuleComponent;
@@ -29,20 +30,7 @@ public class SonarResourceKeyUtils {
             return null;
         }
 
-        final PsiManager psiManager = PsiManager.getInstance(project);
-        final PsiFileSystemItem psiFile = ApplicationManager.getApplication().runReadAction(new Computable<PsiFileSystemItem>() {
-            @Override
-            public PsiFileSystemItem compute() {
-                PsiFileSystemItem item;
-                if (virtualFile.isDirectory()) {
-                    item = psiManager.findDirectory(virtualFile);
-                } else {
-                    item = psiManager.findFile(virtualFile);
-                }
-
-                return item;
-            }
-        });
+        final PsiFileSystemItem psiFile = IntellijIdeaUtils.findPsiFileItem(project, virtualFile);
 
         return ApplicationManager.getApplication().runReadAction(new Computable<String>() {
             @Override
@@ -63,6 +51,26 @@ public class SonarResourceKeyUtils {
                 return SonarResourceKeyUtils.makeFileKey((PsiJavaFile) psiFile, sonarModuleComponent);
             }
         });
+    }
+
+    public static String createPartialResourceKey(final Project project, final VirtualFile virtualFile) {
+        return createResourceKey(project, virtualFile, new SonarResourceKeyMaker() {
+            @Override
+            public String makeResourceKey(PsiFileSystemItem psiFile, SonarModuleComponent sonarModuleComponent) {
+                if (!(psiFile instanceof PsiJavaFile)) {
+                    return null;
+                }
+
+                return SonarResourceKeyUtils.makePartialKey((PsiJavaFile) psiFile);
+            }
+        });
+    }
+
+    private static String makePartialKey(PsiJavaFile psiFile) {
+        String packageName = StringUtil.isEmpty(psiFile.getPackageName()) ? "[default]" : psiFile.getPackageName();
+        String className = psiFile.getClasses()[0].getName();
+
+        return packageName + "." + className;
     }
 
     private static String makeFileKey(PsiJavaFile psiFile, SonarModuleComponent sonarModuleComponent) {

@@ -5,9 +5,11 @@ import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.util.AsyncResult;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.PopupHandler;
@@ -19,6 +21,9 @@ import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.JXTree;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jdesktop.swingx.decorator.ToolTipHighlighter;
+import org.sonar.ide.intellij.component.EventBus;
+import org.sonar.ide.intellij.component.EventKind;
+import org.sonar.ide.intellij.component.EventListener;
 import org.sonar.ide.intellij.component.SonarProjectComponent;
 import org.sonar.ide.intellij.inspection.LastInspectionResult;
 import org.sonar.ide.intellij.listener.LoadingSonarFilesListener;
@@ -44,6 +49,11 @@ import java.util.Map;
 
 public final class SonarToolWindow implements LoadingSonarFilesListener, RefreshRuleListener {
 
+    private final Icon INSPECT_ICON = IconLoader.getIcon("/icons/inspect.png");
+
+    private ActionToolbar toolbar;
+    private final ToggleAction localAnalysisButton = new ShowLocalAnalysisAction();
+
     private JXBusyLabel loadingLabel;
     private FileNamesToolTipBuilder fileNamesToolTipBuilder = new FileNamesToolTipBuilder();
     private final ViolationCellRenderer cellRenderer = new ViolationCellRenderer();
@@ -59,6 +69,7 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
     private SonarToolWindow(final Project project, final ToolWindow toolWindow) {
         this.toolWindow = toolWindow;
         this.project = project;
+
         final ViolationTableModel violationTableModel = new ViolationTableModel();
 
         final JTabbedPane tabbedPane = new JTabbedPane();
@@ -130,8 +141,23 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
         localViolationsTree.setRootVisible(false);
         final JScrollPane scrollPane = new JScrollPane(localViolationsTree);
         JScrollPane scrollPaneTree = new JScrollPane(violationsTree);
-        tabbedPane.addTab("Current file", scrollPane);
+        final SonarConsolePanel console = new SonarConsolePanel(project);
+        SimpleToolWindowPanel simpleToolWindowPanel = new SimpleToolWindowPanel(false, true);
+
+        toolbar = createToolbar();
+        simpleToolWindowPanel.setToolbar(toolbar.getComponent());
+        simpleToolWindowPanel.setContent(scrollPane);
+        tabbedPane.addTab("Current file", simpleToolWindowPanel);
         tabbedPane.addTab("Last inspection", scrollPaneTree);
+        tabbedPane.addTab("Console", console.getMainPanel());
+
+        EventBus.subscribe(EventKind.LOCAL_ANALYSIS_STARTED, new EventListener() {
+            @Override
+            public void handleEvent(EventKind eventKind) {
+                tabbedPane.setSelectedIndex(2);
+            }
+        });
+
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gridBagConstraintsScrollPane = new GridBagConstraints();
         gridBagConstraintsScrollPane.gridx = 0;
@@ -144,15 +170,7 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
         gridBagConstraintsScrollPane.weighty = 10;
         panel.add(tabbedPane, gridBagConstraintsScrollPane);
 
-        GridBagConstraints gridBagConstraintsLoading = new GridBagConstraints();
-        gridBagConstraintsLoading.gridx = 0;
-        gridBagConstraintsLoading.gridy = 0;
-        gridBagConstraintsLoading.gridwidth = 1;
-        gridBagConstraintsLoading.gridheight = 1;
-        gridBagConstraintsLoading.fill = GridBagConstraints.BOTH;
-        gridBagConstraintsLoading.anchor = GridBagConstraints.CENTER;
-        gridBagConstraintsLoading.weightx = 0;
-        gridBagConstraintsLoading.weighty = 0;
+
         this.loadingLabel = new JXBusyLabel();
         final DefaultActionGroup group = new DefaultActionGroup();
         ToggleAction groupFilesAction = new ToggleAction() {
@@ -172,7 +190,35 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
         groupFilesAction.getTemplatePresentation().setText("Group files");
         group.add(groupFilesAction);
         group.add(displayDescriptionAction);
-        panel.add(this.loadingLabel, gridBagConstraintsLoading);
+        panel.add(this.loadingLabel, makeGridBagConstraintForToolbarActions(0));
+
+
+        final SonarProjectComponent sonarProjectComponent = project.getComponent(SonarProjectComponent.class);
+
+        EventBus.subscribe(EventKind.LOCAL_ANALYSIS_ACTIVATED, new EventListener() {
+            @Override
+            public void handleEvent(EventKind eventKind) {
+                toolbar.updateActionsImmediately();
+
+                refreshCurrentInspectionPanel();
+            }
+
+            private void refreshCurrentInspectionPanel() {
+                if (violationTableModel.getCurrentVirtualFile() != null) {
+                    sonarProjectComponent.getToolWindowModel().refreshViolationsTable(violationTableModel.getCurrentVirtualFile());
+                }
+            }
+        });
+
+        EventBus.subscribe(EventKind.REMOTE_ANALYSIS_ACTIVATED, new EventListener() {
+            @Override
+            public void handleEvent(EventKind eventKind) {
+                toolbar.updateActionsImmediately();
+                sonarProjectComponent.getToolWindowModel().refreshViolationsTable(violationTableModel.getCurrentVirtualFile());
+            }
+        });
+
+
         PopupHandler.installPopupHandler(violationsTree, group, ActionPlaces.UNKNOWN, ActionManager.getInstance());
         final DefaultActionGroup tableTreeChoiceGroup = new DefaultActionGroup();
         final DefaultActionGroup localTreeActionGroup = new DefaultActionGroup();
@@ -209,7 +255,7 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
         toolWindow.getContentManager().addContent(content);
 
         SonarProjectComponent projectComponent = project.getComponent(SonarProjectComponent.class);
-        ToolWindowModel toolWindowModel = new ToolWindowModel(project, violationTableModel, localTreeModel, projectComponent.getSonarCache());
+        ToolWindowModel toolWindowModel = new ToolWindowModel(project, violationTableModel, localTreeModel, projectComponent.getSonarAnalysis());
         projectComponent.setToolWindowModel(toolWindowModel);
         LastInspectionResult.getInstance().addListener(new ViolatationChangedListener() {
             @Override
@@ -221,7 +267,20 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
         localViolationsTree.addMouseListener(new TreeMousePressedListener(localViolationsTree, localDisplayDescriptionAction));
 
 
-        projectComponent.getSonarCache().addLoadingFileListener(this);
+        projectComponent.getSonarAnalysis().addLoadingFileListener(this);
+    }
+
+    private GridBagConstraints makeGridBagConstraintForToolbarActions(int x) {
+        GridBagConstraints gridBagConstraintsLoading = new GridBagConstraints();
+        gridBagConstraintsLoading.gridx = x;
+        gridBagConstraintsLoading.gridy = 0;
+        gridBagConstraintsLoading.gridwidth = 1;
+        gridBagConstraintsLoading.gridheight = 1;
+        gridBagConstraintsLoading.fill = GridBagConstraints.BOTH;
+        gridBagConstraintsLoading.anchor = GridBagConstraints.CENTER;
+        gridBagConstraintsLoading.weightx = 0;
+        gridBagConstraintsLoading.weighty = 0;
+        return gridBagConstraintsLoading;
     }
 
     private void downloadRules() {
@@ -288,7 +347,49 @@ public final class SonarToolWindow implements LoadingSonarFilesListener, Refresh
                 }
             }
         }
+
+
     }
 
-    ;
+
+    private ActionToolbar createToolbar() {
+        DefaultActionGroup group = new DefaultActionGroup();
+        group.add(localAnalysisButton);
+
+        return ActionManager.getInstance().createActionToolbar(ActionPlaces.UNKNOWN, group, false);
+    }
+
+    class ShowLocalAnalysisAction extends ToggleAction {
+
+        private boolean state = false;
+
+        ShowLocalAnalysisAction() {
+            super("Show local analysis", "Toggle to switch to local analysis", INSPECT_ICON);
+        }
+
+        @Override
+        public boolean isSelected(AnActionEvent anActionEvent) {
+            return state;
+        }
+
+        @Override
+        public void update(AnActionEvent e) {
+
+            final SonarProjectComponent sonarProjectComponent = project.getComponent(SonarProjectComponent.class);
+            boolean localAnalysisAvailable = sonarProjectComponent.isLocalAnalysisAvailable();
+            e.getPresentation().setEnabled(localAnalysisAvailable);
+            state = sonarProjectComponent.getSonarAnalysis().isLocalAnalysis();
+            super.update(e);
+        }
+
+        @Override
+        public void setSelected(AnActionEvent anActionEvent, boolean b) {
+            final SonarProjectComponent sonarProjectComponent = project.getComponent(SonarProjectComponent.class);
+            if (b) {
+                sonarProjectComponent.switchToExistingLocalAnalysis();
+            } else {
+                sonarProjectComponent.switchToRemoteAnalysis();
+            }
+        }
+    }
 }

@@ -14,7 +14,19 @@ public class SonarProject {
         return resource.getName() + " - " + resource.getVersion();
     }
 
-    public Resource getResource() {
-        return resource;
+  public Resource getResource() {
+    return resource;
+  }
+
+    public String getProjectKey() {
+        return resource.getKey();
+    }
+
+    public String getProjectName() {
+        return resource.getName();
+    }
+
+    public String getVersion() {
+        return resource.getVersion();
     }
 }

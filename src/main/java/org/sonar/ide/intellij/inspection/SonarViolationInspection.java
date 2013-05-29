@@ -44,13 +44,13 @@ public class SonarViolationInspection extends AbstractSonarInspection {
         List<Violation> violationList = ApplicationManager.getApplication().runReadAction(new Computable<List<Violation>>() {
             @Override
             public List<Violation> compute() {
-                return file.getProject().getComponent(SonarProjectComponent.class).getSonarCache().getViolations(file.getVirtualFile());
+                return file.getProject().getComponent(SonarProjectComponent.class).getSonarAnalysis().getViolations(file.getVirtualFile());
             }
         });
         Source source = ApplicationManager.getApplication().runReadAction(new Computable<Source>() {
             @Override
             public Source compute() {
-                return file.getProject().getComponent(SonarProjectComponent.class).getSonarCache().getSource(file.getVirtualFile());
+                return file.getProject().getComponent(SonarProjectComponent.class).getSonarAnalysis().getSource(file.getVirtualFile());
             }
         });
 

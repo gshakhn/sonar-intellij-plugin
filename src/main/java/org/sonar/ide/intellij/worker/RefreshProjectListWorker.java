@@ -1,5 +1,7 @@
 package org.sonar.ide.intellij.worker;
 
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.ui.Messages;
 import org.sonar.ide.intellij.listener.RefreshProjectListListener;
 import org.sonar.ide.intellij.model.SonarProject;
 import org.sonar.wsclient.Sonar;
@@ -15,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 
 public class RefreshProjectListWorker extends SwingWorker<List<SonarProject>, Void> {
 
+    private static final Logger LOG = Logger.getInstance("#org.sonar.ide.intellij.worker.RefreshProjectListWorker");
     private Sonar sonar;
     private List<RefreshProjectListListener> listeners = new ArrayList<RefreshProjectListListener>();
 
@@ -28,21 +31,34 @@ public class RefreshProjectListWorker extends SwingWorker<List<SonarProject>, Vo
 
     @Override
     protected List<SonarProject> doInBackground() throws Exception {
-        ResourceQuery query = new ResourceQuery();
+        final ResourceQuery query = new ResourceQuery();
         query.setQualifiers("TRK,BRC");
         query.setDepth(1);
+        query.setTimeoutMilliseconds(15000);
 
         List<Resource> resources;
         try {
             resources = this.sonar.findAll(query);
-        } catch (Exception e) {
+        } catch (final Exception e) {
+            LOG.warn("Error occurred querrying Sonar " + query.getUrl(), e);
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    Throwable rootCause = e;
+                    while (rootCause.getCause() != null) {
+                        rootCause = e.getCause();
+                    }
+                    Messages.showErrorDialog("Connection to Sonar could not be established! " + rootCause.getLocalizedMessage(), "Sonar Connection Failed");
+                }
+            });
             return null;
         }
 
-        List<SonarProject> projects = new ArrayList<SonarProject>();
+        final List<SonarProject> projects = new ArrayList<SonarProject>();
 
         for (Resource resource : resources) {
-            SonarProject project = new SonarProject(resource);
+            final SonarProject project = new SonarProject(resource);
             projects.add(project);
         }
 
@@ -64,9 +80,9 @@ public class RefreshProjectListWorker extends SwingWorker<List<SonarProject>, Vo
                 listener.doneRefreshProjects(projects);
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOG.error("Refreshing of project was interrupted!", e);
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            LOG.error("Refreshing of project could not be successfully executed!", e);
         }
     }
 }

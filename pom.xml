@@ -58,6 +58,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>idea</artifactId>
+            <version>${idea.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.4</version>
@@ -94,12 +100,6 @@
             <version>2.4</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>idea</artifactId>
-            <version>${idea.version}</version>
-            <scope>provided</scope>
-        </dependency>
 
         <!-- Test -->
         <dependency>

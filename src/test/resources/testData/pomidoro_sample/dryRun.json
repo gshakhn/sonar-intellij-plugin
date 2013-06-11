@@ -1,0 +1,1046 @@
+{"version": "3.4.1", "violations_per_resource": {
+    "ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolWindows": [
+        {
+            "line": 39,
+            "message": "Name 'pomodoroIcon' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Constant Name"
+        },
+        {
+            "line": 42,
+            "message": "Anonymous inner class length is 23 lines (max allowed is 20).",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.sizes.AnonInnerLengthCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Anon Inner Length"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.UIBundle": [
+        {
+            "line": 33,
+            "message": "Utility classes should not have a public or default constructor.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.HideUtilityClassConstructorCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Hide Utility Class Constructor"
+        },
+        {
+            "line": 42,
+            "message": "Avoid unused private methods such as 'abc()'.",
+            "severity": "MAJOR",
+            "rule_key": "UnusedPrivateMethod",
+            "rule_repository": "pmd",
+            "rule_name": "Unused private method"
+        },
+        {
+            "line": 46,
+            "message": "Avoid unused local variables such as 'abc'.",
+            "severity": "MAJOR",
+            "rule_key": "UnusedLocalVariable",
+            "rule_repository": "pmd",
+            "rule_name": "Unused local variable"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroPresenter": [
+        {
+            "line": 66,
+            "message": "Anonymous inner class length is 29 lines (max allowed is 20).",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.sizes.AnonInnerLengthCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Anon Inner Length"
+        },
+        {
+            "line": 97,
+            "message": "Name 'hack_for_jdk1_6_u06__IDEA_9_0_2__winXP' must match pattern '^[a-z][a-zA-Z0-9]*$'.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Method Name"
+        },
+        {
+            "line": 99,
+            "message": "'10' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 99,
+            "message": "'10' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 103,
+            "message": "'60' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 104,
+            "message": "'60' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 35,
+            "message": "Perhaps 'progressBarPrefix' could be replaced by a local variable.",
+            "severity": "MINOR",
+            "rule_key": "SingularField",
+            "rule_repository": "pmd",
+            "rule_name": "Singular Field"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.model.PomodoroModel": [
+        {
+            "line": 124,
+            "message": "Use equals() to compare object references.",
+            "severity": "MAJOR",
+            "rule_key": "CompareObjectsWithEquals",
+            "rule_repository": "pmd",
+            "rule_name": "Compare Objects With Equals"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.settings.SettingsPresenter": [
+        {
+            "line": 168,
+            "message": "Don't use trailing comments.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.TrailingCommentCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Trailing Comment"
+        },
+        {
+            "line": 98,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 99,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 123,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 124,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 129,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 130,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.settings.SettingsForm": [
+        {
+            "line": 29,
+            "message": "Variable 'pomodoroLengthComboBox' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 30,
+            "message": "Variable 'breakLengthComboBox' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 31,
+            "message": "Variable 'ringVolumeSlider' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 32,
+            "message": "Variable 'popupCheckBox' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 33,
+            "message": "Variable 'blockDuringBreak' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 35,
+            "message": "Variable 'showToolWindowCheckbox' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 55,
+            "message": "Name '$$$setupUI$$$' must match pattern '^[a-z][a-zA-Z0-9]*$'.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Method Name"
+        },
+        {
+            "line": 57,
+            "message": "'10' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 57,
+            "message": "'10' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 63,
+            "message": "'7' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 63,
+            "message": "'3' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 71,
+            "message": "'6' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 105,
+            "message": "'3' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 112,
+            "message": "'3' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 116,
+            "message": "'3' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 120,
+            "message": "'5' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 125,
+            "message": "'5' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 128,
+            "message": "'4' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 131,
+            "message": "'4' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 139,
+            "message": "Name '$$$getRootComponent$$$' must match pattern '^[a-z][a-zA-Z0-9]*$'.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Method Name"
+        },
+        {
+            "line": 55,
+            "message": "Avoid using dollar signs in variable/method/class/interface names",
+            "severity": "MINOR",
+            "rule_key": "AvoidDollarSigns",
+            "rule_repository": "pmd",
+            "rule_name": "Naming - Avoid dollar signs"
+        },
+        {
+            "line": 55,
+            "message": "The method $$$setupUI$$$() has an NCSS line count of 79",
+            "severity": "MAJOR",
+            "rule_key": "NcssMethodCount",
+            "rule_repository": "pmd",
+            "rule_name": "Ncss Method Count"
+        },
+        {
+            "line": 111,
+            "message": "The String literal \"resources/messages\" appears 4 times in this file; the first occurrence is on line 111",
+            "severity": "MAJOR",
+            "rule_key": "AvoidDuplicateLiterals",
+            "rule_repository": "pmd",
+            "rule_name": "Avoid Duplicate Literals"
+        },
+        {
+            "line": 139,
+            "message": "Avoid using dollar signs in variable/method/class/interface names",
+            "severity": "MINOR",
+            "rule_key": "AvoidDollarSigns",
+            "rule_repository": "pmd",
+            "rule_name": "Naming - Avoid dollar signs"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroForm": [
+        {
+            "line": 64,
+            "message": "Name '$$$setupUI$$$' must match pattern '^[a-z][a-zA-Z0-9]*$'.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Method Name"
+        },
+        {
+            "line": 66,
+            "message": "'3' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 80,
+            "message": "'6' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 93,
+            "message": "'4' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 95,
+            "message": "'5' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 98,
+            "message": "'3' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 104,
+            "message": "Name '$$$loadLabelText$$$' must match pattern '^[a-z][a-zA-Z0-9]*$'.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Method Name"
+        },
+        {
+            "line": 131,
+            "message": "Name '$$$loadButtonText$$$' must match pattern '^[a-z][a-zA-Z0-9]*$'.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Method Name"
+        },
+        {
+            "line": 158,
+            "message": "Name '$$$getRootComponent$$$' must match pattern '^[a-z][a-zA-Z0-9]*$'.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Method Name"
+        },
+        {
+            "line": 64,
+            "message": "Avoid using dollar signs in variable/method/class/interface names",
+            "severity": "MINOR",
+            "rule_key": "AvoidDollarSigns",
+            "rule_repository": "pmd",
+            "rule_name": "Naming - Avoid dollar signs"
+        },
+        {
+            "line": 104,
+            "message": "Avoid using dollar signs in variable/method/class/interface names",
+            "severity": "MINOR",
+            "rule_key": "AvoidDollarSigns",
+            "rule_repository": "pmd",
+            "rule_name": "Naming - Avoid dollar signs"
+        },
+        {
+            "line": 112,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 131,
+            "message": "Avoid using dollar signs in variable/method/class/interface names",
+            "severity": "MINOR",
+            "rule_key": "AvoidDollarSigns",
+            "rule_repository": "pmd",
+            "rule_name": "Naming - Avoid dollar signs"
+        },
+        {
+            "line": 139,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 158,
+            "message": "Avoid using dollar signs in variable/method/class/interface names",
+            "severity": "MINOR",
+            "rule_key": "AvoidDollarSigns",
+            "rule_repository": "pmd",
+            "rule_name": "Naming - Avoid dollar signs"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.PomodoroPanelFactory": [
+        {
+            "line": 40,
+            "message": "Avoid unused local variables such as 'abc'.",
+            "severity": "MAJOR",
+            "rule_key": "UnusedLocalVariable",
+            "rule_repository": "pmd",
+            "rule_name": "Unused local variable"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.modalwindow.ModalForm": [
+        {
+            "line": 31,
+            "message": "Variable 'rootPanel' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 68,
+            "message": "Name '$$$setupUI$$$' must match pattern '^[a-z][a-zA-Z0-9]*$'.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Method Name"
+        },
+        {
+            "line": 71,
+            "message": "'-16777216' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 72,
+            "message": "'460' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 72,
+            "message": "'360' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 73,
+            "message": "'460' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 73,
+            "message": "'360' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 76,
+            "message": "'-3355444' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 77,
+            "message": "'11' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 86,
+            "message": "Name '$$$loadLabelText$$$' must match pattern '^[a-z][a-zA-Z0-9]*$'.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Method Name"
+        },
+        {
+            "line": 113,
+            "message": "Name '$$$getRootComponent$$$' must match pattern '^[a-z][a-zA-Z0-9]*$'.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Method Name"
+        },
+        {
+            "line": 68,
+            "message": "Avoid using dollar signs in variable/method/class/interface names",
+            "severity": "MINOR",
+            "rule_key": "AvoidDollarSigns",
+            "rule_repository": "pmd",
+            "rule_name": "Naming - Avoid dollar signs"
+        },
+        {
+            "line": 86,
+            "message": "Avoid using dollar signs in variable/method/class/interface names",
+            "severity": "MINOR",
+            "rule_key": "AvoidDollarSigns",
+            "rule_repository": "pmd",
+            "rule_name": "Naming - Avoid dollar signs"
+        },
+        {
+            "line": 94,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 113,
+            "message": "Avoid using dollar signs in variable/method/class/interface names",
+            "severity": "MINOR",
+            "rule_key": "AvoidDollarSigns",
+            "rule_repository": "pmd",
+            "rule_name": "Naming - Avoid dollar signs"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.model.ControlThread": [
+        {
+            "line": 38,
+            "message": "'500' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 44,
+            "message": "Don't use trailing comments.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.TrailingCommentCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Trailing Comment"
+        },
+        {
+            "line": 40,
+            "message": "Avoid throwing raw exception types.",
+            "severity": "MAJOR",
+            "rule_key": "AvoidThrowingRawExceptionTypes",
+            "rule_repository": "pmd",
+            "rule_name": "Avoid Throwing Raw Exception Types"
+        },
+        {
+            "line": 42,
+            "message": "Avoid using exceptions as flow control.",
+            "severity": "MAJOR",
+            "rule_key": "ExceptionAsFlowControl",
+            "rule_repository": "pmd",
+            "rule_name": "Exception As Flow Control"
+        },
+        {
+            "line": 44,
+            "message": "Avoid printStackTrace(); use a logger call instead.",
+            "severity": "MAJOR",
+            "rule_key": "AvoidPrintStackTrace",
+            "rule_repository": "pmd",
+            "rule_name": "Avoid Print Stack Trace"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.Abc": [
+        {
+            "line": 13,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 13,
+            "message": "Do not use if statements that are always true or always false",
+            "severity": "CRITICAL",
+            "rule_key": "UnconditionalIfStatement",
+            "rule_repository": "pmd",
+            "rule_name": "Unconditional If Statement"
+        },
+        {
+            "line": 15,
+            "message": "System.out.print is used",
+            "severity": "MAJOR",
+            "rule_key": "SystemPrintln",
+            "rule_repository": "pmd",
+            "rule_name": "System Println"
+        },
+        {
+            "line": 18,
+            "message": "Avoid unused private methods such as 'fake()'.",
+            "severity": "MAJOR",
+            "rule_key": "UnusedPrivateMethod",
+            "rule_repository": "pmd",
+            "rule_name": "Unused private method"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.model.Settings": [
+        {
+            "line": 53,
+            "message": "This block of commented-out lines of code should be removed.",
+            "severity": "MAJOR",
+            "rule_key": "CommentedOutCodeLine",
+            "rule_repository": "squid",
+            "rule_name": "Avoid commented-out lines of code"
+        },
+        {
+            "line": 48,
+            "message": "This block of commented-out lines of code should be removed.",
+            "severity": "MAJOR",
+            "rule_key": "CommentedOutCodeLine",
+            "rule_repository": "squid",
+            "rule_name": "Avoid commented-out lines of code"
+        },
+        {
+            "line": 37,
+            "message": "Variable 'pomodoroLength' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 38,
+            "message": "Variable 'breakLength' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 39,
+            "message": "Variable 'ringVolume' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 40,
+            "message": "Variable 'popupEnabled' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 41,
+            "message": "Variable 'blockDuringBreak' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 42,
+            "message": "Variable 'showToolWindow' must be private and have accessor methods.",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Visibility Modifier"
+        },
+        {
+            "line": 130,
+            "message": "Cyclomatic Complexity is 11 (max allowed is 10).",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.metrics.CyclomaticComplexityCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Cyclomatic Complexity"
+        },
+        {
+            "line": 152,
+            "message": "'31' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 153,
+            "message": "'31' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 154,
+            "message": "'31' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 155,
+            "message": "'31' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 156,
+            "message": "'31' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 157,
+            "message": "'31' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 157,
+            "message": "'32' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 127,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 133,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 134,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 138,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 139,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 140,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 141,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 142,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 143,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 144,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.PomodoroComponent": [
+        {
+            "line": 171,
+            "message": "Don't use trailing comments.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.TrailingCommentCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Trailing Comment"
+        },
+        {
+            "line": 186,
+            "message": "'3' is a magic number.",
+            "severity": "MINOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Magic Number"
+        },
+        {
+            "line": 195,
+            "message": "Anonymous inner class length is 26 lines (max allowed is 20).",
+            "severity": "MAJOR",
+            "rule_key": "com.puppycrawl.tools.checkstyle.checks.sizes.AnonInnerLengthCheck",
+            "rule_repository": "checkstyle",
+            "rule_name": "Anon Inner Length"
+        },
+        {
+            "line": 55,
+            "message": "Avoid empty if statements",
+            "severity": "CRITICAL",
+            "rule_key": "EmptyIfStmt",
+            "rule_repository": "pmd",
+            "rule_name": "Empty If Stmt"
+        },
+        {
+            "line": 55,
+            "message": "Do not use if statements that are always true or always false",
+            "severity": "CRITICAL",
+            "rule_key": "UnconditionalIfStatement",
+            "rule_repository": "pmd",
+            "rule_name": "Unconditional If Statement"
+        },
+        {
+            "line": 147,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 153,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 154,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 171,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        },
+        {
+            "line": 200,
+            "message": "Avoid using if statements without curly braces",
+            "severity": "MAJOR",
+            "rule_key": "IfStmtsMustUseBraces",
+            "rule_repository": "pmd",
+            "rule_name": "If Stmts Must Use Braces"
+        }
+    ],
+    "ru.greeneyes.project.pomidoro.model.PomodoroModelState": [
+        {
+            "line": 41,
+            "message": "Overridable method 'setPomodoroState' called during object construction",
+            "severity": "MAJOR",
+            "rule_key": "ConstructorCallsOverridableMethod",
+            "rule_repository": "pmd",
+            "rule_name": "Constructor Calls Overridable Method"
+        },
+        {
+            "line": 42,
+            "message": "Overridable method 'setLastState' called during object construction",
+            "severity": "MAJOR",
+            "rule_key": "ConstructorCallsOverridableMethod",
+            "rule_repository": "pmd",
+            "rule_name": "Constructor Calls Overridable Method"
+        },
+        {
+            "line": 43,
+            "message": "Overridable method 'setStartTime' called during object construction",
+            "severity": "MAJOR",
+            "rule_key": "ConstructorCallsOverridableMethod",
+            "rule_repository": "pmd",
+            "rule_name": "Constructor Calls Overridable Method"
+        },
+        {
+            "line": 44,
+            "message": "Overridable method 'setPomodorosAmount' called during object construction",
+            "severity": "MAJOR",
+            "rule_key": "ConstructorCallsOverridableMethod",
+            "rule_repository": "pmd",
+            "rule_name": "Constructor Calls Overridable Method"
+        },
+        {
+            "line": 49,
+            "message": "Overridable method 'setPomodoroState' called during object construction",
+            "severity": "MAJOR",
+            "rule_key": "ConstructorCallsOverridableMethod",
+            "rule_repository": "pmd",
+            "rule_name": "Constructor Calls Overridable Method"
+        },
+        {
+            "line": 50,
+            "message": "Overridable method 'setLastState' called during object construction",
+            "severity": "MAJOR",
+            "rule_key": "ConstructorCallsOverridableMethod",
+            "rule_repository": "pmd",
+            "rule_name": "Constructor Calls Overridable Method"
+        },
+        {
+            "line": 51,
+            "message": "Overridable method 'setStartTime' called during object construction",
+            "severity": "MAJOR",
+            "rule_key": "ConstructorCallsOverridableMethod",
+            "rule_repository": "pmd",
+            "rule_name": "Constructor Calls Overridable Method"
+        }
+    ]
+}}

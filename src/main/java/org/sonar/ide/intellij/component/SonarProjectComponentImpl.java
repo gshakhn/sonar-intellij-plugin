@@ -7,23 +7,25 @@ import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
+import org.sonar.ide.intellij.analysis.SonarAnalysis;
+import org.sonar.ide.intellij.analysis.SonarCompactAnalysis;
 import org.sonar.ide.intellij.listener.SonarFileEditorManagerListener;
 import org.sonar.ide.intellij.model.ToolWindowModel;
-import org.sonar.ide.intellij.utils.SonarCache;
 import org.sonar.ide.intellij.utils.SonarUtils;
 import org.sonar.wsclient.Sonar;
+
 
 @State(name = "SonarConfiguration", storages = {@Storage(id = "other", file = "$PROJECT_FILE$")})
 public class SonarProjectComponentImpl implements SonarProjectComponent, ProjectComponent, PersistentStateComponent<SonarProjectComponent.SonarProjectState> {
     private ToolWindowModel toolWindowModel;
     private SonarProjectState state;
     private Project project;
-    private SonarCache sonarCache;
+    private SonarCompactAnalysis sonarAnalysis;
 
     public SonarProjectComponentImpl(Project project) {
         this.project = project;
         this.state = new SonarProjectState();
-        this.sonarCache = new SonarCache(project);
+        this.sonarAnalysis = new SonarCompactAnalysis(project);
     }
 
     @Override
@@ -75,7 +77,32 @@ public class SonarProjectComponentImpl implements SonarProjectComponent, Project
     }
 
     @Override
-    public SonarCache getSonarCache() {
-        return sonarCache;
+    public SonarAnalysis getSonarAnalysis() {
+        return sonarAnalysis;
+    }
+
+    @Override
+    public void switchToLocalAnalysis(SonarAnalysis result) {
+        sonarAnalysis.switchToLocalAnalysis(result);
+        EventBus.notifyEvent(EventKind.LOCAL_ANALYSIS_ACTIVATED);
+
+    }
+
+    @Override
+    public void switchToExistingLocalAnalysis() {
+        sonarAnalysis.switchToCurrentLocalAnalysis();
+        EventBus.notifyEvent(EventKind.LOCAL_ANALYSIS_ACTIVATED);
+    }
+
+
+    @Override
+    public void switchToRemoteAnalysis() {
+        sonarAnalysis.switchToRemoteAnalysis();
+        EventBus.notifyEvent(EventKind.REMOTE_ANALYSIS_ACTIVATED);
+    }
+
+    @Override
+    public boolean isLocalAnalysisAvailable() {
+        return sonarAnalysis.isLocalAnalysisAvailable();
     }
 }

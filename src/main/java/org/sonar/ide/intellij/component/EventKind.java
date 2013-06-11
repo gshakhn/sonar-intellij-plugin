@@ -1,0 +1,9 @@
+package org.sonar.ide.intellij.component;
+
+
+public enum EventKind {
+    LOCAL_ANALYSIS_FINISHED,
+    LOCAL_ANALYSIS_STARTED,
+    REMOTE_ANALYSIS_ACTIVATED,
+    CANCEL_LOCAL_ANALYSIS, LOCAL_ANALYSIS_ACTIVATED
+}

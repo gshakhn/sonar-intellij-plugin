@@ -1,11 +1,12 @@
 Introduction
 -----------
 
-This is the unofficial [IntelliJ IDEA] plugin for [Sonar]. There was a plugin called [SONAR IDE], but it's development for [IntelliJ IDEA] has been discontinued with IntelliJ 9. So I decided to scratch an itch and write my own. Then a few people contributed to make it better. Isn't open source awesome?
+This is the unofficial [IntelliJ IDEA] plugin for [Sonar]. There was a plugin called SONAR IDE, but it's development for [IntelliJ IDEA] has been discontinued with IntelliJ 9. Today there is an [Eclipse plugin called SonarQube](http://docs.codehaus.org/display/SONAR/Using+SonarQube+in+Eclipse) only.
+So I decided to scratch an itch and write my own. Then a few people contributed to make it better. Isn't open source awesome?
 
 [IntelliJ IDEA]: http://www.jetbrains.com/idea/
 [Sonar]: http://www.sonarsource.org/
-[SONAR IDE]: http://docs.codehaus.org/display/SONAR/IntelliJ+IDEA+Plugin
+
 
 Download
 --------
@@ -31,7 +32,7 @@ For your convienience we created a bash script which will do exactly this for yo
 ```
 
 To run the maven build you'll also need to install an updated version of [ideauidesigner-maven-plugin]. See that readme for installation instructions.
-[ideauidesigner-maven-plugin]: https://github.com/gshakhn/ideauidesigner-maven-plugin
+[ideauidesigner-maven-plugin]: https://github.com/gshakhn/ideauidesigner-maven-plugin/tree/12.x
 
 After you install all the jars this plugin needs into your local repo, just run
 

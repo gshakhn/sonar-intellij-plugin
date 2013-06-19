@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>sonar-intellij-plugin</name>
-    <description>Adds Sonar integration to IntelliJ. See https://github.com/gshakhn/sonar-intellij-plugin for latest
+    <description>OpenSource Sonar integration for IntelliJ, PhpStorm, RubyMine, PyCharm and other Jetbrains IDEs. See https://github.com/gshakhn/sonar-intellij-plugin for details and latest
         changes.
     </description>
     <issueManagement>

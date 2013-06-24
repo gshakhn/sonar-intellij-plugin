@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.min.version>1.6</jdk.min.version>
         <ij.plugin>true</ij.plugin>
-        <idea.version>12.0.4</idea.version>
+        <idea.version>12.0.3</idea.version>
         <idea.build>123.169</idea.build>
         <sonar.version>3.4.1</sonar.version>
         <sonar.language>java</sonar.language>
@@ -58,6 +58,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>idea</artifactId>
+            <version>${idea.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.4</version>
@@ -88,6 +94,13 @@
             <version>3.2.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+
+
         <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
@@ -95,13 +108,14 @@
             <version>4.10</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- needed by idea.jar -->
         <dependency>
             <groupId>com.intellij</groupId>
-            <artifactId>idea</artifactId>
+            <artifactId>bootstrap</artifactId>
             <version>${idea.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- needed by idea.jar -->
         <dependency>
             <groupId>com.intellij</groupId>
             <artifactId>trove4j</artifactId>
@@ -114,6 +128,39 @@
             <version>${idea.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>resources_en</artifactId>
+            <version>${idea.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>sanselan-0.98-snapshot</artifactId>
+            <version>${idea.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${idea.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>jdom</artifactId>
+            <version>${idea.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.8.4</version>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
     <build>
         <resources>
@@ -124,6 +171,12 @@
                     <include>icons/</include>
                 </includes>
                 <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources/</directory>
+                <includes>
+                    <include>**/*.jar</include>
+                </includes>
             </resource>
         </resources>
 

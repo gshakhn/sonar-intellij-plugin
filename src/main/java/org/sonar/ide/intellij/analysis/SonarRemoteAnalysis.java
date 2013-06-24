@@ -1,4 +1,4 @@
-package org.sonar.ide.intellij.utils;
+package org.sonar.ide.intellij.analysis;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -11,17 +11,25 @@ import org.sonar.wsclient.services.Model;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
-public class SonarCache {
+/**
+ * Represents the source and violations data which was done remotely
+ */
+public class SonarRemoteAnalysis implements SonarAnalysis {
+
     private Cache<Violation> violationCache;
     private Cache<Source> sourceCache;
 
     private final Set<LoadingSonarFilesListener> loadingFilesListeners = new HashSet<LoadingSonarFilesListener>();
 
-    public SonarCache(final Project project) {
+    public SonarRemoteAnalysis(final Project project) {
         this.violationCache = new ViolationsCache(project);
         this.sourceCache = new SourceCache(project);
     }
@@ -65,9 +73,14 @@ public class SonarCache {
         this.loadingFilesListeners.add(listener);
     }
 
-    public void clearCache() {
+    public void clear() {
         this.violationCache.clear();
         this.sourceCache.clear();
+    }
+
+    @Override
+    public boolean isLocalAnalysis() {
+        return false;
     }
 
     private abstract class Cache<T extends Model> {

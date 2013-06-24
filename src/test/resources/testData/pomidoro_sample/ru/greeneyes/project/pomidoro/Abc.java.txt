@@ -1,0 +1,21 @@
+package ru.greeneyes.project.pomidoro;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: g_gili
+ * Date: 2/9/13
+ * Time: 8:51 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class Abc {
+
+	public void abc() {
+		if(true)
+
+			System.out.print("A");
+	}
+
+	private void fake() {
+
+	}
+}

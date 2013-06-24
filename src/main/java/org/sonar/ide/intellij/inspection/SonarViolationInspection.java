@@ -1,6 +1,10 @@
 package org.sonar.ide.intellij.inspection;
 
-import com.intellij.codeInspection.*;
+import com.intellij.codeInspection.InspectionManager;
+import com.intellij.codeInspection.LocalInspectionToolSession;
+import com.intellij.codeInspection.ProblemDescriptor;
+import com.intellij.codeInspection.ProblemHighlightType;
+import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
@@ -37,6 +41,7 @@ public class SonarViolationInspection extends AbstractSonarInspection {
     }
 
     private Map<VirtualFile, List<Violation>> violations = new ConcurrentHashMap<VirtualFile, List<Violation>>();
+
     private boolean isOnTheFly = true;
 
     @Nullable
@@ -44,18 +49,19 @@ public class SonarViolationInspection extends AbstractSonarInspection {
         List<Violation> violationList = ApplicationManager.getApplication().runReadAction(new Computable<List<Violation>>() {
             @Override
             public List<Violation> compute() {
-                return file.getProject().getComponent(SonarProjectComponent.class).getSonarCache().getViolations(file.getVirtualFile());
+                return file.getProject().getComponent(SonarProjectComponent.class).getSonarAnalysis().getViolations(file.getVirtualFile());
             }
         });
         Source source = ApplicationManager.getApplication().runReadAction(new Computable<Source>() {
             @Override
             public Source compute() {
-                return file.getProject().getComponent(SonarProjectComponent.class).getSonarCache().getSource(file.getVirtualFile());
+                return file.getProject().getComponent(SonarProjectComponent.class).getSonarAnalysis().getSource(file.getVirtualFile());
             }
         });
 
         if (!isOnTheFly && violationList != null)
             violations.put(file.getVirtualFile(), violationList);
+
         List<ProblemDescriptor> problems = buildProblemDescriptors(
                 violationList,
                 manager,

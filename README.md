@@ -1,69 +1,14 @@
 Introduction
 -----------
 
-This is the unofficial [IntelliJ IDEA] plugin for [Sonar]. There was a plugin called SONAR IDE, but it's development for [IntelliJ IDEA] has been discontinued with IntelliJ 9. Today there is an [Eclipse plugin called SonarQube](http://docs.codehaus.org/display/SONAR/Using+SonarQube+in+Eclipse) only.
-So I decided to scratch an itch and write my own. Then a few people contributed to make it better. Isn't open source awesome?
-
-[IntelliJ IDEA]: http://www.jetbrains.com/idea/
-[Sonar]: http://www.sonarsource.org/
-
-
-Download
---------
-
-You can install the plugin through the official JetBrains repo. You can also manually download it [here].
-There is also an [11.x compatible version] on the [11.x] branch.
-
-[here]: http://plugins.jetbrains.com/plugin?pr=idea&pluginId=7168
-[11.x compatible version]: https://github.com/gshakhn/sonar-intellij-plugin/blob/11.x/sonar-intellij-plugin-idea11.zip
-[11.x]: https://github.com/gshakhn/sonar-intellij-plugin/tree/11.x
-
-Building the plugin
-------------------
-
-To build the plugin on your machine you need to have at least a downloaded copy of IntelliJ 12.0.4 (Build 123.169).
-The plugin depends on multiple jars of IntelliJ IDEA but as these are not available via Maven Central, you'll have to
-install the various Intellij jars located in the lib folder of your IntelliJ install into your local Maven repository.
-
-For your convienience we created a bash script which will do exactly this for you
-```
-    $ cd sonar-intellij-plugin/
-    $ ./install-intellij-libs.sh 12.0.4 <path to IntelliJ 12.0.4>
-```
-
-To run the maven build you'll also need to install an updated version of [ideauidesigner-maven-plugin]. See that readme for installation instructions.
-[ideauidesigner-maven-plugin]: https://github.com/gshakhn/ideauidesigner-maven-plugin/tree/12.x
-
-After you install all the jars this plugin needs into your local repo, just run
-
-    mvn package
-
-The resulting zip file will be located in the target folder.
-
-
-Using the plugin
-------------------
-
-**PREREQUISITES:**
-The plugin expects you to have access to a running instance of [Sonar] where you already performed an analysis for the sources you have locally. If you haven't done so, yet, please consider reading the Sonar documentation on how to integrate Sonar analysis e.g. [with your Maven build](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+Maven) first.
-
-1. Go to  File > Project Settings > Modules > Your Module > Sonar Configuration.
-2. Enter your host and username/password if required.
-3. Click the Load Projects button.
-4. Select the Sonar project associated with the module and hit OK.
-5. Open the Sonar tab at the bottom.
-6. Navigate to a Java file that has violations.
-7. Assuming everything is configured correctly, you should see the violations show up in the table.
-
-
-Usability Notes
-------------------
-- The violation list and source code for a Java file are cached. If the violation is fixed and another Sonar analysis is complete, you'll have to clear the cache through the context menu. (Right click on any open file editor and go to the Sonar menu)
-- There is very little error handling for a bad configuration.
+**PLEASE NOTE: THIS PLUGIN HAS BEEN MOVED TO https://github.com/sonar-intellij-plugin/sonar-intellij-plugin. ANY FEATURE REQUESTS OR BUG REPORTS SHOULD GO THERE.**
+Many thanks for your support!
 
 
 Changelog
 ---------
+
+Moved to https://github.com/sonar-intellij-plugin/sonar-intellij-plugin
 
 Version 1.0.7
 - Fix "NPE when starting Intellij 12" ([#32](https://github.com/gshakhn/sonar-intellij-plugin/issues/32))

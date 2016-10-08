@@ -1,4 +1,4 @@
-<idea-plugin version="2" url="https://github.com/gshakhn/sonar-intellij-plugin">
+<idea-plugin version="2">
   <name>Sonar IntelliJ</name>
   <description>${project.description}</description>
   <version>${project.version}</version>
@@ -9,6 +9,12 @@
     Please see online changelog at <a href="https://github.com/gshakhn/sonar-intellij-plugin/blob/master/README.md#changelog">https://github.com/gshakhn/sonar-intellij-plugin/blob/master/README.md#changelog</a>.
 ]]></change-notes>
 
+<!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+on how to target different products -->
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    
     <application-components>
     <!-- Add your application components here -->
   </application-components>
